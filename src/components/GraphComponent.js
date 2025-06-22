@@ -24,14 +24,18 @@ function GraphComponent() {
   useEffect(() => {
     if (notes.length === 0 && !loading) return;
 
-    const processedNodes = notes.map(note => ({
-      group: 'nodes',
-      data: {
-        id: note.id,
-        label: (note.text || 'Untitled').substring(0, 50) + ((note.text || '').length > 50 ? '...' : ''),
-        url: note.url || '#'
-      }
+    const processedNodes = notes
+      .filter(note => note && note.id && typeof note.text === 'string') // Filter out invalid notes
+      .map(note => ({
+        group: 'nodes',
+        data: {
+          id: note.id,
+          label: note.text.substring(0, 50) + (note.text.length > 50 ? '...' : ''),
+          url: note.url || '#'
+        }
     }));
+
+    const validNoteIds = new Set(processedNodes.map(n => n.data.id));
 
     const processedEdges = [];
     if (notes.length > 1) {
@@ -40,7 +44,7 @@ function GraphComponent() {
           const note1 = notes[i];
           const note2 = notes[j];
           
-          if (note1.tags && note2.tags) {
+          if (note1 && note2 && validNoteIds.has(note1.id) && validNoteIds.has(note2.id) && note1.tags && note2.tags) {
             const commonTags = note1.tags.filter(tag => note2.tags.includes(tag));
             if (commonTags.length > 0) {
               processedEdges.push({
