@@ -114,4 +114,20 @@ button:hover {
 
 .delete-btn:hover {
   background-color: #c82333;
+}
+
+.footer-actions {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  text-align: center;
+}
+
+.btn-clear-all {
+  background-color: #dc3545; /* Red for destructive action */
+  color: white;
+}
+
+.btn-clear-all:hover {
+  background-color: #c82333;
 } 
