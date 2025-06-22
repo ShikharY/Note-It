@@ -1,8 +1,18 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
-import './styles.css';
+import { createTheme, MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(<App />); 
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
+
+ReactDOM.render(
+  <React.StrictMode>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <App />
+    </MantineProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+); 

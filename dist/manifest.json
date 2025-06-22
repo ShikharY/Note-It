@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Take notes while browsing any webpage",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "action": {
     "default_popup": "popup.html",

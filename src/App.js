@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Box, Stack, Textarea, TextInput, Button, Group, Title, Paper } from '@mantine/core';
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -15,19 +16,23 @@ function App() {
 
   const handleSaveNote = () => {
     if (newNote.trim() === '') return;
-
-    const noteToSave = {
-      id: Date.now(),
-      text: newNote,
-      tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
-      timestamp: new Date().toLocaleString()
-    };
-
-    const updatedNotes = [...notes, noteToSave];
-    chrome.storage.local.set({ notes: updatedNotes }, () => {
-      setNotes(updatedNotes);
-      setNewNote('');
-      setTags('');
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const currentTab = tabs[0];
+      if (currentTab) {
+        const noteToSave = {
+          id: Date.now(),
+          text: newNote,
+          tags: tags.split(',').map(tag => tag.trim()).filter(Boolean),
+          timestamp: new Date().toLocaleString(),
+          url: currentTab.url
+        };
+        const updatedNotes = [...notes, noteToSave];
+        chrome.storage.local.set({ notes: updatedNotes }, () => {
+          setNotes(updatedNotes);
+          setNewNote('');
+          setTags('');
+        });
+      }
     });
   };
   
@@ -52,37 +57,36 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <header>
-        <h1>Note It</h1>
-      </header>
-      <div className="note-form">
-        <textarea
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-          placeholder="Write a new note..."
-        />
-        <input
-            type="text"
+    <Box w={350}>
+      <Paper p="md" shadow="xs" withBorder h="100%">
+        <Stack>
+          <Title order={2} ta="center">Note It</Title>
+          <Textarea
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            placeholder="Write a new note..."
+            label="Your Note"
+            autosize
+            minRows={3}
+          />
+          <TextInput
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="Tags (comma-separated)"
-        />
-      </div>
-
-      <div className="button-group">
-        <button onClick={handleSaveNote} className="btn-save">Save Note</button>
-        <button onClick={openGraphView} className="btn-graph">Graph View</button>
-      </div>
-
-      {notes.length > 0 && (
-        <div className="footer-actions">
-          <button onClick={handleClearAllNotes} className="btn-clear-all">
-            Clear All Notes
-          </button>
-        </div>
-      )}
-    </div>
+            label="Tags"
+          />
+          <Group grow>
+            <Button onClick={handleSaveNote}>Save Note</Button>
+            <Button onClick={openGraphView} variant="outline">Graph View</Button>
+          </Group>
+          {notes.length > 0 && (
+            <Button onClick={handleClearAllNotes} color="red" variant="light" fullWidth mt="md">
+              Clear All Notes
+            </Button>
+          )}
+        </Stack>
+      </Paper>
+    </Box>
   );
 }
 
