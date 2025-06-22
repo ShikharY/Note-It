@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Note It",
+  "version": "1.0.0",
+  "description": "Take notes while browsing any webpage",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Note It"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+} 
