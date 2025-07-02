@@ -29,12 +29,6 @@ A simple Chrome extension for taking notes while browsing any webpage.
 To run in development mode with auto-rebuild:
 
 ```bash
-npm run start
-```
-
-Or alternatively:
-
-```bash
 npm run dev
 ```
 
