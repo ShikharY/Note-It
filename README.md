@@ -13,6 +13,7 @@ A simple Chrome extension for taking notes while browsing any webpage.
 ## Installation
 
 1. Build the extension:
+
    ```bash
    npm run build
    ```
@@ -26,9 +27,12 @@ A simple Chrome extension for taking notes while browsing any webpage.
 ## Development
 
 To run in development mode with auto-rebuild:
+
 ```bash
 npm run dev
 ```
+
+Both commands will start webpack in watch mode, automatically rebuilding the extension when you make changes to the source code.
 
 ## Usage
 
@@ -42,6 +46,7 @@ npm run dev
 ## Graph View
 
 The Graph View opens in a new browser tab and provides:
+
 - A full-page layout for better note visualization
 - Grid layout showing all saved notes
 - Links to the original pages where notes were taken
@@ -68,8 +73,9 @@ The Graph View opens in a new browser tab and provides:
 ## Building
 
 The extension will be built to the `dist/` folder, which contains:
+
 - `popup.html` - The popup page
 - `popup.js` - The bundled popup JavaScript
 - `graphView.html` - The graph view page
 - `graphView.js` - The bundled graph view JavaScript
-- `manifest.json` - Extension manifest 
+- `manifest.json` - Extension manifest
