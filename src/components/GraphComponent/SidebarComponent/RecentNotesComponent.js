@@ -2,12 +2,19 @@ import React from "react";
 import { Stack, Text, Anchor } from "@mantine/core";
 
 const RecentNotesComponent = ({ nodes, onSelect }) => {
-  const recentNodes = [...nodes]
-    .sort((a, b) => String(b.data.id).localeCompare(String(a.data.id)))
+  const recentNodes = (nodes || [])
+    .filter((node) => node && node.data && node.data.id !== undefined)
+    .sort((a, b) => {
+      const tA = Number(a.data.timestamp ?? 0);
+      const tB = Number(b.data.timestamp ?? 0);
+      return tB - tA; // Most recent first (highest timestamp at top)
+    })
     .slice(0, 5);
 
-  const truncate = (text, maxLength = 20) =>
-    text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  const truncate = (text, maxLength = 20) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
 
   return (
     <Stack mt="md" spacing="xs">
@@ -15,16 +22,22 @@ const RecentNotesComponent = ({ nodes, onSelect }) => {
         Top 5 Recent Notes
       </Text>
 
-      {recentNodes.map((node) => (
-        <Anchor
-          key={node.data.id}
-          size="sm"
-          onClick={() => onSelect(node.data.id)}
-          style={{ cursor: "pointer", color: "#aaa" }}
-        >
-          {truncate(node.data.label)}
-        </Anchor>
-      ))}
+      {recentNodes.length > 0 ? (
+        recentNodes.map((node) => (
+          <Anchor
+            key={node.data.id}
+            size="sm"
+            onClick={() => onSelect(node.data.id)}
+            style={{ cursor: "pointer", color: "#aaa" }}
+          >
+            {truncate(node.data.label || "")}
+          </Anchor>
+        ))
+      ) : (
+        <Text size="sm" c="dimmed">
+          No notes available now.
+        </Text>
+      )}
     </Stack>
   );
 };

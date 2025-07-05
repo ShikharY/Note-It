@@ -21,6 +21,11 @@ function GraphComponent() {
 
     const processedNodes = notes
       .filter((note) => note && note.id && typeof note.text === "string") // Filter out invalid notes
+      .sort((a, b) => {
+        const tA = Number(a.timestamp ?? 0);
+        const tB = Number(b.timestamp ?? 0);
+        return tB - tA; // Most recent first
+      })
       .map((note) => ({
         group: "nodes",
         data: {
@@ -28,6 +33,7 @@ function GraphComponent() {
           label:
             note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
           url: note.url || "#",
+          timestamp: note.timestamp,
         },
       }));
 
