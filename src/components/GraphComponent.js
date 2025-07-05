@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import SidebarComponent from "./GraphComponent/SidebarComponent";
+import NodeModal from "./GraphComponent/NodeModal";
 
 function GraphComponent() {
   const [notes, setNotes] = useState([]);
@@ -8,6 +9,7 @@ function GraphComponent() {
   const [loading, setLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState(null);
   const [opened, { toggle }] = useDisclosure();
+  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure();
   const cyRef = useRef(null);
 
   useEffect(() => {
@@ -32,8 +34,10 @@ function GraphComponent() {
           id: note.id,
           label:
             note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
+          fullText: note.text,
           url: note.url || "#",
           timestamp: note.timestamp,
+          tags: note.tags || [],
         },
       }));
 
@@ -82,11 +86,7 @@ function GraphComponent() {
   useEffect(() => {
     if (cyRef.current) {
       cyRef.current.on("tap", "node", (event) => {
-        const nodeData = event.target.data();
-        setSelectedNode(nodeData);
-        if (nodeData.url && nodeData.url !== "#") {
-          window.open(nodeData.url, "_blank");
-        }
+        handleNodeClick(event.target.data());
       });
 
       return () => {
@@ -95,7 +95,12 @@ function GraphComponent() {
         }
       };
     }
-  }, [cyRef.current, elements]);
+  }, [cyRef.current, elements, openModal]);
+
+  const handleNodeClick = (nodeData) => {
+    setSelectedNode(nodeData);
+    openModal();
+  };
 
   const layout = {
     name: "cose",
@@ -141,17 +146,27 @@ function GraphComponent() {
   ];
 
   return (
-    <SidebarComponent
-      opened={opened}
-      toggle={toggle}
-      selectedNode={selectedNode}
-      elements={elements}
-      loading={loading}
-      layout={layout}
-      stylesheet={stylesheet}
-      cyRef={cyRef}
-      notes={notes}
-    />
+    <>
+      <SidebarComponent
+        opened={opened}
+        toggle={toggle}
+        selectedNode={selectedNode}
+        elements={elements}
+        loading={loading}
+        layout={layout}
+        stylesheet={stylesheet}
+        cyRef={cyRef}
+        notes={notes}
+        onOpenModal={openModal}
+      />
+      <NodeModal
+        opened={modalOpened && !!selectedNode}
+        onClose={closeModal}
+        selectedNode={selectedNode}
+        notes={notes}
+        onUpdateNotes={setNotes}
+      />
+    </>
   );
 }
 

@@ -1,6 +1,7914 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _extends)
+/* harmony export */ });
+function _extends() {
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
+    }
+    return n;
+  }, _extends.apply(null, arguments);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _objectWithoutPropertiesLoose)
+/* harmony export */ });
+function _objectWithoutPropertiesLoose(r, e) {
+  if (null == r) return {};
+  var t = {};
+  for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+    if (-1 !== e.indexOf(n)) continue;
+    t[n] = r[n];
+  }
+  return t;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs":
+/*!******************************************************************!*\
+  !*** ./node_modules/@floating-ui/core/dist/floating-ui.core.mjs ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrow: () => (/* binding */ arrow),
+/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
+/* harmony export */   computePosition: () => (/* binding */ computePosition),
+/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
+/* harmony export */   flip: () => (/* binding */ flip),
+/* harmony export */   hide: () => (/* binding */ hide),
+/* harmony export */   inline: () => (/* binding */ inline),
+/* harmony export */   limitShift: () => (/* binding */ limitShift),
+/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   rectToClientRect: () => (/* reexport safe */ _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect),
+/* harmony export */   shift: () => (/* binding */ shift),
+/* harmony export */   size: () => (/* binding */ size)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+
+
+
+function computeCoordsFromPlacement(_ref, placement, rtl) {
+  let {
+    reference,
+    floating
+  } = _ref;
+  const sideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
+  const alignmentAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
+  const alignLength = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(alignmentAxis);
+  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+  const isVertical = sideAxis === 'y';
+  const commonX = reference.x + reference.width / 2 - floating.width / 2;
+  const commonY = reference.y + reference.height / 2 - floating.height / 2;
+  const commonAlign = reference[alignLength] / 2 - floating[alignLength] / 2;
+  let coords;
+  switch (side) {
+    case 'top':
+      coords = {
+        x: commonX,
+        y: reference.y - floating.height
+      };
+      break;
+    case 'bottom':
+      coords = {
+        x: commonX,
+        y: reference.y + reference.height
+      };
+      break;
+    case 'right':
+      coords = {
+        x: reference.x + reference.width,
+        y: commonY
+      };
+      break;
+    case 'left':
+      coords = {
+        x: reference.x - floating.width,
+        y: commonY
+      };
+      break;
+    default:
+      coords = {
+        x: reference.x,
+        y: reference.y
+      };
+  }
+  switch ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement)) {
+    case 'start':
+      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+    case 'end':
+      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+  }
+  return coords;
+}
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a given reference element.
+ *
+ * This export does not have any `platform` interface logic. You will need to
+ * write one for the platform you are using Floating UI with.
+ */
+const computePosition = async (reference, floating, config) => {
+  const {
+    placement = 'bottom',
+    strategy = 'absolute',
+    middleware = [],
+    platform
+  } = config;
+  const validMiddleware = middleware.filter(Boolean);
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(floating));
+  let rects = await platform.getElementRects({
+    reference,
+    floating,
+    strategy
+  });
+  let {
+    x,
+    y
+  } = computeCoordsFromPlacement(rects, placement, rtl);
+  let statefulPlacement = placement;
+  let middlewareData = {};
+  let resetCount = 0;
+  for (let i = 0; i < validMiddleware.length; i++) {
+    const {
+      name,
+      fn
+    } = validMiddleware[i];
+    const {
+      x: nextX,
+      y: nextY,
+      data,
+      reset
+    } = await fn({
+      x,
+      y,
+      initialPlacement: placement,
+      placement: statefulPlacement,
+      strategy,
+      middlewareData,
+      rects,
+      platform,
+      elements: {
+        reference,
+        floating
+      }
+    });
+    x = nextX != null ? nextX : x;
+    y = nextY != null ? nextY : y;
+    middlewareData = {
+      ...middlewareData,
+      [name]: {
+        ...middlewareData[name],
+        ...data
+      }
+    };
+    if (reset && resetCount <= 50) {
+      resetCount++;
+      if (typeof reset === 'object') {
+        if (reset.placement) {
+          statefulPlacement = reset.placement;
+        }
+        if (reset.rects) {
+          rects = reset.rects === true ? await platform.getElementRects({
+            reference,
+            floating,
+            strategy
+          }) : reset.rects;
+        }
+        ({
+          x,
+          y
+        } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+      }
+      i = -1;
+    }
+  }
+  return {
+    x,
+    y,
+    placement: statefulPlacement,
+    strategy,
+    middlewareData
+  };
+};
+
+/**
+ * Resolves with an object of overflow side offsets that determine how much the
+ * element is overflowing a given clipping boundary on each side.
+ * - positive = overflowing the boundary by that number of pixels
+ * - negative = how many pixels left before it will overflow
+ * - 0 = lies flush with the boundary
+ * @see https://floating-ui.com/docs/detectOverflow
+ */
+async function detectOverflow(state, options) {
+  var _await$platform$isEle;
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    x,
+    y,
+    platform,
+    rects,
+    elements,
+    strategy
+  } = state;
+  const {
+    boundary = 'clippingAncestors',
+    rootBoundary = 'viewport',
+    elementContext = 'floating',
+    altBoundary = false,
+    padding = 0
+  } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+  const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+  const altContext = elementContext === 'floating' ? 'reference' : 'floating';
+  const element = elements[altBoundary ? altContext : elementContext];
+  const clippingClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(await platform.getClippingRect({
+    element: ((_await$platform$isEle = await (platform.isElement == null ? void 0 : platform.isElement(element))) != null ? _await$platform$isEle : true) ? element : element.contextElement || (await (platform.getDocumentElement == null ? void 0 : platform.getDocumentElement(elements.floating))),
+    boundary,
+    rootBoundary,
+    strategy
+  }));
+  const rect = elementContext === 'floating' ? {
+    x,
+    y,
+    width: rects.floating.width,
+    height: rects.floating.height
+  } : rects.reference;
+  const offsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(elements.floating));
+  const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) ? (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
+    x: 1,
+    y: 1
+  } : {
+    x: 1,
+    y: 1
+  };
+  const elementClientRect = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(platform.convertOffsetParentRelativeRectToViewportRelativeRect ? await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  }) : rect);
+  return {
+    top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x
+  };
+}
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow = options => ({
+  name: 'arrow',
+  options,
+  async fn(state) {
+    const {
+      x,
+      y,
+      placement,
+      rects,
+      platform,
+      elements,
+      middlewareData
+    } = state;
+    // Since `element` is required, we don't Partial<> the type.
+    const {
+      element,
+      padding = 0
+    } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state) || {};
+    if (element == null) {
+      return {};
+    }
+    const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+    const coords = {
+      x,
+      y
+    };
+    const axis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentAxis)(placement);
+    const length = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAxisLength)(axis);
+    const arrowDimensions = await platform.getDimensions(element);
+    const isYAxis = axis === 'y';
+    const minProp = isYAxis ? 'top' : 'left';
+    const maxProp = isYAxis ? 'bottom' : 'right';
+    const clientProp = isYAxis ? 'clientHeight' : 'clientWidth';
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const startDiff = coords[axis] - rects.reference[axis];
+    const arrowOffsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(element));
+    let clientSize = arrowOffsetParent ? arrowOffsetParent[clientProp] : 0;
+
+    // DOM platform can return `window` as the `offsetParent`.
+    if (!clientSize || !(await (platform.isElement == null ? void 0 : platform.isElement(arrowOffsetParent)))) {
+      clientSize = elements.floating[clientProp] || rects.floating[length];
+    }
+    const centerToReference = endDiff / 2 - startDiff / 2;
+
+    // If the padding is large enough that it causes the arrow to no longer be
+    // centered, modify the padding so that it is centered.
+    const largestPossiblePadding = clientSize / 2 - arrowDimensions[length] / 2 - 1;
+    const minPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[minProp], largestPossiblePadding);
+    const maxPadding = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(paddingObject[maxProp], largestPossiblePadding);
+
+    // Make sure the arrow doesn't overflow the floating element if the center
+    // point is outside the floating element's bounds.
+    const min$1 = minPadding;
+    const max = clientSize - arrowDimensions[length] - maxPadding;
+    const center = clientSize / 2 - arrowDimensions[length] / 2 + centerToReference;
+    const offset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min$1, center, max);
+
+    // If the reference is small enough that the arrow's padding causes it to
+    // to point to nothing for an aligned placement, adjust the offset of the
+    // floating element itself. To ensure `shift()` continues to take action,
+    // a single reset is performed when this is true.
+    const shouldAddOffset = !middlewareData.arrow && (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) != null && center !== offset && rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 < 0;
+    const alignmentOffset = shouldAddOffset ? center < min$1 ? center - min$1 : center - max : 0;
+    return {
+      [axis]: coords[axis] + alignmentOffset,
+      data: {
+        [axis]: offset,
+        centerOffset: center - offset - alignmentOffset,
+        ...(shouldAddOffset && {
+          alignmentOffset
+        })
+      },
+      reset: shouldAddOffset
+    };
+  }
+});
+
+function getPlacementList(alignment, autoAlignment, allowedPlacements) {
+  const allowedPlacementsSortedByAlignment = alignment ? [...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment), ...allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) !== alignment)] : allowedPlacements.filter(placement => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === placement);
+  return allowedPlacementsSortedByAlignment.filter(placement => {
+    if (alignment) {
+      return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement) === alignment || (autoAlignment ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAlignmentPlacement)(placement) !== placement : false);
+    }
+    return true;
+  });
+}
+/**
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
+ * @see https://floating-ui.com/docs/autoPlacement
+ */
+const autoPlacement = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'autoPlacement',
+    options,
+    async fn(state) {
+      var _middlewareData$autoP, _middlewareData$autoP2, _placementsThatFitOnE;
+      const {
+        rects,
+        middlewareData,
+        placement,
+        platform,
+        elements
+      } = state;
+      const {
+        crossAxis = false,
+        alignment,
+        allowedPlacements = _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements,
+        autoAlignment = true,
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const placements$1 = alignment !== undefined || allowedPlacements === _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.placements ? getPlacementList(alignment || null, autoAlignment, allowedPlacements) : allowedPlacements;
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const currentIndex = ((_middlewareData$autoP = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP.index) || 0;
+      const currentPlacement = placements$1[currentIndex];
+      if (currentPlacement == null) {
+        return {};
+      }
+      const alignmentSides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(currentPlacement, rects, await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating)));
+
+      // Make `computeCoords` start from the right place.
+      if (placement !== currentPlacement) {
+        return {
+          reset: {
+            placement: placements$1[0]
+          }
+        };
+      }
+      const currentOverflows = [overflow[(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(currentPlacement)], overflow[alignmentSides[0]], overflow[alignmentSides[1]]];
+      const allOverflows = [...(((_middlewareData$autoP2 = middlewareData.autoPlacement) == null ? void 0 : _middlewareData$autoP2.overflows) || []), {
+        placement: currentPlacement,
+        overflows: currentOverflows
+      }];
+      const nextPlacement = placements$1[currentIndex + 1];
+
+      // There are more placements to check.
+      if (nextPlacement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: nextPlacement
+          }
+        };
+      }
+      const placementsSortedByMostSpace = allOverflows.map(d => {
+        const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d.placement);
+        return [d.placement, alignment && crossAxis ?
+        // Check along the mainAxis and main crossAxis side.
+        d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0) :
+        // Check only the mainAxis.
+        d.overflows[0], d.overflows];
+      }).sort((a, b) => a[1] - b[1]);
+      const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter(d => d[2].slice(0,
+      // Aligned placements should not check their opposite crossAxis
+      // side.
+      (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(d[0]) ? 2 : 3).every(v => v <= 0));
+      const resetPlacement = ((_placementsThatFitOnE = placementsThatFitOnEachSide[0]) == null ? void 0 : _placementsThatFitOnE[0]) || placementsSortedByMostSpace[0][0];
+      if (resetPlacement !== placement) {
+        return {
+          data: {
+            index: currentIndex + 1,
+            overflows: allOverflows
+          },
+          reset: {
+            placement: resetPlacement
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'flip',
+    options,
+    async fn(state) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform,
+        elements
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = 'bestFit',
+        fallbackAxisSideDirection = 'none',
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+
+      // If a reset by the arrow was caused due to an alignment offset being
+      // added, we should skip any logic now since `flip()` has already done its
+      // work.
+      // https://github.com/floating-ui/floating-ui/issues/2549#issuecomment-1719601643
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+      const initialSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(initialPlacement);
+      const isBasePlacement = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(initialPlacement) === initialPlacement;
+      const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositePlacement)(initialPlacement)] : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getExpandedPlacements)(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== 'none';
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxisPlacements)(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements = [initialPlacement, ...fallbackPlacements];
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignmentSides)(placement, rects, rtl);
+        overflows.push(overflow[sides[0]], overflow[sides[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+
+      // One or more sides is overflowing.
+      if (!overflows.every(side => side <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements[nextIndex];
+        if (nextPlacement) {
+          const ignoreCrossAxisOverflow = checkCrossAxis === 'alignment' ? initialSideAxis !== (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(nextPlacement) : false;
+          if (!ignoreCrossAxisOverflow ||
+          // We leave the current main axis only if every placement on that axis
+          // overflows the main axis.
+          overflowsData.every(d => d.overflows[0] > 0 && (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(d.placement) === initialSideAxis)) {
+            // Try next placement and re-run the lifecycle.
+            return {
+              data: {
+                index: nextIndex,
+                overflows: overflowsData
+              },
+              reset: {
+                placement: nextPlacement
+              }
+            };
+          }
+        }
+
+        // First, find the candidates that fit on the mainAxis side of overflow,
+        // then find the placement that fits the best on the main crossAxis side.
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter(d => d.overflows[0] <= 0).sort((a, b) => a.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+
+        // Otherwise fallback.
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case 'bestFit':
+              {
+                var _overflowsData$filter2;
+                const placement = (_overflowsData$filter2 = overflowsData.filter(d => {
+                  if (hasFallbackAxisSideDirection) {
+                    const currentSideAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(d.placement);
+                    return currentSideAxis === initialSideAxis ||
+                    // Create a bias to the `y` side axis due to horizontal
+                    // reading directions favoring greater width.
+                    currentSideAxis === 'y';
+                  }
+                  return true;
+                }).map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+                if (placement) {
+                  resetPlacement = placement;
+                }
+                break;
+              }
+            case 'initialPlacement':
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
+    }
+  };
+};
+
+function getSideOffsets(overflow, rect) {
+  return {
+    top: overflow.top - rect.height,
+    right: overflow.right - rect.width,
+    bottom: overflow.bottom - rect.height,
+    left: overflow.left - rect.width
+  };
+}
+function isAnySideFullyClipped(overflow) {
+  return _floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.sides.some(side => overflow[side] >= 0);
+}
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ * @see https://floating-ui.com/docs/hide
+ */
+const hide = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'hide',
+    options,
+    async fn(state) {
+      const {
+        rects
+      } = state;
+      const {
+        strategy = 'referenceHidden',
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      switch (strategy) {
+        case 'referenceHidden':
+          {
+            const overflow = await detectOverflow(state, {
+              ...detectOverflowOptions,
+              elementContext: 'reference'
+            });
+            const offsets = getSideOffsets(overflow, rects.reference);
+            return {
+              data: {
+                referenceHiddenOffsets: offsets,
+                referenceHidden: isAnySideFullyClipped(offsets)
+              }
+            };
+          }
+        case 'escaped':
+          {
+            const overflow = await detectOverflow(state, {
+              ...detectOverflowOptions,
+              altBoundary: true
+            });
+            const offsets = getSideOffsets(overflow, rects.floating);
+            return {
+              data: {
+                escapedOffsets: offsets,
+                escaped: isAnySideFullyClipped(offsets)
+              }
+            };
+          }
+        default:
+          {
+            return {};
+          }
+      }
+    }
+  };
+};
+
+function getBoundingRect(rects) {
+  const minX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.left));
+  const minY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...rects.map(rect => rect.top));
+  const maxX = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.right));
+  const maxY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...rects.map(rect => rect.bottom));
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY
+  };
+}
+function getRectsByLine(rects) {
+  const sortedRects = rects.slice().sort((a, b) => a.y - b.y);
+  const groups = [];
+  let prevRect = null;
+  for (let i = 0; i < sortedRects.length; i++) {
+    const rect = sortedRects[i];
+    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
+      groups.push([rect]);
+    } else {
+      groups[groups.length - 1].push(rect);
+    }
+    prevRect = rect;
+  }
+  return groups.map(rect => (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(rect)));
+}
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ * @see https://floating-ui.com/docs/inline
+ */
+const inline = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'inline',
+    options,
+    async fn(state) {
+      const {
+        placement,
+        elements,
+        rects,
+        platform,
+        strategy
+      } = state;
+      // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
+      // ClientRect's bounds, despite the event listener being triggered. A
+      // padding of 2 seems to handle this issue.
+      const {
+        padding = 2,
+        x,
+        y
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const nativeClientRects = Array.from((await (platform.getClientRects == null ? void 0 : platform.getClientRects(elements.reference))) || []);
+      const clientRects = getRectsByLine(nativeClientRects);
+      const fallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.rectToClientRect)(getBoundingRect(nativeClientRects));
+      const paddingObject = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getPaddingObject)(padding);
+      function getBoundingClientRect() {
+        // There are two rects and they are disjoined.
+        if (clientRects.length === 2 && clientRects[0].left > clientRects[1].right && x != null && y != null) {
+          // Find the first rect in which the point is fully inside.
+          return clientRects.find(rect => x > rect.left - paddingObject.left && x < rect.right + paddingObject.right && y > rect.top - paddingObject.top && y < rect.bottom + paddingObject.bottom) || fallback;
+        }
+
+        // There are 2 or more connected rects.
+        if (clientRects.length >= 2) {
+          if ((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y') {
+            const firstRect = clientRects[0];
+            const lastRect = clientRects[clientRects.length - 1];
+            const isTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'top';
+            const top = firstRect.top;
+            const bottom = lastRect.bottom;
+            const left = isTop ? firstRect.left : lastRect.left;
+            const right = isTop ? firstRect.right : lastRect.right;
+            const width = right - left;
+            const height = bottom - top;
+            return {
+              top,
+              bottom,
+              left,
+              right,
+              width,
+              height,
+              x: left,
+              y: top
+            };
+          }
+          const isLeftSide = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement) === 'left';
+          const maxRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(...clientRects.map(rect => rect.right));
+          const minLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(...clientRects.map(rect => rect.left));
+          const measureRects = clientRects.filter(rect => isLeftSide ? rect.left === minLeft : rect.right === maxRight);
+          const top = measureRects[0].top;
+          const bottom = measureRects[measureRects.length - 1].bottom;
+          const left = minLeft;
+          const right = maxRight;
+          const width = right - left;
+          const height = bottom - top;
+          return {
+            top,
+            bottom,
+            left,
+            right,
+            width,
+            height,
+            x: left,
+            y: top
+          };
+        }
+        return fallback;
+      }
+      const resetRects = await platform.getElementRects({
+        reference: {
+          getBoundingClientRect
+        },
+        floating: elements.floating,
+        strategy
+      });
+      if (rects.reference.x !== resetRects.reference.x || rects.reference.y !== resetRects.reference.y || rects.reference.width !== resetRects.reference.width || rects.reference.height !== resetRects.reference.height) {
+        return {
+          reset: {
+            rects: resetRects
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+// For type backwards-compatibility, the `OffsetOptions` type was also
+// Derivable.
+
+async function convertValueToCoords(state, options) {
+  const {
+    placement,
+    platform,
+    elements
+  } = state;
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+  const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+  const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
+  const isVertical = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
+  const mainAxisMulti = ['left', 'top'].includes(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+
+  // eslint-disable-next-line prefer-const
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === 'number' ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === 'number') {
+    crossAxis = alignment === 'end' ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = function (options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: 'offset',
+    options,
+    async fn(state) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x,
+        y,
+        placement,
+        middlewareData
+      } = state;
+      const diffCoords = await convertValueToCoords(state, options);
+
+      // If the placement is the same and the arrow caused an alignment offset
+      // then we don't need to change the positioning coordinates.
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x + diffCoords.x,
+        y: y + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'shift',
+    options,
+    async fn(state) {
+      const {
+        x,
+        y,
+        placement
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = false,
+        limiter = {
+          fn: _ref => {
+            let {
+              x,
+              y
+            } = _ref;
+            return {
+              x,
+              y
+            };
+          }
+        },
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const coords = {
+        x,
+        y
+      };
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
+      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      if (checkMainAxis) {
+        const minSide = mainAxis === 'y' ? 'top' : 'left';
+        const maxSide = mainAxis === 'y' ? 'bottom' : 'right';
+        const min = mainAxisCoord + overflow[minSide];
+        const max = mainAxisCoord - overflow[maxSide];
+        mainAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, mainAxisCoord, max);
+      }
+      if (checkCrossAxis) {
+        const minSide = crossAxis === 'y' ? 'top' : 'left';
+        const maxSide = crossAxis === 'y' ? 'bottom' : 'right';
+        const min = crossAxisCoord + overflow[minSide];
+        const max = crossAxisCoord - overflow[maxSide];
+        crossAxisCoord = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.clamp)(min, crossAxisCoord, max);
+      }
+      const limitedCoords = limiter.fn({
+        ...state,
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      });
+      return {
+        ...limitedCoords,
+        data: {
+          x: limitedCoords.x - x,
+          y: limitedCoords.y - y,
+          enabled: {
+            [mainAxis]: checkMainAxis,
+            [crossAxis]: checkCrossAxis
+          }
+        }
+      };
+    }
+  };
+};
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    options,
+    fn(state) {
+      const {
+        x,
+        y,
+        placement,
+        rects,
+        middlewareData
+      } = state;
+      const {
+        offset = 0,
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const coords = {
+        x,
+        y
+      };
+      const crossAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement);
+      const mainAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getOppositeAxis)(crossAxis);
+      let mainAxisCoord = coords[mainAxis];
+      let crossAxisCoord = coords[crossAxis];
+      const rawOffset = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(offset, state);
+      const computedOffset = typeof rawOffset === 'number' ? {
+        mainAxis: rawOffset,
+        crossAxis: 0
+      } : {
+        mainAxis: 0,
+        crossAxis: 0,
+        ...rawOffset
+      };
+      if (checkMainAxis) {
+        const len = mainAxis === 'y' ? 'height' : 'width';
+        const limitMin = rects.reference[mainAxis] - rects.floating[len] + computedOffset.mainAxis;
+        const limitMax = rects.reference[mainAxis] + rects.reference[len] - computedOffset.mainAxis;
+        if (mainAxisCoord < limitMin) {
+          mainAxisCoord = limitMin;
+        } else if (mainAxisCoord > limitMax) {
+          mainAxisCoord = limitMax;
+        }
+      }
+      if (checkCrossAxis) {
+        var _middlewareData$offse, _middlewareData$offse2;
+        const len = mainAxis === 'y' ? 'width' : 'height';
+        const isOriginSide = ['top', 'left'].includes((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement));
+        const limitMin = rects.reference[crossAxis] - rects.floating[len] + (isOriginSide ? ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse[crossAxis]) || 0 : 0) + (isOriginSide ? 0 : computedOffset.crossAxis);
+        const limitMax = rects.reference[crossAxis] + rects.reference[len] + (isOriginSide ? 0 : ((_middlewareData$offse2 = middlewareData.offset) == null ? void 0 : _middlewareData$offse2[crossAxis]) || 0) - (isOriginSide ? computedOffset.crossAxis : 0);
+        if (crossAxisCoord < limitMin) {
+          crossAxisCoord = limitMin;
+        } else if (crossAxisCoord > limitMax) {
+          crossAxisCoord = limitMax;
+        }
+      }
+      return {
+        [mainAxis]: mainAxisCoord,
+        [crossAxis]: crossAxisCoord
+      };
+    }
+  };
+};
+
+/**
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+const size = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'size',
+    options,
+    async fn(state) {
+      var _state$middlewareData, _state$middlewareData2;
+      const {
+        placement,
+        rects,
+        platform,
+        elements
+      } = state;
+      const {
+        apply = () => {},
+        ...detectOverflowOptions
+      } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.evaluate)(options, state);
+      const overflow = await detectOverflow(state, detectOverflowOptions);
+      const side = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSide)(placement);
+      const alignment = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getAlignment)(placement);
+      const isYAxis = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.getSideAxis)(placement) === 'y';
+      const {
+        width,
+        height
+      } = rects.floating;
+      let heightSide;
+      let widthSide;
+      if (side === 'top' || side === 'bottom') {
+        heightSide = side;
+        widthSide = alignment === ((await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating))) ? 'start' : 'end') ? 'left' : 'right';
+      } else {
+        widthSide = side;
+        heightSide = alignment === 'end' ? 'top' : 'bottom';
+      }
+      const maximumClippingHeight = height - overflow.top - overflow.bottom;
+      const maximumClippingWidth = width - overflow.left - overflow.right;
+      const overflowAvailableHeight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(height - overflow[heightSide], maximumClippingHeight);
+      const overflowAvailableWidth = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.min)(width - overflow[widthSide], maximumClippingWidth);
+      const noShift = !state.middlewareData.shift;
+      let availableHeight = overflowAvailableHeight;
+      let availableWidth = overflowAvailableWidth;
+      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x) {
+        availableWidth = maximumClippingWidth;
+      }
+      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y) {
+        availableHeight = maximumClippingHeight;
+      }
+      if (noShift && !alignment) {
+        const xMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, 0);
+        const xMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.right, 0);
+        const yMin = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, 0);
+        const yMax = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.bottom, 0);
+        if (isYAxis) {
+          availableWidth = width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.left, overflow.right));
+        } else {
+          availableHeight = height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_0__.max)(overflow.top, overflow.bottom));
+        }
+      }
+      await apply({
+        ...state,
+        availableWidth,
+        availableHeight
+      });
+      const nextDimensions = await platform.getDimensions(elements.floating);
+      if (width !== nextDimensions.width || height !== nextDimensions.height) {
+        return {
+          reset: {
+            rects: true
+          }
+        };
+      }
+      return {};
+    }
+  };
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs":
+/*!****************************************************************!*\
+  !*** ./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrow: () => (/* binding */ arrow),
+/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
+/* harmony export */   autoUpdate: () => (/* binding */ autoUpdate),
+/* harmony export */   computePosition: () => (/* binding */ computePosition),
+/* harmony export */   detectOverflow: () => (/* binding */ detectOverflow),
+/* harmony export */   flip: () => (/* binding */ flip),
+/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors),
+/* harmony export */   hide: () => (/* binding */ hide),
+/* harmony export */   inline: () => (/* binding */ inline),
+/* harmony export */   limitShift: () => (/* binding */ limitShift),
+/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   platform: () => (/* binding */ platform),
+/* harmony export */   shift: () => (/* binding */ shift),
+/* harmony export */   size: () => (/* binding */ size)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+/* harmony import */ var _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/core */ "./node_modules/@floating-ui/core/dist/floating-ui.core.mjs");
+/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+
+
+
+
+
+function getCssDimensions(element) {
+  const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element);
+  // In testing environments, the `width` and `height` properties are empty
+  // strings for SVG elements, returning NaN. Fallback to `0` in this case.
+  let width = parseFloat(css.width) || 0;
+  let height = parseFloat(css.height) || 0;
+  const hasOffset = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element);
+  const offsetWidth = hasOffset ? element.offsetWidth : width;
+  const offsetHeight = hasOffset ? element.offsetHeight : height;
+  const shouldFallback = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(width) !== offsetWidth || (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(height) !== offsetHeight;
+  if (shouldFallback) {
+    width = offsetWidth;
+    height = offsetHeight;
+  }
+  return {
+    width,
+    height,
+    $: shouldFallback
+  };
+}
+
+function unwrapElement(element) {
+  return !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(element) ? element.contextElement : element;
+}
+
+function getScale(element) {
+  const domElement = unwrapElement(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(domElement)) {
+    return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  }
+  const rect = domElement.getBoundingClientRect();
+  const {
+    width,
+    height,
+    $
+  } = getCssDimensions(domElement);
+  let x = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.width) : rect.width) / width;
+  let y = ($ ? (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.round)(rect.height) : rect.height) / height;
+
+  // 0, NaN, or Infinity should always fallback to 1.
+
+  if (!x || !Number.isFinite(x)) {
+    x = 1;
+  }
+  if (!y || !Number.isFinite(y)) {
+    y = 1;
+  }
+  return {
+    x,
+    y
+  };
+}
+
+const noOffsets = /*#__PURE__*/(0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+function getVisualOffsets(element) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)() || !win.visualViewport) {
+    return noOffsets;
+  }
+  return {
+    x: win.visualViewport.offsetLeft,
+    y: win.visualViewport.offsetTop
+  };
+}
+function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
+  if (isFixed === void 0) {
+    isFixed = false;
+  }
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element)) {
+    return false;
+  }
+  return isFixed;
+}
+
+function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
+  if (includeScale === void 0) {
+    includeScale = false;
+  }
+  if (isFixedStrategy === void 0) {
+    isFixedStrategy = false;
+  }
+  const clientRect = element.getBoundingClientRect();
+  const domElement = unwrapElement(element);
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  if (includeScale) {
+    if (offsetParent) {
+      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent)) {
+        scale = getScale(offsetParent);
+      }
+    } else {
+      scale = getScale(element);
+    }
+  }
+  const visualOffsets = shouldAddVisualOffsets(domElement, isFixedStrategy, offsetParent) ? getVisualOffsets(domElement) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  let x = (clientRect.left + visualOffsets.x) / scale.x;
+  let y = (clientRect.top + visualOffsets.y) / scale.y;
+  let width = clientRect.width / scale.x;
+  let height = clientRect.height / scale.y;
+  if (domElement) {
+    const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(domElement);
+    const offsetWin = offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(offsetParent) ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(offsetParent) : offsetParent;
+    let currentWin = win;
+    let currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
+      const iframeScale = getScale(currentIFrame);
+      const iframeRect = currentIFrame.getBoundingClientRect();
+      const css = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentIFrame);
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
+      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
+      x *= iframeScale.x;
+      y *= iframeScale.y;
+      width *= iframeScale.x;
+      height *= iframeScale.y;
+      x += left;
+      y += top;
+      currentWin = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(currentIFrame);
+      currentIFrame = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getFrameElement)(currentWin);
+    }
+  }
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)({
+    width,
+    height,
+    x,
+    y
+  });
+}
+
+// If <html> has a CSS width greater than the viewport, then this will be
+// incorrect for RTL.
+function getWindowScrollBarX(element, rect) {
+  const leftScroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element).scrollLeft;
+  if (!rect) {
+    return getBoundingClientRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element)).left + leftScroll;
+  }
+  return rect.left + leftScroll;
+}
+
+function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
+  if (ignoreScrollbarX === void 0) {
+    ignoreScrollbarX = false;
+  }
+  const htmlRect = documentElement.getBoundingClientRect();
+  const x = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 :
+  // RTL <body> scrollbar.
+  getWindowScrollBarX(documentElement, htmlRect));
+  const y = htmlRect.top + scroll.scrollTop;
+  return {
+    x,
+    y
+  };
+}
+
+function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
+  let {
+    elements,
+    rect,
+    offsetParent,
+    strategy
+  } = _ref;
+  const isFixed = strategy === 'fixed';
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
+  const topLayer = elements ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(elements.floating) : false;
+  if (offsetParent === documentElement || topLayer && isFixed) {
+    return rect;
+  }
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  let scale = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    }
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent)) {
+      const offsetRect = getBoundingClientRect(offsetParent);
+      scale = getScale(offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    }
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  return {
+    width: rect.width * scale.x,
+    height: rect.height * scale.y,
+    x: rect.x * scale.x - scroll.scrollLeft * scale.x + offsets.x + htmlOffset.x,
+    y: rect.y * scale.y - scroll.scrollTop * scale.y + offsets.y + htmlOffset.y
+  };
+}
+
+function getClientRects(element) {
+  return Array.from(element.getClientRects());
+}
+
+// Gets the entire size of the scrollable document area, even extending outside
+// of the `<html>` and `<body>` rect bounds if horizontally scrollable.
+function getDocumentRect(element) {
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(element);
+  const body = element.ownerDocument.body;
+  const width = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  let x = -scroll.scrollLeft + getWindowScrollBarX(element);
+  const y = -scroll.scrollTop;
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(body).direction === 'rtl') {
+    x += (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(html.clientWidth, body.clientWidth) - width;
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+function getViewportRect(element, strategy) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  const html = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  const visualViewport = win.visualViewport;
+  let width = html.clientWidth;
+  let height = html.clientHeight;
+  let x = 0;
+  let y = 0;
+  if (visualViewport) {
+    width = visualViewport.width;
+    height = visualViewport.height;
+    const visualViewportBased = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isWebKit)();
+    if (!visualViewportBased || visualViewportBased && strategy === 'fixed') {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
+    }
+  }
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+
+// Returns the inner client rect, subtracting scrollbars if present.
+function getInnerBoundingClientRect(element, strategy) {
+  const clientRect = getBoundingClientRect(element, true, strategy === 'fixed');
+  const top = clientRect.top + element.clientTop;
+  const left = clientRect.left + element.clientLeft;
+  const scale = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) ? getScale(element) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(1);
+  const width = element.clientWidth * scale.x;
+  const height = element.clientHeight * scale.y;
+  const x = left * scale.x;
+  const y = top * scale.y;
+  return {
+    width,
+    height,
+    x,
+    y
+  };
+}
+function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) {
+  let rect;
+  if (clippingAncestor === 'viewport') {
+    rect = getViewportRect(element, strategy);
+  } else if (clippingAncestor === 'document') {
+    rect = getDocumentRect((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element));
+  } else if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(clippingAncestor)) {
+    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  } else {
+    const visualOffsets = getVisualOffsets(element);
+    rect = {
+      x: clippingAncestor.x - visualOffsets.x,
+      y: clippingAncestor.y - visualOffsets.y,
+      width: clippingAncestor.width,
+      height: clippingAncestor.height
+    };
+  }
+  return (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.rectToClientRect)(rect);
+}
+function hasFixedPositionAncestor(element, stopNode) {
+  const parentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
+  if (parentNode === stopNode || !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(parentNode) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(parentNode)) {
+    return false;
+  }
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
+}
+
+// A "clipping ancestor" is an `overflow` element with the characteristic of
+// clipping (or hiding) child elements. This returns all clipping ancestors
+// of the given element up the tree.
+function getClippingElementAncestors(element, cache) {
+  const cachedResult = cache.get(element);
+  if (cachedResult) {
+    return cachedResult;
+  }
+  let result = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(element, [], false).filter(el => (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(el) && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(el) !== 'body');
+  let currentContainingBlockComputedStyle = null;
+  const elementIsFixed = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed';
+  let currentNode = elementIsFixed ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element) : element;
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+  while ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(currentNode) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(currentNode)) {
+    const computedStyle = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(currentNode);
+    const currentNodeIsContaining = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(currentNode);
+    if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
+      currentContainingBlockComputedStyle = null;
+    }
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && ['absolute', 'fixed'].includes(currentContainingBlockComputedStyle.position) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+    if (shouldDropCurrentNode) {
+      // Drop non-containing blocks.
+      result = result.filter(ancestor => ancestor !== currentNode);
+    } else {
+      // Record last containing block for next iteration.
+      currentContainingBlockComputedStyle = computedStyle;
+    }
+    currentNode = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(currentNode);
+  }
+  cache.set(element, result);
+  return result;
+}
+
+// Gets the maximum area that the element is visible in due to any number of
+// clipping ancestors.
+function getClippingRect(_ref) {
+  let {
+    element,
+    boundary,
+    rootBoundary,
+    strategy
+  } = _ref;
+  const elementClippingAncestors = boundary === 'clippingAncestors' ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element) ? [] : getClippingElementAncestors(element, this._c) : [].concat(boundary);
+  const clippingAncestors = [...elementClippingAncestors, rootBoundary];
+  const firstClippingAncestor = clippingAncestors[0];
+  const clippingRect = clippingAncestors.reduce((accRect, clippingAncestor) => {
+    const rect = getClientRectFromClippingAncestor(element, clippingAncestor, strategy);
+    accRect.top = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.top, accRect.top);
+    accRect.right = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.right, accRect.right);
+    accRect.bottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(rect.bottom, accRect.bottom);
+    accRect.left = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(rect.left, accRect.left);
+    return accRect;
+  }, getClientRectFromClippingAncestor(element, firstClippingAncestor, strategy));
+  return {
+    width: clippingRect.right - clippingRect.left,
+    height: clippingRect.bottom - clippingRect.top,
+    x: clippingRect.left,
+    y: clippingRect.top
+  };
+}
+
+function getDimensions(element) {
+  const {
+    width,
+    height
+  } = getCssDimensions(element);
+  return {
+    width,
+    height
+  };
+}
+
+function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
+  const isOffsetParentAnElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(offsetParent);
+  const documentElement = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(offsetParent);
+  const isFixed = strategy === 'fixed';
+  const rect = getBoundingClientRect(element, true, isFixed, offsetParent);
+  let scroll = {
+    scrollLeft: 0,
+    scrollTop: 0
+  };
+  const offsets = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+
+  // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
+  // Firefox with layout.scrollbar.side = 3 in about:config to test this.
+  function setLeftRTLScrollbarOffset() {
+    offsets.x = getWindowScrollBarX(documentElement);
+  }
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+    if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeName)(offsetParent) !== 'body' || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isOverflowElement)(documentElement)) {
+      scroll = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getNodeScroll)(offsetParent);
+    }
+    if (isOffsetParentAnElement) {
+      const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
+      offsets.x = offsetRect.x + offsetParent.clientLeft;
+      offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      setLeftRTLScrollbarOffset();
+    }
+  }
+  if (isFixed && !isOffsetParentAnElement && documentElement) {
+    setLeftRTLScrollbarOffset();
+  }
+  const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.createCoords)(0);
+  const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
+  const y = rect.top + scroll.scrollTop - offsets.y - htmlOffset.y;
+  return {
+    x,
+    y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+
+function isStaticPositioned(element) {
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'static';
+}
+
+function getTrueOffsetParent(element, polyfill) {
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).position === 'fixed') {
+    return null;
+  }
+  if (polyfill) {
+    return polyfill(element);
+  }
+  let rawOffsetParent = element.offsetParent;
+
+  // Firefox returns the <html> element as the offsetParent if it's non-static,
+  // while Chrome and Safari return the <body> element. The <body> element must
+  // be used to perform the correct calculations even if the <html> element is
+  // non-static.
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element) === rawOffsetParent) {
+    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  }
+  return rawOffsetParent;
+}
+
+// Gets the closest ancestor positioned element. Handles some edge cases,
+// such as table ancestors and cross browser bugs.
+function getOffsetParent(element, polyfill) {
+  const win = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getWindow)(element);
+  if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTopLayer)(element)) {
+    return win;
+  }
+  if (!(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element)) {
+    let svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(element);
+    while (svgOffsetParent && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(svgOffsetParent)) {
+      if ((0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement)(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) {
+        return svgOffsetParent;
+      }
+      svgOffsetParent = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getParentNode)(svgOffsetParent);
+    }
+    return win;
+  }
+  let offsetParent = getTrueOffsetParent(element, polyfill);
+  while (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isTableElement)(offsetParent) && isStaticPositioned(offsetParent)) {
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
+  }
+  if (offsetParent && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isLastTraversableNode)(offsetParent) && isStaticPositioned(offsetParent) && !(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isContainingBlock)(offsetParent)) {
+    return win;
+  }
+  return offsetParent || (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getContainingBlock)(element) || win;
+}
+
+const getElementRects = async function (data) {
+  const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
+  const getDimensionsFn = this.getDimensions;
+  const floatingDimensions = await getDimensionsFn(data.floating);
+  return {
+    reference: getRectRelativeToOffsetParent(data.reference, await getOffsetParentFn(data.floating), data.strategy),
+    floating: {
+      x: 0,
+      y: 0,
+      width: floatingDimensions.width,
+      height: floatingDimensions.height
+    }
+  };
+};
+
+function isRTL(element) {
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getComputedStyle)(element).direction === 'rtl';
+}
+
+const platform = {
+  convertOffsetParentRelativeRectToViewportRelativeRect,
+  getDocumentElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement,
+  getClippingRect,
+  getOffsetParent,
+  getElementRects,
+  getClientRects,
+  getDimensions,
+  getScale,
+  isElement: _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isElement,
+  isRTL
+};
+
+function rectsAreEqual(a, b) {
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+}
+
+// https://samthor.au/2021/observing-dom/
+function observeMove(element, onMove) {
+  let io = null;
+  let timeoutId;
+  const root = (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getDocumentElement)(element);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element.getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(top);
+    const insetRight = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientWidth - (left + width));
+    const insetBottom = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(root.clientHeight - (top + height));
+    const insetLeft = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.floor)(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.max)(0, (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_1__.min)(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          // If the reference is clipped, the ratio is 0. Throttle the refresh
+          // to prevent an infinite loop of updates.
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1000);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        // It's possible that even though the ratio is reported as 1, the
+        // element is not actually fully within the IntersectionObserver's root
+        // area anymore. This can happen under performance constraints. This may
+        // be a bug in the browser's IntersectionObserver implementation. To
+        // work around this, we compare the element's bounding rect now with
+        // what it was at the time we created the IntersectionObserver. If they
+        // are not equal then the element moved, so we refresh.
+        refresh();
+      }
+      isFirstUpdate = false;
+    }
+
+    // Older browsers don't support a `document` as the root and will throw an
+    // error.
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root.ownerDocument
+      });
+    } catch (_e) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element);
+  }
+  refresh(true);
+  return cleanup;
+}
+
+/**
+ * Automatically updates the position of the floating element when necessary.
+ * Should only be called when the floating element is mounted on the DOM or
+ * visible on the screen.
+ * @returns cleanup function that should be invoked when the floating element is
+ * removed from the DOM or hidden from the screen.
+ * @see https://floating-ui.com/docs/autoUpdate
+ */
+function autoUpdate(reference, floating, update, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === 'function',
+    layoutShift = typeof IntersectionObserver === 'function',
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(referenceEl) : []), ...(0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.getOverflowAncestors)(floating)] : [];
+  ancestors.forEach(ancestor => {
+    ancestorScroll && ancestor.addEventListener('scroll', update, {
+      passive: true
+    });
+    ancestorResize && ancestor.addEventListener('resize', update);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver(_ref => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver) {
+        // Prevent update loops when using the `size` middleware.
+        // https://github.com/floating-ui/floating-ui/issues/1740
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    resizeObserver.observe(floating);
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach(ancestor => {
+      ancestorScroll && ancestor.removeEventListener('scroll', update);
+      ancestorResize && ancestor.removeEventListener('resize', update);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+
+/**
+ * Resolves with an object of overflow side offsets that determine how much the
+ * element is overflowing a given clipping boundary on each side.
+ * - positive = overflowing the boundary by that number of pixels
+ * - negative = how many pixels left before it will overflow
+ * - 0 = lies flush with the boundary
+ * @see https://floating-ui.com/docs/detectOverflow
+ */
+const detectOverflow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.detectOverflow;
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.offset;
+
+/**
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
+ * @see https://floating-ui.com/docs/autoPlacement
+ */
+const autoPlacement = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.autoPlacement;
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.shift;
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.flip;
+
+/**
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+const size = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.size;
+
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ * @see https://floating-ui.com/docs/hide
+ */
+const hide = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.hide;
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.arrow;
+
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ * @see https://floating-ui.com/docs/inline
+ */
+const inline = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.inline;
+
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = _floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.limitShift;
+
+/**
+ * Computes the `x` and `y` coordinates that will place the floating element
+ * next to a given reference element.
+ */
+const computePosition = (reference, floating, options) => {
+  // This caches the expensive `getClippingElementAncestors` function so that
+  // multiple lifecycle resets re-use the same result. It only lives for a
+  // single call. If other functions become expensive, we can add them as well.
+  const cache = new Map();
+  const mergedOptions = {
+    platform,
+    ...options
+  };
+  const platformWithCache = {
+    ...mergedOptions.platform,
+    _c: cache
+  };
+  return (0,_floating_ui_core__WEBPACK_IMPORTED_MODULE_2__.computePosition)(reference, floating, {
+    ...mergedOptions,
+    platform: platformWithCache
+  });
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   arrow: () => (/* binding */ arrow),
+/* harmony export */   autoPlacement: () => (/* binding */ autoPlacement),
+/* harmony export */   autoUpdate: () => (/* reexport safe */ _floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.autoUpdate),
+/* harmony export */   computePosition: () => (/* reexport safe */ _floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.computePosition),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.detectOverflow),
+/* harmony export */   flip: () => (/* binding */ flip),
+/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_dom__WEBPACK_IMPORTED_MODULE_1__.getOverflowAncestors),
+/* harmony export */   hide: () => (/* binding */ hide),
+/* harmony export */   inline: () => (/* binding */ inline),
+/* harmony export */   limitShift: () => (/* binding */ limitShift),
+/* harmony export */   offset: () => (/* binding */ offset),
+/* harmony export */   platform: () => (/* reexport safe */ _floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.platform),
+/* harmony export */   shift: () => (/* binding */ shift),
+/* harmony export */   size: () => (/* binding */ size),
+/* harmony export */   useFloating: () => (/* binding */ useFloating)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs");
+/* harmony import */ var _floating_ui_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+
+
+
+
+
+
+var isClient = typeof document !== 'undefined';
+
+var noop = function noop() {};
+var index = isClient ? react__WEBPACK_IMPORTED_MODULE_2__.useLayoutEffect : noop;
+
+// Fork of `fast-deep-equal` that only does the comparisons we need and compares
+// functions
+function deepEqual(a, b) {
+  if (a === b) {
+    return true;
+  }
+  if (typeof a !== typeof b) {
+    return false;
+  }
+  if (typeof a === 'function' && a.toString() === b.toString()) {
+    return true;
+  }
+  let length;
+  let i;
+  let keys;
+  if (a && b && typeof a === 'object') {
+    if (Array.isArray(a)) {
+      length = a.length;
+      if (length !== b.length) return false;
+      for (i = length; i-- !== 0;) {
+        if (!deepEqual(a[i], b[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+    keys = Object.keys(a);
+    length = keys.length;
+    if (length !== Object.keys(b).length) {
+      return false;
+    }
+    for (i = length; i-- !== 0;) {
+      if (!{}.hasOwnProperty.call(b, keys[i])) {
+        return false;
+      }
+    }
+    for (i = length; i-- !== 0;) {
+      const key = keys[i];
+      if (key === '_owner' && a.$$typeof) {
+        continue;
+      }
+      if (!deepEqual(a[key], b[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return a !== a && b !== b;
+}
+
+function getDPR(element) {
+  if (typeof window === 'undefined') {
+    return 1;
+  }
+  const win = element.ownerDocument.defaultView || window;
+  return win.devicePixelRatio || 1;
+}
+
+function roundByDPR(element, value) {
+  const dpr = getDPR(element);
+  return Math.round(value * dpr) / dpr;
+}
+
+function useLatestRef(value) {
+  const ref = react__WEBPACK_IMPORTED_MODULE_2__.useRef(value);
+  index(() => {
+    ref.current = value;
+  });
+  return ref;
+}
+
+/**
+ * Provides data to position a floating element.
+ * @see https://floating-ui.com/docs/useFloating
+ */
+function useFloating(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    placement = 'bottom',
+    strategy = 'absolute',
+    middleware = [],
+    platform,
+    elements: {
+      reference: externalReference,
+      floating: externalFloating
+    } = {},
+    transform = true,
+    whileElementsMounted,
+    open
+  } = options;
+  const [data, setData] = react__WEBPACK_IMPORTED_MODULE_2__.useState({
+    x: 0,
+    y: 0,
+    strategy,
+    placement,
+    middlewareData: {},
+    isPositioned: false
+  });
+  const [latestMiddleware, setLatestMiddleware] = react__WEBPACK_IMPORTED_MODULE_2__.useState(middleware);
+  if (!deepEqual(latestMiddleware, middleware)) {
+    setLatestMiddleware(middleware);
+  }
+  const [_reference, _setReference] = react__WEBPACK_IMPORTED_MODULE_2__.useState(null);
+  const [_floating, _setFloating] = react__WEBPACK_IMPORTED_MODULE_2__.useState(null);
+  const setReference = react__WEBPACK_IMPORTED_MODULE_2__.useCallback(node => {
+    if (node !== referenceRef.current) {
+      referenceRef.current = node;
+      _setReference(node);
+    }
+  }, []);
+  const setFloating = react__WEBPACK_IMPORTED_MODULE_2__.useCallback(node => {
+    if (node !== floatingRef.current) {
+      floatingRef.current = node;
+      _setFloating(node);
+    }
+  }, []);
+  const referenceEl = externalReference || _reference;
+  const floatingEl = externalFloating || _floating;
+  const referenceRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(null);
+  const floatingRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(null);
+  const dataRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(data);
+  const hasWhileElementsMounted = whileElementsMounted != null;
+  const whileElementsMountedRef = useLatestRef(whileElementsMounted);
+  const platformRef = useLatestRef(platform);
+  const openRef = useLatestRef(open);
+  const update = react__WEBPACK_IMPORTED_MODULE_2__.useCallback(() => {
+    if (!referenceRef.current || !floatingRef.current) {
+      return;
+    }
+    const config = {
+      placement,
+      strategy,
+      middleware: latestMiddleware
+    };
+    if (platformRef.current) {
+      config.platform = platformRef.current;
+    }
+    (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.computePosition)(referenceRef.current, floatingRef.current, config).then(data => {
+      const fullData = {
+        ...data,
+        // The floating element's position may be recomputed while it's closed
+        // but still mounted (such as when transitioning out). To ensure
+        // `isPositioned` will be `false` initially on the next open, avoid
+        // setting it to `true` when `open === false` (must be specified).
+        isPositioned: openRef.current !== false
+      };
+      if (isMountedRef.current && !deepEqual(dataRef.current, fullData)) {
+        dataRef.current = fullData;
+        react_dom__WEBPACK_IMPORTED_MODULE_3__.flushSync(() => {
+          setData(fullData);
+        });
+      }
+    });
+  }, [latestMiddleware, placement, strategy, platformRef, openRef]);
+  index(() => {
+    if (open === false && dataRef.current.isPositioned) {
+      dataRef.current.isPositioned = false;
+      setData(data => ({
+        ...data,
+        isPositioned: false
+      }));
+    }
+  }, [open]);
+  const isMountedRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(false);
+  index(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+  index(() => {
+    if (referenceEl) referenceRef.current = referenceEl;
+    if (floatingEl) floatingRef.current = floatingEl;
+    if (referenceEl && floatingEl) {
+      if (whileElementsMountedRef.current) {
+        return whileElementsMountedRef.current(referenceEl, floatingEl, update);
+      }
+      update();
+    }
+  }, [referenceEl, floatingEl, update, whileElementsMountedRef, hasWhileElementsMounted]);
+  const refs = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => ({
+    reference: referenceRef,
+    floating: floatingRef,
+    setReference,
+    setFloating
+  }), [setReference, setFloating]);
+  const elements = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => ({
+    reference: referenceEl,
+    floating: floatingEl
+  }), [referenceEl, floatingEl]);
+  const floatingStyles = react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => {
+    const initialStyles = {
+      position: strategy,
+      left: 0,
+      top: 0
+    };
+    if (!elements.floating) {
+      return initialStyles;
+    }
+    const x = roundByDPR(elements.floating, data.x);
+    const y = roundByDPR(elements.floating, data.y);
+    if (transform) {
+      return {
+        ...initialStyles,
+        transform: "translate(" + x + "px, " + y + "px)",
+        ...(getDPR(elements.floating) >= 1.5 && {
+          willChange: 'transform'
+        })
+      };
+    }
+    return {
+      position: strategy,
+      left: x,
+      top: y
+    };
+  }, [strategy, transform, elements.floating, data.x, data.y]);
+  return react__WEBPACK_IMPORTED_MODULE_2__.useMemo(() => ({
+    ...data,
+    update,
+    refs,
+    elements,
+    floatingStyles
+  }), [data, update, refs, elements, floatingStyles]);
+}
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * This wraps the core `arrow` middleware to allow React refs as the element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow$1 = options => {
+  function isRef(value) {
+    return {}.hasOwnProperty.call(value, 'current');
+  }
+  return {
+    name: 'arrow',
+    options,
+    fn(state) {
+      const {
+        element,
+        padding
+      } = typeof options === 'function' ? options(state) : options;
+      if (element && isRef(element)) {
+        if (element.current != null) {
+          return (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.arrow)({
+            element: element.current,
+            padding
+          }).fn(state);
+        }
+        return {};
+      }
+      if (element) {
+        return (0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.arrow)({
+          element,
+          padding
+        }).fn(state);
+      }
+      return {};
+    }
+  };
+};
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.offset)(options),
+  options: [options, deps]
+});
+
+/**
+ * Optimizes the visibility of the floating element by shifting it in order to
+ * keep it in view when it will overflow the clipping boundary.
+ * @see https://floating-ui.com/docs/shift
+ */
+const shift = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.shift)(options),
+  options: [options, deps]
+});
+
+/**
+ * Built-in `limiter` that will stop `shift()` at a certain point.
+ */
+const limitShift = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.limitShift)(options),
+  options: [options, deps]
+});
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.flip)(options),
+  options: [options, deps]
+});
+
+/**
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
+ * @see https://floating-ui.com/docs/size
+ */
+const size = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.size)(options),
+  options: [options, deps]
+});
+
+/**
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
+ * @see https://floating-ui.com/docs/autoPlacement
+ */
+const autoPlacement = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.autoPlacement)(options),
+  options: [options, deps]
+});
+
+/**
+ * Provides data to hide the floating element in applicable situations, such as
+ * when it is not in the same clipping context as the reference element.
+ * @see https://floating-ui.com/docs/hide
+ */
+const hide = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.hide)(options),
+  options: [options, deps]
+});
+
+/**
+ * Provides improved positioning for inline reference elements that can span
+ * over multiple lines, such as hyperlinks or range selections.
+ * @see https://floating-ui.com/docs/inline
+ */
+const inline = (options, deps) => ({
+  ...(0,_floating_ui_dom__WEBPACK_IMPORTED_MODULE_0__.inline)(options),
+  options: [options, deps]
+});
+
+/**
+ * Provides data to position an inner element of the floating element so that it
+ * appears centered to the reference element.
+ * This wraps the core `arrow` middleware to allow React refs as the element.
+ * @see https://floating-ui.com/docs/arrow
+ */
+const arrow = (options, deps) => ({
+  ...arrow$1(options),
+  options: [options, deps]
+});
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/react/dist/floating-ui.react.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/@floating-ui/react/dist/floating-ui.react.mjs ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+var react__WEBPACK_IMPORTED_MODULE_0___namespace_cache;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Composite: () => (/* binding */ Composite),
+/* harmony export */   CompositeItem: () => (/* binding */ CompositeItem),
+/* harmony export */   FloatingArrow: () => (/* binding */ FloatingArrow),
+/* harmony export */   FloatingDelayGroup: () => (/* binding */ FloatingDelayGroup),
+/* harmony export */   FloatingFocusManager: () => (/* binding */ FloatingFocusManager),
+/* harmony export */   FloatingList: () => (/* binding */ FloatingList),
+/* harmony export */   FloatingNode: () => (/* binding */ FloatingNode),
+/* harmony export */   FloatingOverlay: () => (/* binding */ FloatingOverlay),
+/* harmony export */   FloatingPortal: () => (/* binding */ FloatingPortal),
+/* harmony export */   FloatingTree: () => (/* binding */ FloatingTree),
+/* harmony export */   arrow: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.arrow),
+/* harmony export */   autoPlacement: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.autoPlacement),
+/* harmony export */   autoUpdate: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.autoUpdate),
+/* harmony export */   computePosition: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.computePosition),
+/* harmony export */   detectOverflow: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.detectOverflow),
+/* harmony export */   flip: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.flip),
+/* harmony export */   getOverflowAncestors: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getOverflowAncestors),
+/* harmony export */   hide: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.hide),
+/* harmony export */   inline: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.inline),
+/* harmony export */   inner: () => (/* binding */ inner),
+/* harmony export */   limitShift: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.limitShift),
+/* harmony export */   offset: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.offset),
+/* harmony export */   platform: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.platform),
+/* harmony export */   safePolygon: () => (/* binding */ safePolygon),
+/* harmony export */   shift: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.shift),
+/* harmony export */   size: () => (/* reexport safe */ _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.size),
+/* harmony export */   useClick: () => (/* binding */ useClick),
+/* harmony export */   useClientPoint: () => (/* binding */ useClientPoint),
+/* harmony export */   useDelayGroup: () => (/* binding */ useDelayGroup),
+/* harmony export */   useDelayGroupContext: () => (/* binding */ useDelayGroupContext),
+/* harmony export */   useDismiss: () => (/* binding */ useDismiss),
+/* harmony export */   useFloating: () => (/* binding */ useFloating),
+/* harmony export */   useFloatingNodeId: () => (/* binding */ useFloatingNodeId),
+/* harmony export */   useFloatingParentNodeId: () => (/* binding */ useFloatingParentNodeId),
+/* harmony export */   useFloatingPortalNode: () => (/* binding */ useFloatingPortalNode),
+/* harmony export */   useFloatingRootContext: () => (/* binding */ useFloatingRootContext),
+/* harmony export */   useFloatingTree: () => (/* binding */ useFloatingTree),
+/* harmony export */   useFocus: () => (/* binding */ useFocus),
+/* harmony export */   useHover: () => (/* binding */ useHover),
+/* harmony export */   useId: () => (/* binding */ useId),
+/* harmony export */   useInnerOffset: () => (/* binding */ useInnerOffset),
+/* harmony export */   useInteractions: () => (/* binding */ useInteractions),
+/* harmony export */   useListItem: () => (/* binding */ useListItem),
+/* harmony export */   useListNavigation: () => (/* binding */ useListNavigation),
+/* harmony export */   useMergeRefs: () => (/* binding */ useMergeRefs),
+/* harmony export */   useRole: () => (/* binding */ useRole),
+/* harmony export */   useTransitionStatus: () => (/* binding */ useTransitionStatus),
+/* harmony export */   useTransitionStyles: () => (/* binding */ useTransitionStyles),
+/* harmony export */   useTypeahead: () => (/* binding */ useTypeahead)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @floating-ui/react/utils */ "./node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs");
+/* harmony import */ var _floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @floating-ui/utils */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs");
+/* harmony import */ var _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @floating-ui/react-dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+/* harmony import */ var tabbable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! tabbable */ "./node_modules/tabbable/dist/index.esm.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/react-dom */ "./node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs");
+/* harmony import */ var _floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @floating-ui/react-dom */ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs");
+
+
+
+
+
+
+
+
+
+
+/**
+ * Merges an array of refs into a single memoized callback ref or `null`.
+ * @see https://floating-ui.com/docs/react-utils#usemergerefs
+ */
+function useMergeRefs(refs) {
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    if (refs.every(ref => ref == null)) {
+      return null;
+    }
+    return value => {
+      refs.forEach(ref => {
+        if (typeof ref === 'function') {
+          ref(value);
+        } else if (ref != null) {
+          ref.current = value;
+        }
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, refs);
+}
+
+// https://github.com/mui/material-ui/issues/41190#issuecomment-2040873379
+const SafeReact = {
+  .../*#__PURE__*/ (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache || (react__WEBPACK_IMPORTED_MODULE_0___namespace_cache = __webpack_require__.t(react__WEBPACK_IMPORTED_MODULE_0__, 2)))
+};
+
+const useInsertionEffect = SafeReact.useInsertionEffect;
+const useSafeInsertionEffect = useInsertionEffect || (fn => fn());
+function useEffectEvent(callback) {
+  const ref = react__WEBPACK_IMPORTED_MODULE_0__.useRef(() => {
+    if (true) {
+      throw new Error('Cannot call an event handler while rendering.');
+    }
+  });
+  useSafeInsertionEffect(() => {
+    ref.current = callback;
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    return ref.current == null ? void 0 : ref.current(...args);
+  }, []);
+}
+
+const ARROW_UP = 'ArrowUp';
+const ARROW_DOWN = 'ArrowDown';
+const ARROW_LEFT = 'ArrowLeft';
+const ARROW_RIGHT = 'ArrowRight';
+function isDifferentRow(index, cols, prevRow) {
+  return Math.floor(index / cols) !== prevRow;
+}
+function isIndexOutOfBounds(listRef, index) {
+  return index < 0 || index >= listRef.current.length;
+}
+function getMinIndex(listRef, disabledIndices) {
+  return findNonDisabledIndex(listRef, {
+    disabledIndices
+  });
+}
+function getMaxIndex(listRef, disabledIndices) {
+  return findNonDisabledIndex(listRef, {
+    decrement: true,
+    startingIndex: listRef.current.length,
+    disabledIndices
+  });
+}
+function findNonDisabledIndex(listRef, _temp) {
+  let {
+    startingIndex = -1,
+    decrement = false,
+    disabledIndices,
+    amount = 1
+  } = _temp === void 0 ? {} : _temp;
+  const list = listRef.current;
+  let index = startingIndex;
+  do {
+    index += decrement ? -amount : amount;
+  } while (index >= 0 && index <= list.length - 1 && isDisabled(list, index, disabledIndices));
+  return index;
+}
+function getGridNavigatedIndex(elementsRef, _ref) {
+  let {
+    event,
+    orientation,
+    loop,
+    rtl,
+    cols,
+    disabledIndices,
+    minIndex,
+    maxIndex,
+    prevIndex,
+    stopEvent: stop = false
+  } = _ref;
+  let nextIndex = prevIndex;
+  if (event.key === ARROW_UP) {
+    stop && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+    if (prevIndex === -1) {
+      nextIndex = maxIndex;
+    } else {
+      nextIndex = findNonDisabledIndex(elementsRef, {
+        startingIndex: nextIndex,
+        amount: cols,
+        decrement: true,
+        disabledIndices
+      });
+      if (loop && (prevIndex - cols < minIndex || nextIndex < 0)) {
+        const col = prevIndex % cols;
+        const maxCol = maxIndex % cols;
+        const offset = maxIndex - (maxCol - col);
+        if (maxCol === col) {
+          nextIndex = maxIndex;
+        } else {
+          nextIndex = maxCol > col ? offset : offset - cols;
+        }
+      }
+    }
+    if (isIndexOutOfBounds(elementsRef, nextIndex)) {
+      nextIndex = prevIndex;
+    }
+  }
+  if (event.key === ARROW_DOWN) {
+    stop && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+    if (prevIndex === -1) {
+      nextIndex = minIndex;
+    } else {
+      nextIndex = findNonDisabledIndex(elementsRef, {
+        startingIndex: prevIndex,
+        amount: cols,
+        disabledIndices
+      });
+      if (loop && prevIndex + cols > maxIndex) {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex % cols - cols,
+          amount: cols,
+          disabledIndices
+        });
+      }
+    }
+    if (isIndexOutOfBounds(elementsRef, nextIndex)) {
+      nextIndex = prevIndex;
+    }
+  }
+
+  // Remains on the same row/column.
+  if (orientation === 'both') {
+    const prevRow = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.floor)(prevIndex / cols);
+    if (event.key === (rtl ? ARROW_LEFT : ARROW_RIGHT)) {
+      stop && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+      if (prevIndex % cols !== cols - 1) {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex,
+          disabledIndices
+        });
+        if (loop && isDifferentRow(nextIndex, cols, prevRow)) {
+          nextIndex = findNonDisabledIndex(elementsRef, {
+            startingIndex: prevIndex - prevIndex % cols - 1,
+            disabledIndices
+          });
+        }
+      } else if (loop) {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex - prevIndex % cols - 1,
+          disabledIndices
+        });
+      }
+      if (isDifferentRow(nextIndex, cols, prevRow)) {
+        nextIndex = prevIndex;
+      }
+    }
+    if (event.key === (rtl ? ARROW_RIGHT : ARROW_LEFT)) {
+      stop && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+      if (prevIndex % cols !== 0) {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex,
+          decrement: true,
+          disabledIndices
+        });
+        if (loop && isDifferentRow(nextIndex, cols, prevRow)) {
+          nextIndex = findNonDisabledIndex(elementsRef, {
+            startingIndex: prevIndex + (cols - prevIndex % cols),
+            decrement: true,
+            disabledIndices
+          });
+        }
+      } else if (loop) {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex + (cols - prevIndex % cols),
+          decrement: true,
+          disabledIndices
+        });
+      }
+      if (isDifferentRow(nextIndex, cols, prevRow)) {
+        nextIndex = prevIndex;
+      }
+    }
+    const lastRow = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.floor)(maxIndex / cols) === prevRow;
+    if (isIndexOutOfBounds(elementsRef, nextIndex)) {
+      if (loop && lastRow) {
+        nextIndex = event.key === (rtl ? ARROW_RIGHT : ARROW_LEFT) ? maxIndex : findNonDisabledIndex(elementsRef, {
+          startingIndex: prevIndex - prevIndex % cols - 1,
+          disabledIndices
+        });
+      } else {
+        nextIndex = prevIndex;
+      }
+    }
+  }
+  return nextIndex;
+}
+
+/** For each cell index, gets the item index that occupies that cell */
+function buildCellMap(sizes, cols, dense) {
+  const cellMap = [];
+  let startIndex = 0;
+  sizes.forEach((_ref2, index) => {
+    let {
+      width,
+      height
+    } = _ref2;
+    if (width > cols) {
+      if (true) {
+        throw new Error("[Floating UI]: Invalid grid - item width at index " + index + " is greater than grid columns");
+      }
+    }
+    let itemPlaced = false;
+    if (dense) {
+      startIndex = 0;
+    }
+    while (!itemPlaced) {
+      const targetCells = [];
+      for (let i = 0; i < width; i++) {
+        for (let j = 0; j < height; j++) {
+          targetCells.push(startIndex + i + j * cols);
+        }
+      }
+      if (startIndex % cols + width <= cols && targetCells.every(cell => cellMap[cell] == null)) {
+        targetCells.forEach(cell => {
+          cellMap[cell] = index;
+        });
+        itemPlaced = true;
+      } else {
+        startIndex++;
+      }
+    }
+  });
+
+  // convert into a non-sparse array
+  return [...cellMap];
+}
+
+/** Gets cell index of an item's corner or -1 when index is -1. */
+function getCellIndexOfCorner(index, sizes, cellMap, cols, corner) {
+  if (index === -1) return -1;
+  const firstCellIndex = cellMap.indexOf(index);
+  const sizeItem = sizes[index];
+  switch (corner) {
+    case 'tl':
+      return firstCellIndex;
+    case 'tr':
+      if (!sizeItem) {
+        return firstCellIndex;
+      }
+      return firstCellIndex + sizeItem.width - 1;
+    case 'bl':
+      if (!sizeItem) {
+        return firstCellIndex;
+      }
+      return firstCellIndex + (sizeItem.height - 1) * cols;
+    case 'br':
+      return cellMap.lastIndexOf(index);
+  }
+}
+
+/** Gets all cell indices that correspond to the specified indices */
+function getCellIndices(indices, cellMap) {
+  return cellMap.flatMap((index, cellIndex) => indices.includes(index) ? [cellIndex] : []);
+}
+function isDisabled(list, index, disabledIndices) {
+  if (disabledIndices) {
+    return disabledIndices.includes(index);
+  }
+  const element = list[index];
+  return element == null || element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true';
+}
+
+var index = typeof document !== 'undefined' ? react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect : react__WEBPACK_IMPORTED_MODULE_0__.useEffect;
+
+function sortByDocumentPosition(a, b) {
+  const position = a.compareDocumentPosition(b);
+  if (position & Node.DOCUMENT_POSITION_FOLLOWING || position & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+    return -1;
+  }
+  if (position & Node.DOCUMENT_POSITION_PRECEDING || position & Node.DOCUMENT_POSITION_CONTAINS) {
+    return 1;
+  }
+  return 0;
+}
+function areMapsEqual(map1, map2) {
+  if (map1.size !== map2.size) {
+    return false;
+  }
+  for (const [key, value] of map1.entries()) {
+    if (value !== map2.get(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+const FloatingListContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext({
+  register: () => {},
+  unregister: () => {},
+  map: /*#__PURE__*/new Map(),
+  elementsRef: {
+    current: []
+  }
+});
+/**
+ * Provides context for a list of items within the floating element.
+ * @see https://floating-ui.com/docs/FloatingList
+ */
+function FloatingList(props) {
+  const {
+    children,
+    elementsRef,
+    labelsRef
+  } = props;
+  const [map, setMap] = react__WEBPACK_IMPORTED_MODULE_0__.useState(() => new Map());
+  const register = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    setMap(prevMap => new Map(prevMap).set(node, null));
+  }, []);
+  const unregister = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    setMap(prevMap => {
+      const map = new Map(prevMap);
+      map.delete(node);
+      return map;
+    });
+  }, []);
+  index(() => {
+    const newMap = new Map(map);
+    const nodes = Array.from(newMap.keys()).sort(sortByDocumentPosition);
+    nodes.forEach((node, index) => {
+      newMap.set(node, index);
+    });
+    if (!areMapsEqual(map, newMap)) {
+      setMap(newMap);
+    }
+  }, [map]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FloatingListContext.Provider, {
+    value: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+      register,
+      unregister,
+      map,
+      elementsRef,
+      labelsRef
+    }), [register, unregister, map, elementsRef, labelsRef])
+  }, children);
+}
+/**
+ * Used to register a list item and its index (DOM position) in the
+ * `FloatingList`.
+ * @see https://floating-ui.com/docs/FloatingList#uselistitem
+ */
+function useListItem(props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    label
+  } = props;
+  const {
+    register,
+    unregister,
+    map,
+    elementsRef,
+    labelsRef
+  } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(FloatingListContext);
+  const [index$1, setIndex] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const componentRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const ref = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    componentRef.current = node;
+    if (index$1 !== null) {
+      elementsRef.current[index$1] = node;
+      if (labelsRef) {
+        var _node$textContent;
+        const isLabelDefined = label !== undefined;
+        labelsRef.current[index$1] = isLabelDefined ? label : (_node$textContent = node == null ? void 0 : node.textContent) != null ? _node$textContent : null;
+      }
+    }
+  }, [index$1, elementsRef, labelsRef, label]);
+  index(() => {
+    const node = componentRef.current;
+    if (node) {
+      register(node);
+      return () => {
+        unregister(node);
+      };
+    }
+  }, [register, unregister]);
+  index(() => {
+    const index = componentRef.current ? map.get(componentRef.current) : null;
+    if (index != null) {
+      setIndex(index);
+    }
+  }, [map]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    ref,
+    index: index$1 == null ? -1 : index$1
+  }), [index$1, ref]);
+}
+
+function renderJsx(render, computedProps) {
+  if (typeof render === 'function') {
+    return render(computedProps);
+  }
+  if (render) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(render, computedProps);
+  }
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", computedProps);
+}
+const CompositeContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext({
+  activeIndex: 0,
+  onNavigate: () => {}
+});
+const horizontalKeys = [ARROW_LEFT, ARROW_RIGHT];
+const verticalKeys = [ARROW_UP, ARROW_DOWN];
+const allKeys = [...horizontalKeys, ...verticalKeys];
+
+/**
+ * Creates a single tab stop whose items are navigated by arrow keys, which
+ * provides list navigation outside of floating element contexts.
+ *
+ * This is useful to enable navigation of a list of items that aren’t part of a
+ * floating element. A menubar is an example of a composite, with each reference
+ * element being an item.
+ * @see https://floating-ui.com/docs/Composite
+ */
+const Composite = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function Composite(props, forwardedRef) {
+  const {
+    render,
+    orientation = 'both',
+    loop = true,
+    rtl = false,
+    cols = 1,
+    disabledIndices,
+    activeIndex: externalActiveIndex,
+    onNavigate: externalSetActiveIndex,
+    itemSizes,
+    dense = false,
+    ...domProps
+  } = props;
+  const [internalActiveIndex, internalSetActiveIndex] = react__WEBPACK_IMPORTED_MODULE_0__.useState(0);
+  const activeIndex = externalActiveIndex != null ? externalActiveIndex : internalActiveIndex;
+  const onNavigate = useEffectEvent(externalSetActiveIndex != null ? externalSetActiveIndex : internalSetActiveIndex);
+  const elementsRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef([]);
+  const renderElementProps = render && typeof render !== 'function' ? render.props : {};
+  const contextValue = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    activeIndex,
+    onNavigate
+  }), [activeIndex, onNavigate]);
+  const isGrid = cols > 1;
+  function handleKeyDown(event) {
+    if (!allKeys.includes(event.key)) return;
+    let nextIndex = activeIndex;
+    const minIndex = getMinIndex(elementsRef, disabledIndices);
+    const maxIndex = getMaxIndex(elementsRef, disabledIndices);
+    const horizontalEndKey = rtl ? ARROW_LEFT : ARROW_RIGHT;
+    const horizontalStartKey = rtl ? ARROW_RIGHT : ARROW_LEFT;
+    if (isGrid) {
+      const sizes = itemSizes || Array.from({
+        length: elementsRef.current.length
+      }, () => ({
+        width: 1,
+        height: 1
+      }));
+      // To calculate movements on the grid, we use hypothetical cell indices
+      // as if every item was 1x1, then convert back to real indices.
+      const cellMap = buildCellMap(sizes, cols, dense);
+      const minGridIndex = cellMap.findIndex(index => index != null && !isDisabled(elementsRef.current, index, disabledIndices));
+      // last enabled index
+      const maxGridIndex = cellMap.reduce((foundIndex, index, cellIndex) => index != null && !isDisabled(elementsRef.current, index, disabledIndices) ? cellIndex : foundIndex, -1);
+      const maybeNextIndex = cellMap[getGridNavigatedIndex({
+        current: cellMap.map(itemIndex => itemIndex ? elementsRef.current[itemIndex] : null)
+      }, {
+        event,
+        orientation,
+        loop,
+        rtl,
+        cols,
+        // treat undefined (empty grid spaces) as disabled indices so we
+        // don't end up in them
+        disabledIndices: getCellIndices([...(disabledIndices || elementsRef.current.map((_, index) => isDisabled(elementsRef.current, index) ? index : undefined)), undefined], cellMap),
+        minIndex: minGridIndex,
+        maxIndex: maxGridIndex,
+        prevIndex: getCellIndexOfCorner(activeIndex > maxIndex ? minIndex : activeIndex, sizes, cellMap, cols,
+        // use a corner matching the edge closest to the direction we're
+        // moving in so we don't end up in the same item. Prefer
+        // top/left over bottom/right.
+        event.key === ARROW_DOWN ? 'bl' : event.key === horizontalEndKey ? 'tr' : 'tl')
+      })];
+      if (maybeNextIndex != null) {
+        nextIndex = maybeNextIndex;
+      }
+    }
+    const toEndKeys = {
+      horizontal: [horizontalEndKey],
+      vertical: [ARROW_DOWN],
+      both: [horizontalEndKey, ARROW_DOWN]
+    }[orientation];
+    const toStartKeys = {
+      horizontal: [horizontalStartKey],
+      vertical: [ARROW_UP],
+      both: [horizontalStartKey, ARROW_UP]
+    }[orientation];
+    const preventedKeys = isGrid ? allKeys : {
+      horizontal: horizontalKeys,
+      vertical: verticalKeys,
+      both: allKeys
+    }[orientation];
+    if (nextIndex === activeIndex && [...toEndKeys, ...toStartKeys].includes(event.key)) {
+      if (loop && nextIndex === maxIndex && toEndKeys.includes(event.key)) {
+        nextIndex = minIndex;
+      } else if (loop && nextIndex === minIndex && toStartKeys.includes(event.key)) {
+        nextIndex = maxIndex;
+      } else {
+        nextIndex = findNonDisabledIndex(elementsRef, {
+          startingIndex: nextIndex,
+          decrement: toStartKeys.includes(event.key),
+          disabledIndices
+        });
+      }
+    }
+    if (nextIndex !== activeIndex && !isIndexOutOfBounds(elementsRef, nextIndex)) {
+      var _elementsRef$current$;
+      event.stopPropagation();
+      if (preventedKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+      onNavigate(nextIndex);
+      (_elementsRef$current$ = elementsRef.current[nextIndex]) == null || _elementsRef$current$.focus();
+    }
+  }
+  const computedProps = {
+    ...domProps,
+    ...renderElementProps,
+    ref: forwardedRef,
+    'aria-orientation': orientation === 'both' ? undefined : orientation,
+    onKeyDown(e) {
+      domProps.onKeyDown == null || domProps.onKeyDown(e);
+      renderElementProps.onKeyDown == null || renderElementProps.onKeyDown(e);
+      handleKeyDown(e);
+    }
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(CompositeContext.Provider, {
+    value: contextValue
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FloatingList, {
+    elementsRef: elementsRef
+  }, renderJsx(render, computedProps)));
+});
+/**
+ * @see https://floating-ui.com/docs/Composite
+ */
+const CompositeItem = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function CompositeItem(props, forwardedRef) {
+  const {
+    render,
+    ...domProps
+  } = props;
+  const renderElementProps = render && typeof render !== 'function' ? render.props : {};
+  const {
+    activeIndex,
+    onNavigate
+  } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(CompositeContext);
+  const {
+    ref,
+    index
+  } = useListItem();
+  const mergedRef = useMergeRefs([ref, forwardedRef, renderElementProps.ref]);
+  const isActive = activeIndex === index;
+  const computedProps = {
+    ...domProps,
+    ...renderElementProps,
+    ref: mergedRef,
+    tabIndex: isActive ? 0 : -1,
+    'data-active': isActive ? '' : undefined,
+    onFocus(e) {
+      domProps.onFocus == null || domProps.onFocus(e);
+      renderElementProps.onFocus == null || renderElementProps.onFocus(e);
+      onNavigate(index);
+    }
+  };
+  return renderJsx(render, computedProps);
+});
+
+function _extends() {
+  _extends = Object.assign ? Object.assign.bind() : function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  return _extends.apply(this, arguments);
+}
+
+let serverHandoffComplete = false;
+let count = 0;
+const genId = () => // Ensure the id is unique with multiple independent versions of Floating UI
+// on <React 18
+"floating-ui-" + Math.random().toString(36).slice(2, 6) + count++;
+function useFloatingId() {
+  const [id, setId] = react__WEBPACK_IMPORTED_MODULE_0__.useState(() => serverHandoffComplete ? genId() : undefined);
+  index(() => {
+    if (id == null) {
+      setId(genId());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    serverHandoffComplete = true;
+  }, []);
+  return id;
+}
+const useReactId = SafeReact.useId;
+
+/**
+ * Uses React 18's built-in `useId()` when available, or falls back to a
+ * slightly less performant (requiring a double render) implementation for
+ * earlier React versions.
+ * @see https://floating-ui.com/docs/react-utils#useid
+ */
+const useId = useReactId || useFloatingId;
+
+let devMessageSet;
+if (true) {
+  devMessageSet = /*#__PURE__*/new Set();
+}
+function warn() {
+  var _devMessageSet;
+  for (var _len = arguments.length, messages = new Array(_len), _key = 0; _key < _len; _key++) {
+    messages[_key] = arguments[_key];
+  }
+  const message = "Floating UI: " + messages.join(' ');
+  if (!((_devMessageSet = devMessageSet) != null && _devMessageSet.has(message))) {
+    var _devMessageSet2;
+    (_devMessageSet2 = devMessageSet) == null || _devMessageSet2.add(message);
+    console.warn(message);
+  }
+}
+function error() {
+  var _devMessageSet3;
+  for (var _len2 = arguments.length, messages = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    messages[_key2] = arguments[_key2];
+  }
+  const message = "Floating UI: " + messages.join(' ');
+  if (!((_devMessageSet3 = devMessageSet) != null && _devMessageSet3.has(message))) {
+    var _devMessageSet4;
+    (_devMessageSet4 = devMessageSet) == null || _devMessageSet4.add(message);
+    console.error(message);
+  }
+}
+
+/**
+ * Renders a pointing arrow triangle.
+ * @see https://floating-ui.com/docs/FloatingArrow
+ */
+const FloatingArrow = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function FloatingArrow(props, ref) {
+  const {
+    context: {
+      placement,
+      elements: {
+        floating
+      },
+      middlewareData: {
+        arrow,
+        shift
+      }
+    },
+    width = 14,
+    height = 7,
+    tipRadius = 0,
+    strokeWidth = 0,
+    staticOffset,
+    stroke,
+    d,
+    style: {
+      transform,
+      ...restStyle
+    } = {},
+    ...rest
+  } = props;
+  if (true) {
+    if (!ref) {
+      warn('The `ref` prop is required for `FloatingArrow`.');
+    }
+  }
+  const clipPathId = useId();
+  const [isRTL, setIsRTL] = react__WEBPACK_IMPORTED_MODULE_0__.useState(false);
+
+  // https://github.com/floating-ui/floating-ui/issues/2932
+  index(() => {
+    if (!floating) return;
+    const isRTL = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getComputedStyle)(floating).direction === 'rtl';
+    if (isRTL) {
+      setIsRTL(true);
+    }
+  }, [floating]);
+  if (!floating) {
+    return null;
+  }
+  const [side, alignment] = placement.split('-');
+  const isVerticalSide = side === 'top' || side === 'bottom';
+  let computedStaticOffset = staticOffset;
+  if (isVerticalSide && shift != null && shift.x || !isVerticalSide && shift != null && shift.y) {
+    computedStaticOffset = null;
+  }
+
+  // Strokes must be double the border width, this ensures the stroke's width
+  // works as you'd expect.
+  const computedStrokeWidth = strokeWidth * 2;
+  const halfStrokeWidth = computedStrokeWidth / 2;
+  const svgX = width / 2 * (tipRadius / -8 + 1);
+  const svgY = height / 2 * tipRadius / 4;
+  const isCustomShape = !!d;
+  const yOffsetProp = computedStaticOffset && alignment === 'end' ? 'bottom' : 'top';
+  let xOffsetProp = computedStaticOffset && alignment === 'end' ? 'right' : 'left';
+  if (computedStaticOffset && isRTL) {
+    xOffsetProp = alignment === 'end' ? 'left' : 'right';
+  }
+  const arrowX = (arrow == null ? void 0 : arrow.x) != null ? computedStaticOffset || arrow.x : '';
+  const arrowY = (arrow == null ? void 0 : arrow.y) != null ? computedStaticOffset || arrow.y : '';
+  const dValue = d || 'M0,0' + (" H" + width) + (" L" + (width - svgX) + "," + (height - svgY)) + (" Q" + width / 2 + "," + height + " " + svgX + "," + (height - svgY)) + ' Z';
+  const rotation = {
+    top: isCustomShape ? 'rotate(180deg)' : '',
+    left: isCustomShape ? 'rotate(90deg)' : 'rotate(-90deg)',
+    bottom: isCustomShape ? '' : 'rotate(180deg)',
+    right: isCustomShape ? 'rotate(-90deg)' : 'rotate(90deg)'
+  }[side];
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("svg", _extends({}, rest, {
+    "aria-hidden": true,
+    ref: ref,
+    width: isCustomShape ? width : width + computedStrokeWidth,
+    height: width,
+    viewBox: "0 0 " + width + " " + (height > width ? height : width),
+    style: {
+      position: 'absolute',
+      pointerEvents: 'none',
+      [xOffsetProp]: arrowX,
+      [yOffsetProp]: arrowY,
+      [side]: isVerticalSide || isCustomShape ? '100%' : "calc(100% - " + computedStrokeWidth / 2 + "px)",
+      transform: [rotation, transform].filter(t => !!t).join(' '),
+      ...restStyle
+    }
+  }), computedStrokeWidth > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    clipPath: "url(#" + clipPathId + ")",
+    fill: "none",
+    stroke: stroke
+    // Account for the stroke on the fill path rendered below.
+    ,
+    strokeWidth: computedStrokeWidth + (d ? 0 : 1),
+    d: dValue
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("path", {
+    stroke: computedStrokeWidth && !d ? rest.fill : 'none',
+    d: dValue
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("clipPath", {
+    id: clipPathId
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("rect", {
+    x: -halfStrokeWidth,
+    y: halfStrokeWidth * (isCustomShape ? -1 : 1),
+    width: width + computedStrokeWidth,
+    height: width
+  })));
+});
+
+function createPubSub() {
+  const map = new Map();
+  return {
+    emit(event, data) {
+      var _map$get;
+      (_map$get = map.get(event)) == null || _map$get.forEach(handler => handler(data));
+    },
+    on(event, listener) {
+      map.set(event, [...(map.get(event) || []), listener]);
+    },
+    off(event, listener) {
+      var _map$get2;
+      map.set(event, ((_map$get2 = map.get(event)) == null ? void 0 : _map$get2.filter(l => l !== listener)) || []);
+    }
+  };
+}
+
+const FloatingNodeContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
+const FloatingTreeContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
+
+/**
+ * Returns the parent node id for nested floating elements, if available.
+ * Returns `null` for top-level floating elements.
+ */
+const useFloatingParentNodeId = () => {
+  var _React$useContext;
+  return ((_React$useContext = react__WEBPACK_IMPORTED_MODULE_0__.useContext(FloatingNodeContext)) == null ? void 0 : _React$useContext.id) || null;
+};
+
+/**
+ * Returns the nearest floating tree context, if available.
+ */
+const useFloatingTree = () => react__WEBPACK_IMPORTED_MODULE_0__.useContext(FloatingTreeContext);
+
+/**
+ * Registers a node into the `FloatingTree`, returning its id.
+ * @see https://floating-ui.com/docs/FloatingTree
+ */
+function useFloatingNodeId(customParentId) {
+  const id = useId();
+  const tree = useFloatingTree();
+  const reactParentId = useFloatingParentNodeId();
+  const parentId = customParentId || reactParentId;
+  index(() => {
+    const node = {
+      id,
+      parentId
+    };
+    tree == null || tree.addNode(node);
+    return () => {
+      tree == null || tree.removeNode(node);
+    };
+  }, [tree, id, parentId]);
+  return id;
+}
+/**
+ * Provides parent node context for nested floating elements.
+ * @see https://floating-ui.com/docs/FloatingTree
+ */
+function FloatingNode(props) {
+  const {
+    children,
+    id
+  } = props;
+  const parentId = useFloatingParentNodeId();
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FloatingNodeContext.Provider, {
+    value: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+      id,
+      parentId
+    }), [id, parentId])
+  }, children);
+}
+/**
+ * Provides context for nested floating elements when they are not children of
+ * each other on the DOM.
+ * This is not necessary in all cases, except when there must be explicit communication between parent and child floating elements. It is necessary for:
+ * - The `bubbles` option in the `useDismiss()` Hook
+ * - Nested virtual list navigation
+ * - Nested floating elements that each open on hover
+ * - Custom communication between parent and child floating elements
+ * @see https://floating-ui.com/docs/FloatingTree
+ */
+function FloatingTree(props) {
+  const {
+    children
+  } = props;
+  const nodesRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef([]);
+  const addNode = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    nodesRef.current = [...nodesRef.current, node];
+  }, []);
+  const removeNode = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    nodesRef.current = nodesRef.current.filter(n => n !== node);
+  }, []);
+  const events = react__WEBPACK_IMPORTED_MODULE_0__.useState(() => createPubSub())[0];
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FloatingTreeContext.Provider, {
+    value: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+      nodesRef,
+      addNode,
+      removeNode,
+      events
+    }), [addNode, removeNode, events])
+  }, children);
+}
+
+function createAttribute(name) {
+  return "data-floating-ui-" + name;
+}
+
+function useLatestRef(value) {
+  const ref = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(value);
+  index(() => {
+    ref.current = value;
+  });
+  return ref;
+}
+
+const safePolygonIdentifier = /*#__PURE__*/createAttribute('safe-polygon');
+function getDelay(value, prop, pointerType) {
+  if (pointerType && !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerType)) {
+    return 0;
+  }
+  if (typeof value === 'number') {
+    return value;
+  }
+  return value == null ? void 0 : value[prop];
+}
+/**
+ * Opens the floating element while hovering over the reference element, like
+ * CSS `:hover`.
+ * @see https://floating-ui.com/docs/useHover
+ */
+function useHover(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    dataRef,
+    events,
+    elements
+  } = context;
+  const {
+    enabled = true,
+    delay = 0,
+    handleClose = null,
+    mouseOnly = false,
+    restMs = 0,
+    move = true
+  } = props;
+  const tree = useFloatingTree();
+  const parentId = useFloatingParentNodeId();
+  const handleCloseRef = useLatestRef(handleClose);
+  const delayRef = useLatestRef(delay);
+  const openRef = useLatestRef(open);
+  const pointerTypeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+  const timeoutRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(-1);
+  const handlerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+  const restTimeoutRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(-1);
+  const blockMouseMoveRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
+  const performedPointerEventsMutationRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const unbindMouseMoveRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(() => {});
+  const restTimeoutPendingRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const isHoverOpen = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    var _dataRef$current$open;
+    const type = (_dataRef$current$open = dataRef.current.openEvent) == null ? void 0 : _dataRef$current$open.type;
+    return (type == null ? void 0 : type.includes('mouse')) && type !== 'mousedown';
+  }, [dataRef]);
+
+  // When closing before opening, clear the delay timeouts to cancel it
+  // from showing.
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    function onOpenChange(_ref) {
+      let {
+        open
+      } = _ref;
+      if (!open) {
+        clearTimeout(timeoutRef.current);
+        clearTimeout(restTimeoutRef.current);
+        blockMouseMoveRef.current = true;
+        restTimeoutPendingRef.current = false;
+      }
+    }
+    events.on('openchange', onOpenChange);
+    return () => {
+      events.off('openchange', onOpenChange);
+    };
+  }, [enabled, events]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    if (!handleCloseRef.current) return;
+    if (!open) return;
+    function onLeave(event) {
+      if (isHoverOpen()) {
+        onOpenChange(false, event, 'hover');
+      }
+    }
+    const html = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating).documentElement;
+    html.addEventListener('mouseleave', onLeave);
+    return () => {
+      html.removeEventListener('mouseleave', onLeave);
+    };
+  }, [elements.floating, open, onOpenChange, enabled, handleCloseRef, isHoverOpen]);
+  const closeWithDelay = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(function (event, runElseBranch, reason) {
+    if (runElseBranch === void 0) {
+      runElseBranch = true;
+    }
+    if (reason === void 0) {
+      reason = 'hover';
+    }
+    const closeDelay = getDelay(delayRef.current, 'close', pointerTypeRef.current);
+    if (closeDelay && !handlerRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => onOpenChange(false, event, reason), closeDelay);
+    } else if (runElseBranch) {
+      clearTimeout(timeoutRef.current);
+      onOpenChange(false, event, reason);
+    }
+  }, [delayRef, onOpenChange]);
+  const cleanupMouseMoveHandler = useEffectEvent(() => {
+    unbindMouseMoveRef.current();
+    handlerRef.current = undefined;
+  });
+  const clearPointerEvents = useEffectEvent(() => {
+    if (performedPointerEventsMutationRef.current) {
+      const body = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating).body;
+      body.style.pointerEvents = '';
+      body.removeAttribute(safePolygonIdentifier);
+      performedPointerEventsMutationRef.current = false;
+    }
+  });
+  const isClickLikeOpenEvent = useEffectEvent(() => {
+    return dataRef.current.openEvent ? ['click', 'mousedown'].includes(dataRef.current.openEvent.type) : false;
+  });
+
+  // Registering the mouse events on the reference directly to bypass React's
+  // delegation system. If the cursor was on a disabled element and then entered
+  // the reference (no gap), `mouseenter` doesn't fire in the delegation system.
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    function onMouseEnter(event) {
+      clearTimeout(timeoutRef.current);
+      blockMouseMoveRef.current = false;
+      if (mouseOnly && !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerTypeRef.current) || restMs > 0 && !getDelay(delayRef.current, 'open')) {
+        return;
+      }
+      const openDelay = getDelay(delayRef.current, 'open', pointerTypeRef.current);
+      if (openDelay) {
+        timeoutRef.current = window.setTimeout(() => {
+          if (!openRef.current) {
+            onOpenChange(true, event, 'hover');
+          }
+        }, openDelay);
+      } else if (!open) {
+        onOpenChange(true, event, 'hover');
+      }
+    }
+    function onMouseLeave(event) {
+      if (isClickLikeOpenEvent()) return;
+      unbindMouseMoveRef.current();
+      const doc = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating);
+      clearTimeout(restTimeoutRef.current);
+      restTimeoutPendingRef.current = false;
+      if (handleCloseRef.current && dataRef.current.floatingContext) {
+        // Prevent clearing `onScrollMouseLeave` timeout.
+        if (!open) {
+          clearTimeout(timeoutRef.current);
+        }
+        handlerRef.current = handleCloseRef.current({
+          ...dataRef.current.floatingContext,
+          tree,
+          x: event.clientX,
+          y: event.clientY,
+          onClose() {
+            clearPointerEvents();
+            cleanupMouseMoveHandler();
+            if (!isClickLikeOpenEvent()) {
+              closeWithDelay(event, true, 'safe-polygon');
+            }
+          }
+        });
+        const handler = handlerRef.current;
+        doc.addEventListener('mousemove', handler);
+        unbindMouseMoveRef.current = () => {
+          doc.removeEventListener('mousemove', handler);
+        };
+        return;
+      }
+
+      // Allow interactivity without `safePolygon` on touch devices. With a
+      // pointer, a short close delay is an alternative, so it should work
+      // consistently.
+      const shouldClose = pointerTypeRef.current === 'touch' ? !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(elements.floating, event.relatedTarget) : true;
+      if (shouldClose) {
+        closeWithDelay(event);
+      }
+    }
+
+    // Ensure the floating element closes after scrolling even if the pointer
+    // did not move.
+    // https://github.com/floating-ui/floating-ui/discussions/1692
+    function onScrollMouseLeave(event) {
+      if (isClickLikeOpenEvent()) return;
+      if (!dataRef.current.floatingContext) return;
+      handleCloseRef.current == null || handleCloseRef.current({
+        ...dataRef.current.floatingContext,
+        tree,
+        x: event.clientX,
+        y: event.clientY,
+        onClose() {
+          clearPointerEvents();
+          cleanupMouseMoveHandler();
+          if (!isClickLikeOpenEvent()) {
+            closeWithDelay(event);
+          }
+        }
+      })(event);
+    }
+    if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(elements.domReference)) {
+      var _elements$floating;
+      const ref = elements.domReference;
+      open && ref.addEventListener('mouseleave', onScrollMouseLeave);
+      (_elements$floating = elements.floating) == null || _elements$floating.addEventListener('mouseleave', onScrollMouseLeave);
+      move && ref.addEventListener('mousemove', onMouseEnter, {
+        once: true
+      });
+      ref.addEventListener('mouseenter', onMouseEnter);
+      ref.addEventListener('mouseleave', onMouseLeave);
+      return () => {
+        var _elements$floating2;
+        open && ref.removeEventListener('mouseleave', onScrollMouseLeave);
+        (_elements$floating2 = elements.floating) == null || _elements$floating2.removeEventListener('mouseleave', onScrollMouseLeave);
+        move && ref.removeEventListener('mousemove', onMouseEnter);
+        ref.removeEventListener('mouseenter', onMouseEnter);
+        ref.removeEventListener('mouseleave', onMouseLeave);
+      };
+    }
+  }, [elements, enabled, context, mouseOnly, restMs, move, closeWithDelay, cleanupMouseMoveHandler, clearPointerEvents, onOpenChange, open, openRef, tree, delayRef, handleCloseRef, dataRef, isClickLikeOpenEvent]);
+
+  // Block pointer-events of every element other than the reference and floating
+  // while the floating element is open and has a `handleClose` handler. Also
+  // handles nested floating elements.
+  // https://github.com/floating-ui/floating-ui/issues/1722
+  index(() => {
+    var _handleCloseRef$curre;
+    if (!enabled) return;
+    if (open && (_handleCloseRef$curre = handleCloseRef.current) != null && _handleCloseRef$curre.__options.blockPointerEvents && isHoverOpen()) {
+      performedPointerEventsMutationRef.current = true;
+      const floatingEl = elements.floating;
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(elements.domReference) && floatingEl) {
+        var _tree$nodesRef$curren;
+        const body = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating).body;
+        body.setAttribute(safePolygonIdentifier, '');
+        const ref = elements.domReference;
+        const parentFloating = tree == null || (_tree$nodesRef$curren = tree.nodesRef.current.find(node => node.id === parentId)) == null || (_tree$nodesRef$curren = _tree$nodesRef$curren.context) == null ? void 0 : _tree$nodesRef$curren.elements.floating;
+        if (parentFloating) {
+          parentFloating.style.pointerEvents = '';
+        }
+        body.style.pointerEvents = 'none';
+        ref.style.pointerEvents = 'auto';
+        floatingEl.style.pointerEvents = 'auto';
+        return () => {
+          body.style.pointerEvents = '';
+          ref.style.pointerEvents = '';
+          floatingEl.style.pointerEvents = '';
+        };
+      }
+    }
+  }, [enabled, open, parentId, elements, tree, handleCloseRef, isHoverOpen]);
+  index(() => {
+    if (!open) {
+      pointerTypeRef.current = undefined;
+      restTimeoutPendingRef.current = false;
+      cleanupMouseMoveHandler();
+      clearPointerEvents();
+    }
+  }, [open, cleanupMouseMoveHandler, clearPointerEvents]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    return () => {
+      cleanupMouseMoveHandler();
+      clearTimeout(timeoutRef.current);
+      clearTimeout(restTimeoutRef.current);
+      clearPointerEvents();
+    };
+  }, [enabled, elements.domReference, cleanupMouseMoveHandler, clearPointerEvents]);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    function setPointerRef(event) {
+      pointerTypeRef.current = event.pointerType;
+    }
+    return {
+      onPointerDown: setPointerRef,
+      onPointerEnter: setPointerRef,
+      onMouseMove(event) {
+        const {
+          nativeEvent
+        } = event;
+        function handleMouseMove() {
+          if (!blockMouseMoveRef.current && !openRef.current) {
+            onOpenChange(true, nativeEvent, 'hover');
+          }
+        }
+        if (mouseOnly && !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerTypeRef.current)) {
+          return;
+        }
+        if (open || restMs === 0) {
+          return;
+        }
+
+        // Ignore insignificant movements to account for tremors.
+        if (restTimeoutPendingRef.current && event.movementX ** 2 + event.movementY ** 2 < 2) {
+          return;
+        }
+        clearTimeout(restTimeoutRef.current);
+        if (pointerTypeRef.current === 'touch') {
+          handleMouseMove();
+        } else {
+          restTimeoutPendingRef.current = true;
+          restTimeoutRef.current = window.setTimeout(handleMouseMove, restMs);
+        }
+      }
+    };
+  }, [mouseOnly, onOpenChange, open, openRef, restMs]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onMouseEnter() {
+      clearTimeout(timeoutRef.current);
+    },
+    onMouseLeave(event) {
+      if (!isClickLikeOpenEvent()) {
+        closeWithDelay(event.nativeEvent, false);
+      }
+    }
+  }), [closeWithDelay, isClickLikeOpenEvent]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference,
+    floating
+  } : {}, [enabled, reference, floating]);
+}
+
+const NOOP = () => {};
+const FloatingDelayGroupContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext({
+  delay: 0,
+  initialDelay: 0,
+  timeoutMs: 0,
+  currentId: null,
+  setCurrentId: NOOP,
+  setState: NOOP,
+  isInstantPhase: false
+});
+
+/**
+ * @deprecated
+ * Use the return value of `useDelayGroup()` instead.
+ */
+const useDelayGroupContext = () => react__WEBPACK_IMPORTED_MODULE_0__.useContext(FloatingDelayGroupContext);
+/**
+ * Provides context for a group of floating elements that should share a
+ * `delay`.
+ * @see https://floating-ui.com/docs/FloatingDelayGroup
+ */
+function FloatingDelayGroup(props) {
+  const {
+    children,
+    delay,
+    timeoutMs = 0
+  } = props;
+  const [state, setState] = react__WEBPACK_IMPORTED_MODULE_0__.useReducer((prev, next) => ({
+    ...prev,
+    ...next
+  }), {
+    delay,
+    timeoutMs,
+    initialDelay: delay,
+    currentId: null,
+    isInstantPhase: false
+  });
+  const initialCurrentIdRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const setCurrentId = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(currentId => {
+    setState({
+      currentId
+    });
+  }, []);
+  index(() => {
+    if (state.currentId) {
+      if (initialCurrentIdRef.current === null) {
+        initialCurrentIdRef.current = state.currentId;
+      } else if (!state.isInstantPhase) {
+        setState({
+          isInstantPhase: true
+        });
+      }
+    } else {
+      if (state.isInstantPhase) {
+        setState({
+          isInstantPhase: false
+        });
+      }
+      initialCurrentIdRef.current = null;
+    }
+  }, [state.currentId, state.isInstantPhase]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FloatingDelayGroupContext.Provider, {
+    value: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+      ...state,
+      setState,
+      setCurrentId
+    }), [state, setCurrentId])
+  }, children);
+}
+/**
+ * Enables grouping when called inside a component that's a child of a
+ * `FloatingDelayGroup`.
+ * @see https://floating-ui.com/docs/FloatingDelayGroup
+ */
+function useDelayGroup(context, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    floatingId
+  } = context;
+  const {
+    id: optionId,
+    enabled = true
+  } = options;
+  const id = optionId != null ? optionId : floatingId;
+  const groupContext = useDelayGroupContext();
+  const {
+    currentId,
+    setCurrentId,
+    initialDelay,
+    setState,
+    timeoutMs
+  } = groupContext;
+  index(() => {
+    if (!enabled) return;
+    if (!currentId) return;
+    setState({
+      delay: {
+        open: 1,
+        close: getDelay(initialDelay, 'close')
+      }
+    });
+    if (currentId !== id) {
+      onOpenChange(false);
+    }
+  }, [enabled, id, onOpenChange, setState, currentId, initialDelay]);
+  index(() => {
+    function unset() {
+      onOpenChange(false);
+      setState({
+        delay: initialDelay,
+        currentId: null
+      });
+    }
+    if (!enabled) return;
+    if (!currentId) return;
+    if (!open && currentId === id) {
+      if (timeoutMs) {
+        const timeout = window.setTimeout(unset, timeoutMs);
+        return () => {
+          clearTimeout(timeout);
+        };
+      }
+      unset();
+    }
+  }, [enabled, open, setState, currentId, id, onOpenChange, initialDelay, timeoutMs]);
+  index(() => {
+    if (!enabled) return;
+    if (setCurrentId === NOOP || !open) return;
+    setCurrentId(id);
+  }, [enabled, open, setCurrentId, id]);
+  return groupContext;
+}
+
+let rafId = 0;
+function enqueueFocus(el, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    preventScroll = false,
+    cancelPrevious = true,
+    sync = false
+  } = options;
+  cancelPrevious && cancelAnimationFrame(rafId);
+  const exec = () => el == null ? void 0 : el.focus({
+    preventScroll
+  });
+  if (sync) {
+    exec();
+  } else {
+    rafId = requestAnimationFrame(exec);
+  }
+}
+
+function getAncestors(nodes, id) {
+  var _nodes$find;
+  let allAncestors = [];
+  let currentParentId = (_nodes$find = nodes.find(node => node.id === id)) == null ? void 0 : _nodes$find.parentId;
+  while (currentParentId) {
+    const currentNode = nodes.find(node => node.id === currentParentId);
+    currentParentId = currentNode == null ? void 0 : currentNode.parentId;
+    if (currentNode) {
+      allAncestors = allAncestors.concat(currentNode);
+    }
+  }
+  return allAncestors;
+}
+
+function getChildren(nodes, id) {
+  let allChildren = nodes.filter(node => {
+    var _node$context;
+    return node.parentId === id && ((_node$context = node.context) == null ? void 0 : _node$context.open);
+  });
+  let currentChildren = allChildren;
+  while (currentChildren.length) {
+    currentChildren = nodes.filter(node => {
+      var _currentChildren;
+      return (_currentChildren = currentChildren) == null ? void 0 : _currentChildren.some(n => {
+        var _node$context2;
+        return node.parentId === n.id && ((_node$context2 = node.context) == null ? void 0 : _node$context2.open);
+      });
+    });
+    allChildren = allChildren.concat(currentChildren);
+  }
+  return allChildren;
+}
+function getDeepestNode(nodes, id) {
+  let deepestNodeId;
+  let maxDepth = -1;
+  function findDeepest(nodeId, depth) {
+    if (depth > maxDepth) {
+      deepestNodeId = nodeId;
+      maxDepth = depth;
+    }
+    const children = getChildren(nodes, nodeId);
+    children.forEach(child => {
+      findDeepest(child.id, depth + 1);
+    });
+  }
+  findDeepest(id, 0);
+  return nodes.find(node => node.id === deepestNodeId);
+}
+
+// Modified to add conditional `aria-hidden` support:
+// https://github.com/theKashey/aria-hidden/blob/9220c8f4a4fd35f63bee5510a9f41a37264382d4/src/index.ts
+let counterMap = /*#__PURE__*/new WeakMap();
+let uncontrolledElementsSet = /*#__PURE__*/new WeakSet();
+let markerMap = {};
+let lockCount$1 = 0;
+const supportsInert = () => typeof HTMLElement !== 'undefined' && 'inert' in HTMLElement.prototype;
+const unwrapHost = node => node && (node.host || unwrapHost(node.parentNode));
+const correctElements = (parent, targets) => targets.map(target => {
+  if (parent.contains(target)) {
+    return target;
+  }
+  const correctedTarget = unwrapHost(target);
+  if (parent.contains(correctedTarget)) {
+    return correctedTarget;
+  }
+  return null;
+}).filter(x => x != null);
+function applyAttributeToOthers(uncorrectedAvoidElements, body, ariaHidden, inert) {
+  const markerName = 'data-floating-ui-inert';
+  const controlAttribute = inert ? 'inert' : ariaHidden ? 'aria-hidden' : null;
+  const avoidElements = correctElements(body, uncorrectedAvoidElements);
+  const elementsToKeep = new Set();
+  const elementsToStop = new Set(avoidElements);
+  const hiddenElements = [];
+  if (!markerMap[markerName]) {
+    markerMap[markerName] = new WeakMap();
+  }
+  const markerCounter = markerMap[markerName];
+  avoidElements.forEach(keep);
+  deep(body);
+  elementsToKeep.clear();
+  function keep(el) {
+    if (!el || elementsToKeep.has(el)) {
+      return;
+    }
+    elementsToKeep.add(el);
+    el.parentNode && keep(el.parentNode);
+  }
+  function deep(parent) {
+    if (!parent || elementsToStop.has(parent)) {
+      return;
+    }
+    [].forEach.call(parent.children, node => {
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getNodeName)(node) === 'script') return;
+      if (elementsToKeep.has(node)) {
+        deep(node);
+      } else {
+        const attr = controlAttribute ? node.getAttribute(controlAttribute) : null;
+        const alreadyHidden = attr !== null && attr !== 'false';
+        const counterValue = (counterMap.get(node) || 0) + 1;
+        const markerValue = (markerCounter.get(node) || 0) + 1;
+        counterMap.set(node, counterValue);
+        markerCounter.set(node, markerValue);
+        hiddenElements.push(node);
+        if (counterValue === 1 && alreadyHidden) {
+          uncontrolledElementsSet.add(node);
+        }
+        if (markerValue === 1) {
+          node.setAttribute(markerName, '');
+        }
+        if (!alreadyHidden && controlAttribute) {
+          node.setAttribute(controlAttribute, 'true');
+        }
+      }
+    });
+  }
+  lockCount$1++;
+  return () => {
+    hiddenElements.forEach(element => {
+      const counterValue = (counterMap.get(element) || 0) - 1;
+      const markerValue = (markerCounter.get(element) || 0) - 1;
+      counterMap.set(element, counterValue);
+      markerCounter.set(element, markerValue);
+      if (!counterValue) {
+        if (!uncontrolledElementsSet.has(element) && controlAttribute) {
+          element.removeAttribute(controlAttribute);
+        }
+        uncontrolledElementsSet.delete(element);
+      }
+      if (!markerValue) {
+        element.removeAttribute(markerName);
+      }
+    });
+    lockCount$1--;
+    if (!lockCount$1) {
+      counterMap = new WeakMap();
+      counterMap = new WeakMap();
+      uncontrolledElementsSet = new WeakSet();
+      markerMap = {};
+    }
+  };
+}
+function markOthers(avoidElements, ariaHidden, inert) {
+  if (ariaHidden === void 0) {
+    ariaHidden = false;
+  }
+  if (inert === void 0) {
+    inert = false;
+  }
+  const body = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(avoidElements[0]).body;
+  return applyAttributeToOthers(avoidElements.concat(Array.from(body.querySelectorAll('[aria-live]'))), body, ariaHidden, inert);
+}
+
+const getTabbableOptions = () => ({
+  getShadowRoot: true,
+  displayCheck:
+  // JSDOM does not support the `tabbable` library. To solve this we can
+  // check if `ResizeObserver` is a real function (not polyfilled), which
+  // determines if the current environment is JSDOM-like.
+  typeof ResizeObserver === 'function' && ResizeObserver.toString().includes('[native code]') ? 'full' : 'none'
+});
+function getTabbableIn(container, direction) {
+  const allTabbable = (0,tabbable__WEBPACK_IMPORTED_MODULE_7__.tabbable)(container, getTabbableOptions());
+  if (direction === 'prev') {
+    allTabbable.reverse();
+  }
+  const activeIndex = allTabbable.indexOf((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(container)));
+  const nextTabbableElements = allTabbable.slice(activeIndex + 1);
+  return nextTabbableElements[0];
+}
+function getNextTabbable() {
+  return getTabbableIn(document.body, 'next');
+}
+function getPreviousTabbable() {
+  return getTabbableIn(document.body, 'prev');
+}
+function isOutsideEvent(event, container) {
+  const containerElement = container || event.currentTarget;
+  const relatedTarget = event.relatedTarget;
+  return !relatedTarget || !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(containerElement, relatedTarget);
+}
+function disableFocusInside(container) {
+  const tabbableElements = (0,tabbable__WEBPACK_IMPORTED_MODULE_7__.tabbable)(container, getTabbableOptions());
+  tabbableElements.forEach(element => {
+    element.dataset.tabindex = element.getAttribute('tabindex') || '';
+    element.setAttribute('tabindex', '-1');
+  });
+}
+function enableFocusInside(container) {
+  const elements = container.querySelectorAll('[data-tabindex]');
+  elements.forEach(element => {
+    const tabindex = element.dataset.tabindex;
+    delete element.dataset.tabindex;
+    if (tabindex) {
+      element.setAttribute('tabindex', tabindex);
+    } else {
+      element.removeAttribute('tabindex');
+    }
+  });
+}
+
+// See Diego Haz's Sandbox for making this logic work well on Safari/iOS:
+// https://codesandbox.io/s/tabbable-portal-f4tng?file=/src/FocusTrap.tsx
+
+const HIDDEN_STYLES = {
+  border: 0,
+  clip: 'rect(0 0 0 0)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: 0,
+  position: 'fixed',
+  whiteSpace: 'nowrap',
+  width: '1px',
+  top: 0,
+  left: 0
+};
+let timeoutId;
+function setActiveElementOnTab(event) {
+  if (event.key === 'Tab') {
+    event.target;
+    clearTimeout(timeoutId);
+  }
+}
+const FocusGuard = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function FocusGuard(props, ref) {
+  const [role, setRole] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  index(() => {
+    if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isSafari)()) {
+      // Unlike other screen readers such as NVDA and JAWS, the virtual cursor
+      // on VoiceOver does trigger the onFocus event, so we can use the focus
+      // trap element. On Safari, only buttons trigger the onFocus event.
+      // NB: "group" role in the Sandbox no longer appears to work, must be a
+      // button role.
+      setRole('button');
+    }
+    document.addEventListener('keydown', setActiveElementOnTab);
+    return () => {
+      document.removeEventListener('keydown', setActiveElementOnTab);
+    };
+  }, []);
+  const restProps = {
+    ref,
+    tabIndex: 0,
+    // Role is only for VoiceOver
+    role,
+    'aria-hidden': role ? undefined : true,
+    [createAttribute('focus-guard')]: '',
+    style: HIDDEN_STYLES
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", _extends({}, props, restProps));
+});
+
+const PortalContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
+const attr = /*#__PURE__*/createAttribute('portal');
+/**
+ * @see https://floating-ui.com/docs/FloatingPortal#usefloatingportalnode
+ */
+function useFloatingPortalNode(props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    id,
+    root
+  } = props;
+  const uniqueId = useId();
+  const portalContext = usePortalContext();
+  const [portalNode, setPortalNode] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const portalNodeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  index(() => {
+    return () => {
+      portalNode == null || portalNode.remove();
+      // Allow the subsequent layout effects to create a new node on updates.
+      // The portal node will still be cleaned up on unmount.
+      // https://github.com/floating-ui/floating-ui/issues/2454
+      queueMicrotask(() => {
+        portalNodeRef.current = null;
+      });
+    };
+  }, [portalNode]);
+  index(() => {
+    // Wait for the uniqueId to be generated before creating the portal node in
+    // React <18 (using `useFloatingId` instead of the native `useId`).
+    // https://github.com/floating-ui/floating-ui/issues/2778
+    if (!uniqueId) return;
+    if (portalNodeRef.current) return;
+    const existingIdRoot = id ? document.getElementById(id) : null;
+    if (!existingIdRoot) return;
+    const subRoot = document.createElement('div');
+    subRoot.id = uniqueId;
+    subRoot.setAttribute(attr, '');
+    existingIdRoot.appendChild(subRoot);
+    portalNodeRef.current = subRoot;
+    setPortalNode(subRoot);
+  }, [id, uniqueId]);
+  index(() => {
+    // Wait for the root to exist before creating the portal node. The root must
+    // be stored in state, not a ref, for this to work reactively.
+    if (root === null) return;
+    if (!uniqueId) return;
+    if (portalNodeRef.current) return;
+    let container = root || (portalContext == null ? void 0 : portalContext.portalNode);
+    if (container && !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(container)) container = container.current;
+    container = container || document.body;
+    let idWrapper = null;
+    if (id) {
+      idWrapper = document.createElement('div');
+      idWrapper.id = id;
+      container.appendChild(idWrapper);
+    }
+    const subRoot = document.createElement('div');
+    subRoot.id = uniqueId;
+    subRoot.setAttribute(attr, '');
+    container = idWrapper || container;
+    container.appendChild(subRoot);
+    portalNodeRef.current = subRoot;
+    setPortalNode(subRoot);
+  }, [id, root, uniqueId, portalContext]);
+  return portalNode;
+}
+/**
+ * Portals the floating element into a given container element — by default,
+ * outside of the app root and into the body.
+ * This is necessary to ensure the floating element can appear outside any
+ * potential parent containers that cause clipping (such as `overflow: hidden`),
+ * while retaining its location in the React tree.
+ * @see https://floating-ui.com/docs/FloatingPortal
+ */
+function FloatingPortal(props) {
+  const {
+    children,
+    id,
+    root,
+    preserveTabOrder = true
+  } = props;
+  const portalNode = useFloatingPortalNode({
+    id,
+    root
+  });
+  const [focusManagerState, setFocusManagerState] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const beforeOutsideRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const afterOutsideRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const beforeInsideRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const afterInsideRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const modal = focusManagerState == null ? void 0 : focusManagerState.modal;
+  const open = focusManagerState == null ? void 0 : focusManagerState.open;
+  const shouldRenderGuards =
+  // The FocusManager and therefore floating element are currently open/
+  // rendered.
+  !!focusManagerState &&
+  // Guards are only for non-modal focus management.
+  !focusManagerState.modal &&
+  // Don't render if unmount is transitioning.
+  focusManagerState.open && preserveTabOrder && !!(root || portalNode);
+
+  // https://codesandbox.io/s/tabbable-portal-f4tng?file=/src/TabbablePortal.tsx
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!portalNode || !preserveTabOrder || modal) {
+      return;
+    }
+
+    // Make sure elements inside the portal element are tabbable only when the
+    // portal has already been focused, either by tabbing into a focus trap
+    // element outside or using the mouse.
+    function onFocus(event) {
+      if (portalNode && isOutsideEvent(event)) {
+        const focusing = event.type === 'focusin';
+        const manageFocus = focusing ? enableFocusInside : disableFocusInside;
+        manageFocus(portalNode);
+      }
+    }
+    // Listen to the event on the capture phase so they run before the focus
+    // trap elements onFocus prop is called.
+    portalNode.addEventListener('focusin', onFocus, true);
+    portalNode.addEventListener('focusout', onFocus, true);
+    return () => {
+      portalNode.removeEventListener('focusin', onFocus, true);
+      portalNode.removeEventListener('focusout', onFocus, true);
+    };
+  }, [portalNode, preserveTabOrder, modal]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!portalNode) return;
+    if (open) return;
+    enableFocusInside(portalNode);
+  }, [open, portalNode]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(PortalContext.Provider, {
+    value: react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+      preserveTabOrder,
+      beforeOutsideRef,
+      afterOutsideRef,
+      beforeInsideRef,
+      afterInsideRef,
+      portalNode,
+      setFocusManagerState
+    }), [preserveTabOrder, portalNode])
+  }, shouldRenderGuards && portalNode && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FocusGuard, {
+    "data-type": "outside",
+    ref: beforeOutsideRef,
+    onFocus: event => {
+      if (isOutsideEvent(event, portalNode)) {
+        var _beforeInsideRef$curr;
+        (_beforeInsideRef$curr = beforeInsideRef.current) == null || _beforeInsideRef$curr.focus();
+      } else {
+        const prevTabbable = getPreviousTabbable() || (focusManagerState == null ? void 0 : focusManagerState.refs.domReference.current);
+        prevTabbable == null || prevTabbable.focus();
+      }
+    }
+  }), shouldRenderGuards && portalNode && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("span", {
+    "aria-owns": portalNode.id,
+    style: HIDDEN_STYLES
+  }), portalNode && /*#__PURE__*/react_dom__WEBPACK_IMPORTED_MODULE_1__.createPortal(children, portalNode), shouldRenderGuards && portalNode && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FocusGuard, {
+    "data-type": "outside",
+    ref: afterOutsideRef,
+    onFocus: event => {
+      if (isOutsideEvent(event, portalNode)) {
+        var _afterInsideRef$curre;
+        (_afterInsideRef$curre = afterInsideRef.current) == null || _afterInsideRef$curre.focus();
+      } else {
+        const nextTabbable = getNextTabbable() || (focusManagerState == null ? void 0 : focusManagerState.refs.domReference.current);
+        nextTabbable == null || nextTabbable.focus();
+        (focusManagerState == null ? void 0 : focusManagerState.closeOnFocusOut) && (focusManagerState == null ? void 0 : focusManagerState.onOpenChange(false, event.nativeEvent, 'focus-out'));
+      }
+    }
+  }));
+}
+const usePortalContext = () => react__WEBPACK_IMPORTED_MODULE_0__.useContext(PortalContext);
+
+const FOCUSABLE_ATTRIBUTE = 'data-floating-ui-focusable';
+function getFloatingFocusElement(floatingElement) {
+  if (!floatingElement) {
+    return null;
+  }
+  // Try to find the element that has `{...getFloatingProps()}` spread on it.
+  // This indicates the floating element is acting as a positioning wrapper, and
+  // so focus should be managed on the child element with the event handlers and
+  // aria props.
+  return floatingElement.hasAttribute(FOCUSABLE_ATTRIBUTE) ? floatingElement : floatingElement.querySelector("[" + FOCUSABLE_ATTRIBUTE + "]") || floatingElement;
+}
+
+const LIST_LIMIT = 20;
+let previouslyFocusedElements = [];
+function addPreviouslyFocusedElement(element) {
+  previouslyFocusedElements = previouslyFocusedElements.filter(el => el.isConnected);
+  let tabbableEl = element;
+  if (!tabbableEl || (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getNodeName)(tabbableEl) === 'body') return;
+  if (!(0,tabbable__WEBPACK_IMPORTED_MODULE_7__.isTabbable)(tabbableEl, getTabbableOptions())) {
+    const tabbableChild = (0,tabbable__WEBPACK_IMPORTED_MODULE_7__.tabbable)(tabbableEl, getTabbableOptions())[0];
+    if (tabbableChild) {
+      tabbableEl = tabbableChild;
+    }
+  }
+  previouslyFocusedElements.push(tabbableEl);
+  if (previouslyFocusedElements.length > LIST_LIMIT) {
+    previouslyFocusedElements = previouslyFocusedElements.slice(-LIST_LIMIT);
+  }
+}
+function getPreviouslyFocusedElement() {
+  return previouslyFocusedElements.slice().reverse().find(el => el.isConnected);
+}
+const VisuallyHiddenDismiss = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function VisuallyHiddenDismiss(props, ref) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", _extends({}, props, {
+    type: "button",
+    ref: ref,
+    tabIndex: -1,
+    style: HIDDEN_STYLES
+  }));
+});
+/**
+ * Provides focus management for the floating element.
+ * @see https://floating-ui.com/docs/FloatingFocusManager
+ */
+function FloatingFocusManager(props) {
+  const {
+    context,
+    children,
+    disabled = false,
+    order = ['content'],
+    guards: _guards = true,
+    initialFocus = 0,
+    returnFocus = true,
+    restoreFocus = false,
+    modal = true,
+    visuallyHiddenDismiss = false,
+    closeOnFocusOut = true
+  } = props;
+  const {
+    open,
+    refs,
+    nodeId,
+    onOpenChange,
+    events,
+    dataRef,
+    floatingId,
+    elements: {
+      domReference,
+      floating
+    }
+  } = context;
+  const ignoreInitialFocus = typeof initialFocus === 'number' && initialFocus < 0;
+  // If the reference is a combobox and is typeable (e.g. input/textarea),
+  // there are different focus semantics. The guards should not be rendered, but
+  // aria-hidden should be applied to all nodes still. Further, the visually
+  // hidden dismiss button should only appear at the end of the list, not the
+  // start.
+  const isUntrappedTypeableCombobox = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isTypeableCombobox)(domReference) && ignoreInitialFocus;
+
+  // Force the guards to be rendered if the `inert` attribute is not supported.
+  const guards = supportsInert() ? _guards : true;
+  const orderRef = useLatestRef(order);
+  const initialFocusRef = useLatestRef(initialFocus);
+  const returnFocusRef = useLatestRef(returnFocus);
+  const tree = useFloatingTree();
+  const portalContext = usePortalContext();
+  const startDismissButtonRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const endDismissButtonRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const preventReturnFocusRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const isPointerDownRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const tabbableIndexRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(-1);
+  const isInsidePortal = portalContext != null;
+  const floatingFocusElement = getFloatingFocusElement(floating);
+  const getTabbableContent = useEffectEvent(function (container) {
+    if (container === void 0) {
+      container = floatingFocusElement;
+    }
+    return container ? (0,tabbable__WEBPACK_IMPORTED_MODULE_7__.tabbable)(container, getTabbableOptions()) : [];
+  });
+  const getTabbableElements = useEffectEvent(container => {
+    const content = getTabbableContent(container);
+    return orderRef.current.map(type => {
+      if (domReference && type === 'reference') {
+        return domReference;
+      }
+      if (floatingFocusElement && type === 'floating') {
+        return floatingFocusElement;
+      }
+      return content;
+    }).filter(Boolean).flat();
+  });
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (disabled) return;
+    if (!modal) return;
+    function onKeyDown(event) {
+      if (event.key === 'Tab') {
+        // The focus guards have nothing to focus, so we need to stop the event.
+        if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(floatingFocusElement, (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement))) && getTabbableContent().length === 0 && !isUntrappedTypeableCombobox) {
+          (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+        }
+        const els = getTabbableElements();
+        const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event);
+        if (orderRef.current[0] === 'reference' && target === domReference) {
+          (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+          if (event.shiftKey) {
+            enqueueFocus(els[els.length - 1]);
+          } else {
+            enqueueFocus(els[1]);
+          }
+        }
+        if (orderRef.current[1] === 'floating' && target === floatingFocusElement && event.shiftKey) {
+          (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+          enqueueFocus(els[0]);
+        }
+      }
+    }
+    const doc = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement);
+    doc.addEventListener('keydown', onKeyDown);
+    return () => {
+      doc.removeEventListener('keydown', onKeyDown);
+    };
+  }, [disabled, domReference, floatingFocusElement, modal, orderRef, isUntrappedTypeableCombobox, getTabbableContent, getTabbableElements]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (disabled) return;
+    if (!floating) return;
+    function handleFocusIn(event) {
+      const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event);
+      const tabbableContent = getTabbableContent();
+      const tabbableIndex = tabbableContent.indexOf(target);
+      if (tabbableIndex !== -1) {
+        tabbableIndexRef.current = tabbableIndex;
+      }
+    }
+    floating.addEventListener('focusin', handleFocusIn);
+    return () => {
+      floating.removeEventListener('focusin', handleFocusIn);
+    };
+  }, [disabled, floating, getTabbableContent]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (disabled) return;
+    if (!closeOnFocusOut) return;
+
+    // In Safari, buttons lose focus when pressing them.
+    function handlePointerDown() {
+      isPointerDownRef.current = true;
+      setTimeout(() => {
+        isPointerDownRef.current = false;
+      });
+    }
+    function handleFocusOutside(event) {
+      const relatedTarget = event.relatedTarget;
+      queueMicrotask(() => {
+        const movedToUnrelatedNode = !((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(domReference, relatedTarget) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(floating, relatedTarget) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(relatedTarget, floating) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(portalContext == null ? void 0 : portalContext.portalNode, relatedTarget) || relatedTarget != null && relatedTarget.hasAttribute(createAttribute('focus-guard')) || tree && (getChildren(tree.nodesRef.current, nodeId).find(node => {
+          var _node$context, _node$context2;
+          return (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)((_node$context = node.context) == null ? void 0 : _node$context.elements.floating, relatedTarget) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)((_node$context2 = node.context) == null ? void 0 : _node$context2.elements.domReference, relatedTarget);
+        }) || getAncestors(tree.nodesRef.current, nodeId).find(node => {
+          var _node$context3, _node$context4;
+          return ((_node$context3 = node.context) == null ? void 0 : _node$context3.elements.floating) === relatedTarget || ((_node$context4 = node.context) == null ? void 0 : _node$context4.elements.domReference) === relatedTarget;
+        })));
+
+        // Restore focus to the previous tabbable element index to prevent
+        // focus from being lost outside the floating tree.
+        if (restoreFocus && movedToUnrelatedNode && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement)) === (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement).body) {
+          // Let `FloatingPortal` effect knows that focus is still inside the
+          // floating tree.
+          if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(floatingFocusElement)) {
+            floatingFocusElement.focus();
+          }
+          const prevTabbableIndex = tabbableIndexRef.current;
+          const tabbableContent = getTabbableContent();
+          const nodeToFocus = tabbableContent[prevTabbableIndex] || tabbableContent[tabbableContent.length - 1] || floatingFocusElement;
+          if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(nodeToFocus)) {
+            nodeToFocus.focus();
+          }
+        }
+
+        // Focus did not move inside the floating tree, and there are no tabbable
+        // portal guards to handle closing.
+        if ((isUntrappedTypeableCombobox ? true : !modal) && relatedTarget && movedToUnrelatedNode && !isPointerDownRef.current &&
+        // Fix React 18 Strict Mode returnFocus due to double rendering.
+        relatedTarget !== getPreviouslyFocusedElement()) {
+          preventReturnFocusRef.current = true;
+          onOpenChange(false, event, 'focus-out');
+        }
+      });
+    }
+    if (floating && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(domReference)) {
+      domReference.addEventListener('focusout', handleFocusOutside);
+      domReference.addEventListener('pointerdown', handlePointerDown);
+      floating.addEventListener('focusout', handleFocusOutside);
+      return () => {
+        domReference.removeEventListener('focusout', handleFocusOutside);
+        domReference.removeEventListener('pointerdown', handlePointerDown);
+        floating.removeEventListener('focusout', handleFocusOutside);
+      };
+    }
+  }, [disabled, domReference, floating, floatingFocusElement, modal, nodeId, tree, portalContext, onOpenChange, closeOnFocusOut, restoreFocus, getTabbableContent, isUntrappedTypeableCombobox]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    var _portalContext$portal;
+    if (disabled) return;
+
+    // Don't hide portals nested within the parent portal.
+    const portalNodes = Array.from((portalContext == null || (_portalContext$portal = portalContext.portalNode) == null ? void 0 : _portalContext$portal.querySelectorAll("[" + createAttribute('portal') + "]")) || []);
+    if (floating) {
+      const insideElements = [floating, ...portalNodes, startDismissButtonRef.current, endDismissButtonRef.current, orderRef.current.includes('reference') || isUntrappedTypeableCombobox ? domReference : null].filter(x => x != null);
+      const cleanup = modal || isUntrappedTypeableCombobox ? markOthers(insideElements, guards, !guards) : markOthers(insideElements);
+      return () => {
+        cleanup();
+      };
+    }
+  }, [disabled, domReference, floating, modal, orderRef, portalContext, isUntrappedTypeableCombobox, guards]);
+  index(() => {
+    if (disabled || !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(floatingFocusElement)) return;
+    const doc = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement);
+    const previouslyFocusedElement = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)(doc);
+
+    // Wait for any layout effect state setters to execute to set `tabIndex`.
+    queueMicrotask(() => {
+      const focusableElements = getTabbableElements(floatingFocusElement);
+      const initialFocusValue = initialFocusRef.current;
+      const elToFocus = (typeof initialFocusValue === 'number' ? focusableElements[initialFocusValue] : initialFocusValue.current) || floatingFocusElement;
+      const focusAlreadyInsideFloatingEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(floatingFocusElement, previouslyFocusedElement);
+      if (!ignoreInitialFocus && !focusAlreadyInsideFloatingEl && open) {
+        enqueueFocus(elToFocus, {
+          preventScroll: elToFocus === floatingFocusElement
+        });
+      }
+    });
+  }, [disabled, open, floatingFocusElement, ignoreInitialFocus, getTabbableElements, initialFocusRef]);
+  index(() => {
+    if (disabled || !floatingFocusElement) return;
+    let preventReturnFocusScroll = false;
+    const doc = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floatingFocusElement);
+    const previouslyFocusedElement = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)(doc);
+    const contextData = dataRef.current;
+    let openEvent = contextData.openEvent;
+    addPreviouslyFocusedElement(previouslyFocusedElement);
+
+    // Dismissing via outside press should always ignore `returnFocus` to
+    // prevent unwanted scrolling.
+    function onOpenChange(_ref) {
+      let {
+        open,
+        reason,
+        event,
+        nested
+      } = _ref;
+      if (open) {
+        openEvent = event;
+      }
+      if (reason === 'escape-key' && refs.domReference.current) {
+        addPreviouslyFocusedElement(refs.domReference.current);
+      }
+      if (reason === 'hover' && event.type === 'mouseleave') {
+        preventReturnFocusRef.current = true;
+      }
+      if (reason !== 'outside-press') return;
+      if (nested) {
+        preventReturnFocusRef.current = false;
+        preventReturnFocusScroll = true;
+      } else {
+        preventReturnFocusRef.current = !((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isVirtualClick)(event) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isVirtualPointerEvent)(event));
+      }
+    }
+    events.on('openchange', onOpenChange);
+    const fallbackEl = doc.createElement('span');
+    fallbackEl.setAttribute('tabindex', '-1');
+    fallbackEl.setAttribute('aria-hidden', 'true');
+    Object.assign(fallbackEl.style, HIDDEN_STYLES);
+    if (isInsidePortal && domReference) {
+      domReference.insertAdjacentElement('afterend', fallbackEl);
+    }
+    function getReturnElement() {
+      if (typeof returnFocusRef.current === 'boolean') {
+        return getPreviouslyFocusedElement() || fallbackEl;
+      }
+      return returnFocusRef.current.current || fallbackEl;
+    }
+    return () => {
+      events.off('openchange', onOpenChange);
+      const activeEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)(doc);
+      const isFocusInsideFloatingTree = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(floating, activeEl) || tree && getChildren(tree.nodesRef.current, nodeId).some(node => {
+        var _node$context5;
+        return (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)((_node$context5 = node.context) == null ? void 0 : _node$context5.elements.floating, activeEl);
+      });
+      const shouldFocusReference = isFocusInsideFloatingTree || openEvent && ['click', 'mousedown'].includes(openEvent.type);
+      if (shouldFocusReference && refs.domReference.current) {
+        addPreviouslyFocusedElement(refs.domReference.current);
+      }
+      const returnElement = getReturnElement();
+      queueMicrotask(() => {
+        if (
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        returnFocusRef.current && !preventReturnFocusRef.current && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(returnElement) && (
+        // If the focus moved somewhere else after mount, avoid returning focus
+        // since it likely entered a different element which should be
+        // respected: https://github.com/floating-ui/floating-ui/issues/2607
+        returnElement !== activeEl && activeEl !== doc.body ? isFocusInsideFloatingTree : true)) {
+          returnElement.focus({
+            preventScroll: preventReturnFocusScroll
+          });
+        }
+        fallbackEl.remove();
+      });
+    };
+  }, [disabled, floating, floatingFocusElement, returnFocusRef, dataRef, refs, events, tree, nodeId, isInsidePortal, domReference]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    // The `returnFocus` cleanup behavior is inside a microtask; ensure we
+    // wait for it to complete before resetting the flag.
+    queueMicrotask(() => {
+      preventReturnFocusRef.current = false;
+    });
+  }, [disabled]);
+
+  // Synchronize the `context` & `modal` value to the FloatingPortal context.
+  // It will decide whether or not it needs to render its own guards.
+  index(() => {
+    if (disabled) return;
+    if (!portalContext) return;
+    portalContext.setFocusManagerState({
+      modal,
+      closeOnFocusOut,
+      open,
+      onOpenChange,
+      refs
+    });
+    return () => {
+      portalContext.setFocusManagerState(null);
+    };
+  }, [disabled, portalContext, modal, open, onOpenChange, refs, closeOnFocusOut]);
+  index(() => {
+    if (disabled) return;
+    if (!floatingFocusElement) return;
+    if (typeof MutationObserver !== 'function') return;
+    if (ignoreInitialFocus) return;
+    const handleMutation = () => {
+      const tabIndex = floatingFocusElement.getAttribute('tabindex');
+      const tabbableContent = getTabbableContent();
+      const activeEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(floating));
+      const tabbableIndex = tabbableContent.indexOf(activeEl);
+      if (tabbableIndex !== -1) {
+        tabbableIndexRef.current = tabbableIndex;
+      }
+      if (orderRef.current.includes('floating') || activeEl !== refs.domReference.current && tabbableContent.length === 0) {
+        if (tabIndex !== '0') {
+          floatingFocusElement.setAttribute('tabindex', '0');
+        }
+      } else if (tabIndex !== '-1') {
+        floatingFocusElement.setAttribute('tabindex', '-1');
+      }
+    };
+    handleMutation();
+    const observer = new MutationObserver(handleMutation);
+    observer.observe(floatingFocusElement, {
+      childList: true,
+      subtree: true,
+      attributes: true
+    });
+    return () => {
+      observer.disconnect();
+    };
+  }, [disabled, floating, floatingFocusElement, refs, orderRef, getTabbableContent, ignoreInitialFocus]);
+  function renderDismissButton(location) {
+    if (disabled || !visuallyHiddenDismiss || !modal) {
+      return null;
+    }
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(VisuallyHiddenDismiss, {
+      ref: location === 'start' ? startDismissButtonRef : endDismissButtonRef,
+      onClick: event => onOpenChange(false, event.nativeEvent)
+    }, typeof visuallyHiddenDismiss === 'string' ? visuallyHiddenDismiss : 'Dismiss');
+  }
+  const shouldRenderGuards = !disabled && guards && (modal ? !isUntrappedTypeableCombobox : true) && (isInsidePortal || modal);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, shouldRenderGuards && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FocusGuard, {
+    "data-type": "inside",
+    ref: portalContext == null ? void 0 : portalContext.beforeInsideRef,
+    onFocus: event => {
+      if (modal) {
+        const els = getTabbableElements();
+        enqueueFocus(order[0] === 'reference' ? els[0] : els[els.length - 1]);
+      } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
+        preventReturnFocusRef.current = false;
+        if (isOutsideEvent(event, portalContext.portalNode)) {
+          const nextTabbable = getNextTabbable() || domReference;
+          nextTabbable == null || nextTabbable.focus();
+        } else {
+          var _portalContext$before;
+          (_portalContext$before = portalContext.beforeOutsideRef.current) == null || _portalContext$before.focus();
+        }
+      }
+    }
+  }), !isUntrappedTypeableCombobox && renderDismissButton('start'), children, renderDismissButton('end'), shouldRenderGuards && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(FocusGuard, {
+    "data-type": "inside",
+    ref: portalContext == null ? void 0 : portalContext.afterInsideRef,
+    onFocus: event => {
+      if (modal) {
+        enqueueFocus(getTabbableElements()[0]);
+      } else if (portalContext != null && portalContext.preserveTabOrder && portalContext.portalNode) {
+        if (closeOnFocusOut) {
+          preventReturnFocusRef.current = true;
+        }
+        if (isOutsideEvent(event, portalContext.portalNode)) {
+          const prevTabbable = getPreviousTabbable() || domReference;
+          prevTabbable == null || prevTabbable.focus();
+        } else {
+          var _portalContext$afterO;
+          (_portalContext$afterO = portalContext.afterOutsideRef.current) == null || _portalContext$afterO.focus();
+        }
+      }
+    }
+  }));
+}
+
+let lockCount = 0;
+function enableScrollLock() {
+  const isIOS = /iP(hone|ad|od)|iOS/.test((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getPlatform)());
+  const bodyStyle = document.body.style;
+  // RTL <body> scrollbar
+  const scrollbarX = Math.round(document.documentElement.getBoundingClientRect().left) + document.documentElement.scrollLeft;
+  const paddingProp = scrollbarX ? 'paddingLeft' : 'paddingRight';
+  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  const scrollX = bodyStyle.left ? parseFloat(bodyStyle.left) : window.scrollX;
+  const scrollY = bodyStyle.top ? parseFloat(bodyStyle.top) : window.scrollY;
+  bodyStyle.overflow = 'hidden';
+  if (scrollbarWidth) {
+    bodyStyle[paddingProp] = scrollbarWidth + "px";
+  }
+
+  // Only iOS doesn't respect `overflow: hidden` on document.body, and this
+  // technique has fewer side effects.
+  if (isIOS) {
+    var _window$visualViewpor, _window$visualViewpor2;
+    // iOS 12 does not support `visualViewport`.
+    const offsetLeft = ((_window$visualViewpor = window.visualViewport) == null ? void 0 : _window$visualViewpor.offsetLeft) || 0;
+    const offsetTop = ((_window$visualViewpor2 = window.visualViewport) == null ? void 0 : _window$visualViewpor2.offsetTop) || 0;
+    Object.assign(bodyStyle, {
+      position: 'fixed',
+      top: -(scrollY - Math.floor(offsetTop)) + "px",
+      left: -(scrollX - Math.floor(offsetLeft)) + "px",
+      right: '0'
+    });
+  }
+  return () => {
+    Object.assign(bodyStyle, {
+      overflow: '',
+      [paddingProp]: ''
+    });
+    if (isIOS) {
+      Object.assign(bodyStyle, {
+        position: '',
+        top: '',
+        left: '',
+        right: ''
+      });
+      window.scrollTo(scrollX, scrollY);
+    }
+  };
+}
+let cleanup = () => {};
+
+/**
+ * Provides base styling for a fixed overlay element to dim content or block
+ * pointer events behind a floating element.
+ * It's a regular `<div>`, so it can be styled via any CSS solution you prefer.
+ * @see https://floating-ui.com/docs/FloatingOverlay
+ */
+const FloatingOverlay = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function FloatingOverlay(props, ref) {
+  const {
+    lockScroll = false,
+    ...rest
+  } = props;
+  index(() => {
+    if (!lockScroll) return;
+    lockCount++;
+    if (lockCount === 1) {
+      cleanup = enableScrollLock();
+    }
+    return () => {
+      lockCount--;
+      if (lockCount === 0) {
+        cleanup();
+      }
+    };
+  }, [lockScroll]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", _extends({
+    ref: ref
+  }, rest, {
+    style: {
+      position: 'fixed',
+      overflow: 'auto',
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+      ...rest.style
+    }
+  }));
+});
+
+function isButtonTarget(event) {
+  return (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(event.target) && event.target.tagName === 'BUTTON';
+}
+function isSpaceIgnored(element) {
+  return (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isTypeableElement)(element);
+}
+/**
+ * Opens or closes the floating element when clicking the reference element.
+ * @see https://floating-ui.com/docs/useClick
+ */
+function useClick(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    dataRef,
+    elements: {
+      domReference
+    }
+  } = context;
+  const {
+    enabled = true,
+    event: eventOption = 'click',
+    toggle = true,
+    ignoreMouse = false,
+    keyboardHandlers = true,
+    stickIfOpen = true
+  } = props;
+  const pointerTypeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+  const didKeyDownRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onPointerDown(event) {
+      pointerTypeRef.current = event.pointerType;
+    },
+    onMouseDown(event) {
+      const pointerType = pointerTypeRef.current;
+
+      // Ignore all buttons except for the "main" button.
+      // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+      if (event.button !== 0) return;
+      if (eventOption === 'click') return;
+      if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerType, true) && ignoreMouse) return;
+      if (open && toggle && (dataRef.current.openEvent && stickIfOpen ? dataRef.current.openEvent.type === 'mousedown' : true)) {
+        onOpenChange(false, event.nativeEvent, 'click');
+      } else {
+        // Prevent stealing focus from the floating element
+        event.preventDefault();
+        onOpenChange(true, event.nativeEvent, 'click');
+      }
+    },
+    onClick(event) {
+      const pointerType = pointerTypeRef.current;
+      if (eventOption === 'mousedown' && pointerTypeRef.current) {
+        pointerTypeRef.current = undefined;
+        return;
+      }
+      if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerType, true) && ignoreMouse) return;
+      if (open && toggle && (dataRef.current.openEvent && stickIfOpen ? dataRef.current.openEvent.type === 'click' : true)) {
+        onOpenChange(false, event.nativeEvent, 'click');
+      } else {
+        onOpenChange(true, event.nativeEvent, 'click');
+      }
+    },
+    onKeyDown(event) {
+      pointerTypeRef.current = undefined;
+      if (event.defaultPrevented || !keyboardHandlers || isButtonTarget(event)) {
+        return;
+      }
+      if (event.key === ' ' && !isSpaceIgnored(domReference)) {
+        // Prevent scrolling
+        event.preventDefault();
+        didKeyDownRef.current = true;
+      }
+      if (event.key === 'Enter') {
+        if (open && toggle) {
+          onOpenChange(false, event.nativeEvent, 'click');
+        } else {
+          onOpenChange(true, event.nativeEvent, 'click');
+        }
+      }
+    },
+    onKeyUp(event) {
+      if (event.defaultPrevented || !keyboardHandlers || isButtonTarget(event) || isSpaceIgnored(domReference)) {
+        return;
+      }
+      if (event.key === ' ' && didKeyDownRef.current) {
+        didKeyDownRef.current = false;
+        if (open && toggle) {
+          onOpenChange(false, event.nativeEvent, 'click');
+        } else {
+          onOpenChange(true, event.nativeEvent, 'click');
+        }
+      }
+    }
+  }), [dataRef, domReference, eventOption, ignoreMouse, keyboardHandlers, onOpenChange, open, stickIfOpen, toggle]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference
+  } : {}, [enabled, reference]);
+}
+
+function createVirtualElement(domElement, data) {
+  let offsetX = null;
+  let offsetY = null;
+  let isAutoUpdateEvent = false;
+  return {
+    contextElement: domElement || undefined,
+    getBoundingClientRect() {
+      var _data$dataRef$current;
+      const domRect = (domElement == null ? void 0 : domElement.getBoundingClientRect()) || {
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0
+      };
+      const isXAxis = data.axis === 'x' || data.axis === 'both';
+      const isYAxis = data.axis === 'y' || data.axis === 'both';
+      const canTrackCursorOnAutoUpdate = ['mouseenter', 'mousemove'].includes(((_data$dataRef$current = data.dataRef.current.openEvent) == null ? void 0 : _data$dataRef$current.type) || '') && data.pointerType !== 'touch';
+      let width = domRect.width;
+      let height = domRect.height;
+      let x = domRect.x;
+      let y = domRect.y;
+      if (offsetX == null && data.x && isXAxis) {
+        offsetX = domRect.x - data.x;
+      }
+      if (offsetY == null && data.y && isYAxis) {
+        offsetY = domRect.y - data.y;
+      }
+      x -= offsetX || 0;
+      y -= offsetY || 0;
+      width = 0;
+      height = 0;
+      if (!isAutoUpdateEvent || canTrackCursorOnAutoUpdate) {
+        width = data.axis === 'y' ? domRect.width : 0;
+        height = data.axis === 'x' ? domRect.height : 0;
+        x = isXAxis && data.x != null ? data.x : x;
+        y = isYAxis && data.y != null ? data.y : y;
+      } else if (isAutoUpdateEvent && !canTrackCursorOnAutoUpdate) {
+        height = data.axis === 'x' ? domRect.height : height;
+        width = data.axis === 'y' ? domRect.width : width;
+      }
+      isAutoUpdateEvent = true;
+      return {
+        width,
+        height,
+        x,
+        y,
+        top: y,
+        right: x + width,
+        bottom: y + height,
+        left: x
+      };
+    }
+  };
+}
+function isMouseBasedEvent(event) {
+  return event != null && event.clientX != null;
+}
+/**
+ * Positions the floating element relative to a client point (in the viewport),
+ * such as the mouse position. By default, it follows the mouse cursor.
+ * @see https://floating-ui.com/docs/useClientPoint
+ */
+function useClientPoint(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    dataRef,
+    elements: {
+      floating,
+      domReference
+    },
+    refs
+  } = context;
+  const {
+    enabled = true,
+    axis = 'both',
+    x = null,
+    y = null
+  } = props;
+  const initialRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const cleanupListenerRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const [pointerType, setPointerType] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  const [reactive, setReactive] = react__WEBPACK_IMPORTED_MODULE_0__.useState([]);
+  const setReference = useEffectEvent((x, y) => {
+    if (initialRef.current) return;
+
+    // Prevent setting if the open event was not a mouse-like one
+    // (e.g. focus to open, then hover over the reference element).
+    // Only apply if the event exists.
+    if (dataRef.current.openEvent && !isMouseBasedEvent(dataRef.current.openEvent)) {
+      return;
+    }
+    refs.setPositionReference(createVirtualElement(domReference, {
+      x,
+      y,
+      axis,
+      dataRef,
+      pointerType
+    }));
+  });
+  const handleReferenceEnterOrMove = useEffectEvent(event => {
+    if (x != null || y != null) return;
+    if (!open) {
+      setReference(event.clientX, event.clientY);
+    } else if (!cleanupListenerRef.current) {
+      // If there's no cleanup, there's no listener, but we want to ensure
+      // we add the listener if the cursor landed on the floating element and
+      // then back on the reference (i.e. it's interactive).
+      setReactive([]);
+    }
+  });
+
+  // If the pointer is a mouse-like pointer, we want to continue following the
+  // mouse even if the floating element is transitioning out. On touch
+  // devices, this is undesirable because the floating element will move to
+  // the dismissal touch point.
+  const openCheck = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMouseLikePointerType)(pointerType) ? floating : open;
+  const addListener = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(() => {
+    // Explicitly specified `x`/`y` coordinates shouldn't add a listener.
+    if (!openCheck || !enabled || x != null || y != null) return;
+    const win = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getWindow)(floating);
+    function handleMouseMove(event) {
+      const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event);
+      if (!(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(floating, target)) {
+        setReference(event.clientX, event.clientY);
+      } else {
+        win.removeEventListener('mousemove', handleMouseMove);
+        cleanupListenerRef.current = null;
+      }
+    }
+    if (!dataRef.current.openEvent || isMouseBasedEvent(dataRef.current.openEvent)) {
+      win.addEventListener('mousemove', handleMouseMove);
+      const cleanup = () => {
+        win.removeEventListener('mousemove', handleMouseMove);
+        cleanupListenerRef.current = null;
+      };
+      cleanupListenerRef.current = cleanup;
+      return cleanup;
+    }
+    refs.setPositionReference(domReference);
+  }, [openCheck, enabled, x, y, floating, dataRef, refs, domReference, setReference]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    return addListener();
+  }, [addListener, reactive]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (enabled && !floating) {
+      initialRef.current = false;
+    }
+  }, [enabled, floating]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled && open) {
+      initialRef.current = true;
+    }
+  }, [enabled, open]);
+  index(() => {
+    if (enabled && (x != null || y != null)) {
+      initialRef.current = false;
+      setReference(x, y);
+    }
+  }, [enabled, x, y, setReference]);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    function setPointerTypeRef(_ref) {
+      let {
+        pointerType
+      } = _ref;
+      setPointerType(pointerType);
+    }
+    return {
+      onPointerDown: setPointerTypeRef,
+      onPointerEnter: setPointerTypeRef,
+      onMouseMove: handleReferenceEnterOrMove,
+      onMouseEnter: handleReferenceEnterOrMove
+    };
+  }, [handleReferenceEnterOrMove]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference
+  } : {}, [enabled, reference]);
+}
+
+const bubbleHandlerKeys = {
+  pointerdown: 'onPointerDown',
+  mousedown: 'onMouseDown',
+  click: 'onClick'
+};
+const captureHandlerKeys = {
+  pointerdown: 'onPointerDownCapture',
+  mousedown: 'onMouseDownCapture',
+  click: 'onClickCapture'
+};
+const normalizeProp = normalizable => {
+  var _normalizable$escapeK, _normalizable$outside;
+  return {
+    escapeKey: typeof normalizable === 'boolean' ? normalizable : (_normalizable$escapeK = normalizable == null ? void 0 : normalizable.escapeKey) != null ? _normalizable$escapeK : false,
+    outsidePress: typeof normalizable === 'boolean' ? normalizable : (_normalizable$outside = normalizable == null ? void 0 : normalizable.outsidePress) != null ? _normalizable$outside : true
+  };
+};
+/**
+ * Closes the floating element when a dismissal is requested — by default, when
+ * the user presses the `escape` key or outside of the floating element.
+ * @see https://floating-ui.com/docs/useDismiss
+ */
+function useDismiss(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    elements,
+    dataRef
+  } = context;
+  const {
+    enabled = true,
+    escapeKey = true,
+    outsidePress: unstable_outsidePress = true,
+    outsidePressEvent = 'pointerdown',
+    referencePress = false,
+    referencePressEvent = 'pointerdown',
+    ancestorScroll = false,
+    bubbles,
+    capture
+  } = props;
+  const tree = useFloatingTree();
+  const outsidePressFn = useEffectEvent(typeof unstable_outsidePress === 'function' ? unstable_outsidePress : () => false);
+  const outsidePress = typeof unstable_outsidePress === 'function' ? outsidePressFn : unstable_outsidePress;
+  const insideReactTreeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const endedOrStartedInsideRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const {
+    escapeKey: escapeKeyBubbles,
+    outsidePress: outsidePressBubbles
+  } = normalizeProp(bubbles);
+  const {
+    escapeKey: escapeKeyCapture,
+    outsidePress: outsidePressCapture
+  } = normalizeProp(capture);
+  const isComposingRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const closeOnEscapeKeyDown = useEffectEvent(event => {
+    var _dataRef$current$floa;
+    if (!open || !enabled || !escapeKey || event.key !== 'Escape') {
+      return;
+    }
+
+    // Wait until IME is settled. Pressing `Escape` while composing should
+    // close the compose menu, but not the floating element.
+    if (isComposingRef.current) {
+      return;
+    }
+    const nodeId = (_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.nodeId;
+    const children = tree ? getChildren(tree.nodesRef.current, nodeId) : [];
+    if (!escapeKeyBubbles) {
+      event.stopPropagation();
+      if (children.length > 0) {
+        let shouldDismiss = true;
+        children.forEach(child => {
+          var _child$context;
+          if ((_child$context = child.context) != null && _child$context.open && !child.context.dataRef.current.__escapeKeyBubbles) {
+            shouldDismiss = false;
+            return;
+          }
+        });
+        if (!shouldDismiss) {
+          return;
+        }
+      }
+    }
+    onOpenChange(false, (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isReactEvent)(event) ? event.nativeEvent : event, 'escape-key');
+  });
+  const closeOnEscapeKeyDownCapture = useEffectEvent(event => {
+    var _getTarget2;
+    const callback = () => {
+      var _getTarget;
+      closeOnEscapeKeyDown(event);
+      (_getTarget = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event)) == null || _getTarget.removeEventListener('keydown', callback);
+    };
+    (_getTarget2 = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event)) == null || _getTarget2.addEventListener('keydown', callback);
+  });
+  const closeOnPressOutside = useEffectEvent(event => {
+    var _dataRef$current$floa2;
+    // Given developers can stop the propagation of the synthetic event,
+    // we can only be confident with a positive value.
+    const insideReactTree = insideReactTreeRef.current;
+    insideReactTreeRef.current = false;
+
+    // When click outside is lazy (`click` event), handle dragging.
+    // Don't close if:
+    // - The click started inside the floating element.
+    // - The click ended inside the floating element.
+    const endedOrStartedInside = endedOrStartedInsideRef.current;
+    endedOrStartedInsideRef.current = false;
+    if (outsidePressEvent === 'click' && endedOrStartedInside) {
+      return;
+    }
+    if (insideReactTree) {
+      return;
+    }
+    if (typeof outsidePress === 'function' && !outsidePress(event)) {
+      return;
+    }
+    const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event);
+    const inertSelector = "[" + createAttribute('inert') + "]";
+    const markers = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating).querySelectorAll(inertSelector);
+    let targetRootAncestor = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(target) ? target : null;
+    while (targetRootAncestor && !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isLastTraversableNode)(targetRootAncestor)) {
+      const nextParent = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getParentNode)(targetRootAncestor);
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isLastTraversableNode)(nextParent) || !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(nextParent)) {
+        break;
+      }
+      targetRootAncestor = nextParent;
+    }
+
+    // Check if the click occurred on a third-party element injected after the
+    // floating element rendered.
+    if (markers.length && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(target) && !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isRootElement)(target) &&
+    // Clicked on a direct ancestor (e.g. FloatingOverlay).
+    !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(target, elements.floating) &&
+    // If the target root element contains none of the markers, then the
+    // element was injected after the floating element rendered.
+    Array.from(markers).every(marker => !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(targetRootAncestor, marker))) {
+      return;
+    }
+
+    // Check if the click occurred on the scrollbar
+    if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(target) && floating) {
+      // In Firefox, `target.scrollWidth > target.clientWidth` for inline
+      // elements.
+      const canScrollX = target.clientWidth > 0 && target.scrollWidth > target.clientWidth;
+      const canScrollY = target.clientHeight > 0 && target.scrollHeight > target.clientHeight;
+      let xCond = canScrollY && event.offsetX > target.clientWidth;
+
+      // In some browsers it is possible to change the <body> (or window)
+      // scrollbar to the left side, but is very rare and is difficult to
+      // check for. Plus, for modal dialogs with backdrops, it is more
+      // important that the backdrop is checked but not so much the window.
+      if (canScrollY) {
+        const isRTL = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getComputedStyle)(target).direction === 'rtl';
+        if (isRTL) {
+          xCond = event.offsetX <= target.offsetWidth - target.clientWidth;
+        }
+      }
+      if (xCond || canScrollX && event.offsetY > target.clientHeight) {
+        return;
+      }
+    }
+    const nodeId = (_dataRef$current$floa2 = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa2.nodeId;
+    const targetIsInsideChildren = tree && getChildren(tree.nodesRef.current, nodeId).some(node => {
+      var _node$context;
+      return (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isEventTargetWithin)(event, (_node$context = node.context) == null ? void 0 : _node$context.elements.floating);
+    });
+    if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isEventTargetWithin)(event, elements.floating) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isEventTargetWithin)(event, elements.domReference) || targetIsInsideChildren) {
+      return;
+    }
+    const children = tree ? getChildren(tree.nodesRef.current, nodeId) : [];
+    if (children.length > 0) {
+      let shouldDismiss = true;
+      children.forEach(child => {
+        var _child$context2;
+        if ((_child$context2 = child.context) != null && _child$context2.open && !child.context.dataRef.current.__outsidePressBubbles) {
+          shouldDismiss = false;
+          return;
+        }
+      });
+      if (!shouldDismiss) {
+        return;
+      }
+    }
+    onOpenChange(false, event, 'outside-press');
+  });
+  const closeOnPressOutsideCapture = useEffectEvent(event => {
+    var _getTarget4;
+    const callback = () => {
+      var _getTarget3;
+      closeOnPressOutside(event);
+      (_getTarget3 = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event)) == null || _getTarget3.removeEventListener(outsidePressEvent, callback);
+    };
+    (_getTarget4 = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event)) == null || _getTarget4.addEventListener(outsidePressEvent, callback);
+  });
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!open || !enabled) {
+      return;
+    }
+    dataRef.current.__escapeKeyBubbles = escapeKeyBubbles;
+    dataRef.current.__outsidePressBubbles = outsidePressBubbles;
+    let compositionTimeout = -1;
+    function onScroll(event) {
+      onOpenChange(false, event, 'ancestor-scroll');
+    }
+    function handleCompositionStart() {
+      window.clearTimeout(compositionTimeout);
+      isComposingRef.current = true;
+    }
+    function handleCompositionEnd() {
+      // Safari fires `compositionend` before `keydown`, so we need to wait
+      // until the next tick to set `isComposing` to `false`.
+      // https://bugs.webkit.org/show_bug.cgi?id=165004
+      compositionTimeout = window.setTimeout(() => {
+        isComposingRef.current = false;
+      },
+      // 0ms or 1ms don't work in Safari. 5ms appears to consistently work.
+      // Only apply to WebKit for the test to remain 0ms.
+      (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isWebKit)() ? 5 : 0);
+    }
+    const doc = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating);
+    if (escapeKey) {
+      doc.addEventListener('keydown', escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
+      doc.addEventListener('compositionstart', handleCompositionStart);
+      doc.addEventListener('compositionend', handleCompositionEnd);
+    }
+    outsidePress && doc.addEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
+    let ancestors = [];
+    if (ancestorScroll) {
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(elements.domReference)) {
+        ancestors = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getOverflowAncestors)(elements.domReference);
+      }
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(elements.floating)) {
+        ancestors = ancestors.concat((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getOverflowAncestors)(elements.floating));
+      }
+      if (!(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(elements.reference) && elements.reference && elements.reference.contextElement) {
+        ancestors = ancestors.concat((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getOverflowAncestors)(elements.reference.contextElement));
+      }
+    }
+
+    // Ignore the visual viewport for scrolling dismissal (allow pinch-zoom)
+    ancestors = ancestors.filter(ancestor => {
+      var _doc$defaultView;
+      return ancestor !== ((_doc$defaultView = doc.defaultView) == null ? void 0 : _doc$defaultView.visualViewport);
+    });
+    ancestors.forEach(ancestor => {
+      ancestor.addEventListener('scroll', onScroll, {
+        passive: true
+      });
+    });
+    return () => {
+      if (escapeKey) {
+        doc.removeEventListener('keydown', escapeKeyCapture ? closeOnEscapeKeyDownCapture : closeOnEscapeKeyDown, escapeKeyCapture);
+        doc.removeEventListener('compositionstart', handleCompositionStart);
+        doc.removeEventListener('compositionend', handleCompositionEnd);
+      }
+      outsidePress && doc.removeEventListener(outsidePressEvent, outsidePressCapture ? closeOnPressOutsideCapture : closeOnPressOutside, outsidePressCapture);
+      ancestors.forEach(ancestor => {
+        ancestor.removeEventListener('scroll', onScroll);
+      });
+      window.clearTimeout(compositionTimeout);
+    };
+  }, [dataRef, elements, escapeKey, outsidePress, outsidePressEvent, open, onOpenChange, ancestorScroll, enabled, escapeKeyBubbles, outsidePressBubbles, closeOnEscapeKeyDown, escapeKeyCapture, closeOnEscapeKeyDownCapture, closeOnPressOutside, outsidePressCapture, closeOnPressOutsideCapture]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    insideReactTreeRef.current = false;
+  }, [outsidePress, outsidePressEvent]);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onKeyDown: closeOnEscapeKeyDown,
+    [bubbleHandlerKeys[referencePressEvent]]: event => {
+      if (referencePress) {
+        onOpenChange(false, event.nativeEvent, 'reference-press');
+      }
+    }
+  }), [closeOnEscapeKeyDown, onOpenChange, referencePress, referencePressEvent]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onKeyDown: closeOnEscapeKeyDown,
+    onMouseDown() {
+      endedOrStartedInsideRef.current = true;
+    },
+    onMouseUp() {
+      endedOrStartedInsideRef.current = true;
+    },
+    [captureHandlerKeys[outsidePressEvent]]: () => {
+      insideReactTreeRef.current = true;
+    }
+  }), [closeOnEscapeKeyDown, outsidePressEvent]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference,
+    floating
+  } : {}, [enabled, reference, floating]);
+}
+
+function useFloatingRootContext(options) {
+  const {
+    open = false,
+    onOpenChange: onOpenChangeProp,
+    elements: elementsProp
+  } = options;
+  const floatingId = useId();
+  const dataRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef({});
+  const [events] = react__WEBPACK_IMPORTED_MODULE_0__.useState(() => createPubSub());
+  const nested = useFloatingParentNodeId() != null;
+  if (true) {
+    const optionDomReference = elementsProp.reference;
+    if (optionDomReference && !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(optionDomReference)) {
+      error('Cannot pass a virtual element to the `elements.reference` option,', 'as it must be a real DOM element. Use `refs.setPositionReference()`', 'instead.');
+    }
+  }
+  const [positionReference, setPositionReference] = react__WEBPACK_IMPORTED_MODULE_0__.useState(elementsProp.reference);
+  const onOpenChange = useEffectEvent((open, event, reason) => {
+    dataRef.current.openEvent = open ? event : undefined;
+    events.emit('openchange', {
+      open,
+      event,
+      reason,
+      nested
+    });
+    onOpenChangeProp == null || onOpenChangeProp(open, event, reason);
+  });
+  const refs = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    setPositionReference
+  }), []);
+  const elements = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    reference: positionReference || elementsProp.reference || null,
+    floating: elementsProp.floating || null,
+    domReference: elementsProp.reference
+  }), [positionReference, elementsProp.reference, elementsProp.floating]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    dataRef,
+    open,
+    onOpenChange,
+    elements,
+    events,
+    floatingId,
+    refs
+  }), [open, onOpenChange, elements, events, floatingId, refs]);
+}
+
+/**
+ * Provides data to position a floating element and context to add interactions.
+ * @see https://floating-ui.com/docs/useFloating
+ */
+function useFloating(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    nodeId
+  } = options;
+  const internalRootContext = useFloatingRootContext({
+    ...options,
+    elements: {
+      reference: null,
+      floating: null,
+      ...options.elements
+    }
+  });
+  const rootContext = options.rootContext || internalRootContext;
+  const computedElements = rootContext.elements;
+  const [_domReference, setDomReference] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const [positionReference, _setPositionReference] = react__WEBPACK_IMPORTED_MODULE_0__.useState(null);
+  const optionDomReference = computedElements == null ? void 0 : computedElements.domReference;
+  const domReference = optionDomReference || _domReference;
+  const domReferenceRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const tree = useFloatingTree();
+  index(() => {
+    if (domReference) {
+      domReferenceRef.current = domReference;
+    }
+  }, [domReference]);
+  const position = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.useFloating)({
+    ...options,
+    elements: {
+      ...computedElements,
+      ...(positionReference && {
+        reference: positionReference
+      })
+    }
+  });
+  const setPositionReference = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    const computedPositionReference = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(node) ? {
+      getBoundingClientRect: () => node.getBoundingClientRect(),
+      contextElement: node
+    } : node;
+    // Store the positionReference in state if the DOM reference is specified externally via the
+    // `elements.reference` option. This ensures that it won't be overridden on future renders.
+    _setPositionReference(computedPositionReference);
+    position.refs.setReference(computedPositionReference);
+  }, [position.refs]);
+  const setReference = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(node => {
+    if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(node) || node === null) {
+      domReferenceRef.current = node;
+      setDomReference(node);
+    }
+
+    // Backwards-compatibility for passing a virtual element to `reference`
+    // after it has set the DOM reference.
+    if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(position.refs.reference.current) || position.refs.reference.current === null ||
+    // Don't allow setting virtual elements using the old technique back to
+    // `null` to support `positionReference` + an unstable `reference`
+    // callback ref.
+    node !== null && !(0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(node)) {
+      position.refs.setReference(node);
+    }
+  }, [position.refs]);
+  const refs = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    ...position.refs,
+    setReference,
+    setPositionReference,
+    domReference: domReferenceRef
+  }), [position.refs, setReference, setPositionReference]);
+  const elements = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    ...position.elements,
+    domReference: domReference
+  }), [position.elements, domReference]);
+  const context = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    ...position,
+    ...rootContext,
+    refs,
+    elements,
+    nodeId
+  }), [position, refs, elements, nodeId, rootContext]);
+  index(() => {
+    rootContext.dataRef.current.floatingContext = context;
+    const node = tree == null ? void 0 : tree.nodesRef.current.find(node => node.id === nodeId);
+    if (node) {
+      node.context = context;
+    }
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    ...position,
+    context,
+    refs,
+    elements
+  }), [position, refs, elements, context]);
+}
+
+/**
+ * Opens the floating element while the reference element has focus, like CSS
+ * `:focus`.
+ * @see https://floating-ui.com/docs/useFocus
+ */
+function useFocus(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    onOpenChange,
+    events,
+    dataRef,
+    elements
+  } = context;
+  const {
+    enabled = true,
+    visibleOnly = true
+  } = props;
+  const blockFocusRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const timeoutRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+  const keyboardModalityRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    const win = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.getWindow)(elements.domReference);
+
+    // If the reference was focused and the user left the tab/window, and the
+    // floating element was not open, the focus should be blocked when they
+    // return to the tab/window.
+    function onBlur() {
+      if (!open && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(elements.domReference) && elements.domReference === (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.domReference))) {
+        blockFocusRef.current = true;
+      }
+    }
+    function onKeyDown() {
+      keyboardModalityRef.current = true;
+    }
+    win.addEventListener('blur', onBlur);
+    win.addEventListener('keydown', onKeyDown, true);
+    return () => {
+      win.removeEventListener('blur', onBlur);
+      win.removeEventListener('keydown', onKeyDown, true);
+    };
+  }, [elements.domReference, open, enabled]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    function onOpenChange(_ref) {
+      let {
+        reason
+      } = _ref;
+      if (reason === 'reference-press' || reason === 'escape-key') {
+        blockFocusRef.current = true;
+      }
+    }
+    events.on('openchange', onOpenChange);
+    return () => {
+      events.off('openchange', onOpenChange);
+    };
+  }, [events, enabled]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onPointerDown(event) {
+      if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isVirtualPointerEvent)(event.nativeEvent)) return;
+      keyboardModalityRef.current = false;
+    },
+    onMouseLeave() {
+      blockFocusRef.current = false;
+    },
+    onFocus(event) {
+      if (blockFocusRef.current) return;
+      const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event.nativeEvent);
+      if (visibleOnly && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(target)) {
+        try {
+          // Mac Safari unreliably matches `:focus-visible` on the reference
+          // if focus was outside the page initially - use the fallback
+          // instead.
+          if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isSafari)() && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMac)()) throw Error();
+          if (!target.matches(':focus-visible')) return;
+        } catch (e) {
+          // Old browsers will throw an error when using `:focus-visible`.
+          if (!keyboardModalityRef.current && !(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isTypeableElement)(target)) {
+            return;
+          }
+        }
+      }
+      onOpenChange(true, event.nativeEvent, 'focus');
+    },
+    onBlur(event) {
+      blockFocusRef.current = false;
+      const relatedTarget = event.relatedTarget;
+      const nativeEvent = event.nativeEvent;
+
+      // Hit the non-modal focus management portal guard. Focus will be
+      // moved into the floating element immediately after.
+      const movedToFocusGuard = (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(relatedTarget) && relatedTarget.hasAttribute(createAttribute('focus-guard')) && relatedTarget.getAttribute('data-type') === 'outside';
+
+      // Wait for the window blur listener to fire.
+      timeoutRef.current = window.setTimeout(() => {
+        var _dataRef$current$floa;
+        const activeEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)(elements.domReference ? elements.domReference.ownerDocument : document);
+
+        // Focus left the page, keep it open.
+        if (!relatedTarget && activeEl === elements.domReference) return;
+
+        // When focusing the reference element (e.g. regular click), then
+        // clicking into the floating element, prevent it from hiding.
+        // Note: it must be focusable, e.g. `tabindex="-1"`.
+        // We can not rely on relatedTarget to point to the correct element
+        // as it will only point to the shadow host of the newly focused element
+        // and not the element that actually has received focus if it is located
+        // inside a shadow root.
+        if ((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)((_dataRef$current$floa = dataRef.current.floatingContext) == null ? void 0 : _dataRef$current$floa.refs.floating.current, activeEl) || (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(elements.domReference, activeEl) || movedToFocusGuard) {
+          return;
+        }
+        onOpenChange(false, nativeEvent, 'focus');
+      });
+    }
+  }), [dataRef, elements.domReference, onOpenChange, visibleOnly]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference
+  } : {}, [enabled, reference]);
+}
+
+const ACTIVE_KEY = 'active';
+const SELECTED_KEY = 'selected';
+function mergeProps(userProps, propsList, elementKey) {
+  const map = new Map();
+  const isItem = elementKey === 'item';
+  let domUserProps = userProps;
+  if (isItem && userProps) {
+    const {
+      [ACTIVE_KEY]: _,
+      [SELECTED_KEY]: __,
+      ...validProps
+    } = userProps;
+    domUserProps = validProps;
+  }
+  return {
+    ...(elementKey === 'floating' && {
+      tabIndex: -1,
+      [FOCUSABLE_ATTRIBUTE]: ''
+    }),
+    ...domUserProps,
+    ...propsList.map(value => {
+      const propsOrGetProps = value ? value[elementKey] : null;
+      if (typeof propsOrGetProps === 'function') {
+        return userProps ? propsOrGetProps(userProps) : null;
+      }
+      return propsOrGetProps;
+    }).concat(userProps).reduce((acc, props) => {
+      if (!props) {
+        return acc;
+      }
+      Object.entries(props).forEach(_ref => {
+        let [key, value] = _ref;
+        if (isItem && [ACTIVE_KEY, SELECTED_KEY].includes(key)) {
+          return;
+        }
+        if (key.indexOf('on') === 0) {
+          if (!map.has(key)) {
+            map.set(key, []);
+          }
+          if (typeof value === 'function') {
+            var _map$get;
+            (_map$get = map.get(key)) == null || _map$get.push(value);
+            acc[key] = function () {
+              var _map$get2;
+              for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
+              }
+              return (_map$get2 = map.get(key)) == null ? void 0 : _map$get2.map(fn => fn(...args)).find(val => val !== undefined);
+            };
+          }
+        } else {
+          acc[key] = value;
+        }
+      });
+      return acc;
+    }, {})
+  };
+}
+/**
+ * Merges an array of interaction hooks' props into prop getters, allowing
+ * event handler functions to be composed together without overwriting one
+ * another.
+ * @see https://floating-ui.com/docs/useInteractions
+ */
+function useInteractions(propsList) {
+  if (propsList === void 0) {
+    propsList = [];
+  }
+  const referenceDeps = propsList.map(key => key == null ? void 0 : key.reference);
+  const floatingDeps = propsList.map(key => key == null ? void 0 : key.floating);
+  const itemDeps = propsList.map(key => key == null ? void 0 : key.item);
+  const getReferenceProps = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(userProps => mergeProps(userProps, propsList, 'reference'),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  referenceDeps);
+  const getFloatingProps = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(userProps => mergeProps(userProps, propsList, 'floating'),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  floatingDeps);
+  const getItemProps = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(userProps => mergeProps(userProps, propsList, 'item'),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  itemDeps);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    getReferenceProps,
+    getFloatingProps,
+    getItemProps
+  }), [getReferenceProps, getFloatingProps, getItemProps]);
+}
+
+let isPreventScrollSupported = false;
+function doSwitch(orientation, vertical, horizontal) {
+  switch (orientation) {
+    case 'vertical':
+      return vertical;
+    case 'horizontal':
+      return horizontal;
+    default:
+      return vertical || horizontal;
+  }
+}
+function isMainOrientationKey(key, orientation) {
+  const vertical = key === ARROW_UP || key === ARROW_DOWN;
+  const horizontal = key === ARROW_LEFT || key === ARROW_RIGHT;
+  return doSwitch(orientation, vertical, horizontal);
+}
+function isMainOrientationToEndKey(key, orientation, rtl) {
+  const vertical = key === ARROW_DOWN;
+  const horizontal = rtl ? key === ARROW_LEFT : key === ARROW_RIGHT;
+  return doSwitch(orientation, vertical, horizontal) || key === 'Enter' || key === ' ' || key === '';
+}
+function isCrossOrientationOpenKey(key, orientation, rtl) {
+  const vertical = rtl ? key === ARROW_LEFT : key === ARROW_RIGHT;
+  const horizontal = key === ARROW_DOWN;
+  return doSwitch(orientation, vertical, horizontal);
+}
+function isCrossOrientationCloseKey(key, orientation, rtl) {
+  const vertical = rtl ? key === ARROW_RIGHT : key === ARROW_LEFT;
+  const horizontal = key === ARROW_UP;
+  return doSwitch(orientation, vertical, horizontal);
+}
+/**
+ * Adds arrow key-based navigation of a list of items, either using real DOM
+ * focus or virtual focus.
+ * @see https://floating-ui.com/docs/useListNavigation
+ */
+function useListNavigation(context, props) {
+  const {
+    open,
+    onOpenChange,
+    elements
+  } = context;
+  const {
+    listRef,
+    activeIndex,
+    onNavigate: unstable_onNavigate = () => {},
+    enabled = true,
+    selectedIndex = null,
+    allowEscape = false,
+    loop = false,
+    nested = false,
+    rtl = false,
+    virtual = false,
+    focusItemOnOpen = 'auto',
+    focusItemOnHover = true,
+    openOnArrowKeyDown = true,
+    disabledIndices = undefined,
+    orientation = 'vertical',
+    cols = 1,
+    scrollItemIntoView = true,
+    virtualItemRef,
+    itemSizes,
+    dense = false
+  } = props;
+  if (true) {
+    if (allowEscape) {
+      if (!loop) {
+        warn('`useListNavigation` looping must be enabled to allow escaping.');
+      }
+      if (!virtual) {
+        warn('`useListNavigation` must be virtual to allow escaping.');
+      }
+    }
+    if (orientation === 'vertical' && cols > 1) {
+      warn('In grid list navigation mode (`cols` > 1), the `orientation` should', 'be either "horizontal" or "both".');
+    }
+  }
+  const floatingFocusElement = getFloatingFocusElement(elements.floating);
+  const floatingFocusElementRef = useLatestRef(floatingFocusElement);
+  const parentId = useFloatingParentNodeId();
+  const tree = useFloatingTree();
+  const onNavigate = useEffectEvent(unstable_onNavigate);
+  const typeableComboboxReference = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isTypeableCombobox)(elements.domReference);
+  const focusItemOnOpenRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(focusItemOnOpen);
+  const indexRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(selectedIndex != null ? selectedIndex : -1);
+  const keyRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const isPointerModalityRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(true);
+  const previousOnNavigateRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(onNavigate);
+  const previousMountedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(!!elements.floating);
+  const previousOpenRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(open);
+  const forceSyncFocus = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const forceScrollIntoViewRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const disabledIndicesRef = useLatestRef(disabledIndices);
+  const latestOpenRef = useLatestRef(open);
+  const scrollItemIntoViewRef = useLatestRef(scrollItemIntoView);
+  const selectedIndexRef = useLatestRef(selectedIndex);
+  const [activeId, setActiveId] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  const [virtualId, setVirtualId] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  const focusItem = useEffectEvent(function (listRef, indexRef, forceScrollIntoView) {
+    if (forceScrollIntoView === void 0) {
+      forceScrollIntoView = false;
+    }
+    function runFocus(item) {
+      if (virtual) {
+        setActiveId(item.id);
+        tree == null || tree.events.emit('virtualfocus', item);
+        if (virtualItemRef) {
+          virtualItemRef.current = item;
+        }
+      } else {
+        enqueueFocus(item, {
+          preventScroll: true,
+          // Mac Safari does not move the virtual cursor unless the focus call
+          // is sync. However, for the very first focus call, we need to wait
+          // for the position to be ready in order to prevent unwanted
+          // scrolling. This means the virtual cursor will not move to the first
+          // item when first opening the floating element, but will on
+          // subsequent calls. `preventScroll` is supported in modern Safari,
+          // so we can use that instead.
+          // iOS Safari must be async or the first item will not be focused.
+          sync: (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isMac)() && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isSafari)() ? isPreventScrollSupported || forceSyncFocus.current : false
+        });
+      }
+    }
+    const initialItem = listRef.current[indexRef.current];
+    if (initialItem) {
+      runFocus(initialItem);
+    }
+    requestAnimationFrame(() => {
+      const waitedItem = listRef.current[indexRef.current] || initialItem;
+      if (!waitedItem) return;
+      if (!initialItem) {
+        runFocus(waitedItem);
+      }
+      const scrollIntoViewOptions = scrollItemIntoViewRef.current;
+      const shouldScrollIntoView = scrollIntoViewOptions && item && (forceScrollIntoView || !isPointerModalityRef.current);
+      if (shouldScrollIntoView) {
+        // JSDOM doesn't support `.scrollIntoView()` but it's widely supported
+        // by all browsers.
+        waitedItem.scrollIntoView == null || waitedItem.scrollIntoView(typeof scrollIntoViewOptions === 'boolean' ? {
+          block: 'nearest',
+          inline: 'nearest'
+        } : scrollIntoViewOptions);
+      }
+    });
+  });
+  index(() => {
+    document.createElement('div').focus({
+      get preventScroll() {
+        isPreventScrollSupported = true;
+        return false;
+      }
+    });
+  }, []);
+
+  // Sync `selectedIndex` to be the `activeIndex` upon opening the floating
+  // element. Also, reset `activeIndex` upon closing the floating element.
+  index(() => {
+    if (!enabled) return;
+    if (open && elements.floating) {
+      if (focusItemOnOpenRef.current && selectedIndex != null) {
+        // Regardless of the pointer modality, we want to ensure the selected
+        // item comes into view when the floating element is opened.
+        forceScrollIntoViewRef.current = true;
+        indexRef.current = selectedIndex;
+        onNavigate(selectedIndex);
+      }
+    } else if (previousMountedRef.current) {
+      // Since the user can specify `onNavigate` conditionally
+      // (onNavigate: open ? setActiveIndex : setSelectedIndex),
+      // we store and call the previous function.
+      indexRef.current = -1;
+      previousOnNavigateRef.current(null);
+    }
+  }, [enabled, open, elements.floating, selectedIndex, onNavigate]);
+
+  // Sync `activeIndex` to be the focused item while the floating element is
+  // open.
+  index(() => {
+    if (!enabled) return;
+    if (open && elements.floating) {
+      if (activeIndex == null) {
+        forceSyncFocus.current = false;
+        if (selectedIndexRef.current != null) {
+          return;
+        }
+
+        // Reset while the floating element was open (e.g. the list changed).
+        if (previousMountedRef.current) {
+          indexRef.current = -1;
+          focusItem(listRef, indexRef);
+        }
+
+        // Initial sync.
+        if ((!previousOpenRef.current || !previousMountedRef.current) && focusItemOnOpenRef.current && (keyRef.current != null || focusItemOnOpenRef.current === true && keyRef.current == null)) {
+          let runs = 0;
+          const waitForListPopulated = () => {
+            if (listRef.current[0] == null) {
+              // Avoid letting the browser paint if possible on the first try,
+              // otherwise use rAF. Don't try more than twice, since something
+              // is wrong otherwise.
+              if (runs < 2) {
+                const scheduler = runs ? requestAnimationFrame : queueMicrotask;
+                scheduler(waitForListPopulated);
+              }
+              runs++;
+            } else {
+              indexRef.current = keyRef.current == null || isMainOrientationToEndKey(keyRef.current, orientation, rtl) || nested ? getMinIndex(listRef, disabledIndicesRef.current) : getMaxIndex(listRef, disabledIndicesRef.current);
+              keyRef.current = null;
+              onNavigate(indexRef.current);
+            }
+          };
+          waitForListPopulated();
+        }
+      } else if (!isIndexOutOfBounds(listRef, activeIndex)) {
+        indexRef.current = activeIndex;
+        focusItem(listRef, indexRef, forceScrollIntoViewRef.current);
+        forceScrollIntoViewRef.current = false;
+      }
+    }
+  }, [enabled, open, elements.floating, activeIndex, selectedIndexRef, nested, listRef, orientation, rtl, onNavigate, focusItem, disabledIndicesRef]);
+
+  // Ensure the parent floating element has focus when a nested child closes
+  // to allow arrow key navigation to work after the pointer leaves the child.
+  index(() => {
+    var _nodes$find;
+    if (!enabled || elements.floating || !tree || virtual || !previousMountedRef.current) {
+      return;
+    }
+    const nodes = tree.nodesRef.current;
+    const parent = (_nodes$find = nodes.find(node => node.id === parentId)) == null || (_nodes$find = _nodes$find.context) == null ? void 0 : _nodes$find.elements.floating;
+    const activeEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getDocument)(elements.floating));
+    const treeContainsActiveEl = nodes.some(node => node.context && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(node.context.elements.floating, activeEl));
+    if (parent && !treeContainsActiveEl && isPointerModalityRef.current) {
+      parent.focus({
+        preventScroll: true
+      });
+    }
+  }, [enabled, elements.floating, tree, parentId, virtual]);
+  index(() => {
+    if (!enabled) return;
+    if (!tree) return;
+    if (!virtual) return;
+    if (parentId) return;
+    function handleVirtualFocus(item) {
+      setVirtualId(item.id);
+      if (virtualItemRef) {
+        virtualItemRef.current = item;
+      }
+    }
+    tree.events.on('virtualfocus', handleVirtualFocus);
+    return () => {
+      tree.events.off('virtualfocus', handleVirtualFocus);
+    };
+  }, [enabled, tree, virtual, parentId, virtualItemRef]);
+  index(() => {
+    previousOnNavigateRef.current = onNavigate;
+    previousMountedRef.current = !!elements.floating;
+  });
+  index(() => {
+    if (!open) {
+      keyRef.current = null;
+    }
+  }, [open]);
+  index(() => {
+    previousOpenRef.current = open;
+  }, [open]);
+  const hasActiveIndex = activeIndex != null;
+  const item = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    function syncCurrentTarget(currentTarget) {
+      if (!open) return;
+      const index = listRef.current.indexOf(currentTarget);
+      if (index !== -1) {
+        onNavigate(index);
+      }
+    }
+    const props = {
+      onFocus(_ref) {
+        let {
+          currentTarget
+        } = _ref;
+        syncCurrentTarget(currentTarget);
+      },
+      onClick: _ref2 => {
+        let {
+          currentTarget
+        } = _ref2;
+        return currentTarget.focus({
+          preventScroll: true
+        });
+      },
+      // Safari
+      ...(focusItemOnHover && {
+        onMouseMove(_ref3) {
+          let {
+            currentTarget
+          } = _ref3;
+          syncCurrentTarget(currentTarget);
+        },
+        onPointerLeave(_ref4) {
+          let {
+            pointerType
+          } = _ref4;
+          if (!isPointerModalityRef.current || pointerType === 'touch') {
+            return;
+          }
+          indexRef.current = -1;
+          focusItem(listRef, indexRef);
+          onNavigate(null);
+          if (!virtual) {
+            enqueueFocus(floatingFocusElementRef.current, {
+              preventScroll: true
+            });
+          }
+        }
+      })
+    };
+    return props;
+  }, [open, floatingFocusElementRef, focusItem, focusItemOnHover, listRef, onNavigate, virtual]);
+  const commonOnKeyDown = useEffectEvent(event => {
+    isPointerModalityRef.current = false;
+    forceSyncFocus.current = true;
+
+    // When composing a character, Chrome fires ArrowDown twice. Firefox/Safari
+    // don't appear to suffer from this. `event.isComposing` is avoided due to
+    // Safari not supporting it properly (although it's not needed in the first
+    // place for Safari, just avoiding any possible issues).
+    if (event.which === 229) {
+      return;
+    }
+
+    // If the floating element is animating out, ignore navigation. Otherwise,
+    // the `activeIndex` gets set to 0 despite not being open so the next time
+    // the user ArrowDowns, the first item won't be focused.
+    if (!latestOpenRef.current && event.currentTarget === floatingFocusElementRef.current) {
+      return;
+    }
+    if (nested && isCrossOrientationCloseKey(event.key, orientation, rtl)) {
+      (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+      onOpenChange(false, event.nativeEvent, 'list-navigation');
+      if ((0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isHTMLElement)(elements.domReference)) {
+        if (virtual) {
+          tree == null || tree.events.emit('virtualfocus', elements.domReference);
+        } else {
+          elements.domReference.focus();
+        }
+      }
+      return;
+    }
+    const currentIndex = indexRef.current;
+    const minIndex = getMinIndex(listRef, disabledIndices);
+    const maxIndex = getMaxIndex(listRef, disabledIndices);
+    if (!typeableComboboxReference) {
+      if (event.key === 'Home') {
+        (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+        indexRef.current = minIndex;
+        onNavigate(indexRef.current);
+      }
+      if (event.key === 'End') {
+        (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+        indexRef.current = maxIndex;
+        onNavigate(indexRef.current);
+      }
+    }
+
+    // Grid navigation.
+    if (cols > 1) {
+      const sizes = itemSizes || Array.from({
+        length: listRef.current.length
+      }, () => ({
+        width: 1,
+        height: 1
+      }));
+      // To calculate movements on the grid, we use hypothetical cell indices
+      // as if every item was 1x1, then convert back to real indices.
+      const cellMap = buildCellMap(sizes, cols, dense);
+      const minGridIndex = cellMap.findIndex(index => index != null && !isDisabled(listRef.current, index, disabledIndices));
+      // last enabled index
+      const maxGridIndex = cellMap.reduce((foundIndex, index, cellIndex) => index != null && !isDisabled(listRef.current, index, disabledIndices) ? cellIndex : foundIndex, -1);
+      const index = cellMap[getGridNavigatedIndex({
+        current: cellMap.map(itemIndex => itemIndex != null ? listRef.current[itemIndex] : null)
+      }, {
+        event,
+        orientation,
+        loop,
+        rtl,
+        cols,
+        // treat undefined (empty grid spaces) as disabled indices so we
+        // don't end up in them
+        disabledIndices: getCellIndices([...(disabledIndices || listRef.current.map((_, index) => isDisabled(listRef.current, index) ? index : undefined)), undefined], cellMap),
+        minIndex: minGridIndex,
+        maxIndex: maxGridIndex,
+        prevIndex: getCellIndexOfCorner(indexRef.current > maxIndex ? minIndex : indexRef.current, sizes, cellMap, cols,
+        // use a corner matching the edge closest to the direction
+        // we're moving in so we don't end up in the same item. Prefer
+        // top/left over bottom/right.
+        event.key === ARROW_DOWN ? 'bl' : event.key === (rtl ? ARROW_LEFT : ARROW_RIGHT) ? 'tr' : 'tl'),
+        stopEvent: true
+      })];
+      if (index != null) {
+        indexRef.current = index;
+        onNavigate(indexRef.current);
+      }
+      if (orientation === 'both') {
+        return;
+      }
+    }
+    if (isMainOrientationKey(event.key, orientation)) {
+      (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+
+      // Reset the index if no item is focused.
+      if (open && !virtual && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.activeElement)(event.currentTarget.ownerDocument) === event.currentTarget) {
+        indexRef.current = isMainOrientationToEndKey(event.key, orientation, rtl) ? minIndex : maxIndex;
+        onNavigate(indexRef.current);
+        return;
+      }
+      if (isMainOrientationToEndKey(event.key, orientation, rtl)) {
+        if (loop) {
+          indexRef.current = currentIndex >= maxIndex ? allowEscape && currentIndex !== listRef.current.length ? -1 : minIndex : findNonDisabledIndex(listRef, {
+            startingIndex: currentIndex,
+            disabledIndices
+          });
+        } else {
+          indexRef.current = Math.min(maxIndex, findNonDisabledIndex(listRef, {
+            startingIndex: currentIndex,
+            disabledIndices
+          }));
+        }
+      } else {
+        if (loop) {
+          indexRef.current = currentIndex <= minIndex ? allowEscape && currentIndex !== -1 ? listRef.current.length : maxIndex : findNonDisabledIndex(listRef, {
+            startingIndex: currentIndex,
+            decrement: true,
+            disabledIndices
+          });
+        } else {
+          indexRef.current = Math.max(minIndex, findNonDisabledIndex(listRef, {
+            startingIndex: currentIndex,
+            decrement: true,
+            disabledIndices
+          }));
+        }
+      }
+      if (isIndexOutOfBounds(listRef, indexRef.current)) {
+        onNavigate(null);
+      } else {
+        onNavigate(indexRef.current);
+      }
+    }
+  });
+  const ariaActiveDescendantProp = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    return virtual && open && hasActiveIndex && {
+      'aria-activedescendant': virtualId || activeId
+    };
+  }, [virtual, open, hasActiveIndex, virtualId, activeId]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    return {
+      'aria-orientation': orientation === 'both' ? undefined : orientation,
+      ...(!(0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isTypeableCombobox)(elements.domReference) && ariaActiveDescendantProp),
+      onKeyDown: commonOnKeyDown,
+      onPointerMove() {
+        isPointerModalityRef.current = true;
+      }
+    };
+  }, [ariaActiveDescendantProp, commonOnKeyDown, elements.domReference, orientation]);
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    function checkVirtualMouse(event) {
+      if (focusItemOnOpen === 'auto' && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isVirtualClick)(event.nativeEvent)) {
+        focusItemOnOpenRef.current = true;
+      }
+    }
+    function checkVirtualPointer(event) {
+      // `pointerdown` fires first, reset the state then perform the checks.
+      focusItemOnOpenRef.current = focusItemOnOpen;
+      if (focusItemOnOpen === 'auto' && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.isVirtualPointerEvent)(event.nativeEvent)) {
+        focusItemOnOpenRef.current = true;
+      }
+    }
+    return {
+      ...ariaActiveDescendantProp,
+      onKeyDown(event) {
+        isPointerModalityRef.current = false;
+        const isArrowKey = event.key.startsWith('Arrow');
+        const isHomeOrEndKey = ['Home', 'End'].includes(event.key);
+        const isMoveKey = isArrowKey || isHomeOrEndKey;
+        const isCrossOpenKey = isCrossOrientationOpenKey(event.key, orientation, rtl);
+        const isCrossCloseKey = isCrossOrientationCloseKey(event.key, orientation, rtl);
+        const isMainKey = isMainOrientationKey(event.key, orientation);
+        const isNavigationKey = (nested ? isCrossOpenKey : isMainKey) || event.key === 'Enter' || event.key.trim() === '';
+        if (virtual && open) {
+          const rootNode = tree == null ? void 0 : tree.nodesRef.current.find(node => node.parentId == null);
+          const deepestNode = tree && rootNode ? getDeepestNode(tree.nodesRef.current, rootNode.id) : null;
+          if (isMoveKey && deepestNode && virtualItemRef) {
+            const eventObject = new KeyboardEvent('keydown', {
+              key: event.key,
+              bubbles: true
+            });
+            if (isCrossOpenKey || isCrossCloseKey) {
+              var _deepestNode$context, _deepestNode$context2;
+              const isCurrentTarget = ((_deepestNode$context = deepestNode.context) == null ? void 0 : _deepestNode$context.elements.domReference) === event.currentTarget;
+              const dispatchItem = isCrossCloseKey && !isCurrentTarget ? (_deepestNode$context2 = deepestNode.context) == null ? void 0 : _deepestNode$context2.elements.domReference : isCrossOpenKey ? listRef.current.find(item => (item == null ? void 0 : item.id) === activeId) : null;
+              if (dispatchItem) {
+                (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+                dispatchItem.dispatchEvent(eventObject);
+                setVirtualId(undefined);
+              }
+            }
+            if ((isMainKey || isHomeOrEndKey) && deepestNode.context) {
+              if (deepestNode.context.open && deepestNode.parentId && event.currentTarget !== deepestNode.context.elements.domReference) {
+                var _deepestNode$context$;
+                (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+                (_deepestNode$context$ = deepestNode.context.elements.domReference) == null || _deepestNode$context$.dispatchEvent(eventObject);
+                return;
+              }
+            }
+          }
+          return commonOnKeyDown(event);
+        }
+
+        // If a floating element should not open on arrow key down, avoid
+        // setting `activeIndex` while it's closed.
+        if (!open && !openOnArrowKeyDown && isArrowKey) {
+          return;
+        }
+        if (isNavigationKey) {
+          keyRef.current = nested && isMainKey ? null : event.key;
+        }
+        if (nested) {
+          if (isCrossOpenKey) {
+            (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+            if (open) {
+              indexRef.current = getMinIndex(listRef, disabledIndicesRef.current);
+              onNavigate(indexRef.current);
+            } else {
+              onOpenChange(true, event.nativeEvent, 'list-navigation');
+            }
+          }
+          return;
+        }
+        if (isMainKey) {
+          if (selectedIndex != null) {
+            indexRef.current = selectedIndex;
+          }
+          (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+          if (!open && openOnArrowKeyDown) {
+            onOpenChange(true, event.nativeEvent, 'list-navigation');
+          } else {
+            commonOnKeyDown(event);
+          }
+          if (open) {
+            onNavigate(indexRef.current);
+          }
+        }
+      },
+      onFocus() {
+        if (open && !virtual) {
+          onNavigate(null);
+        }
+      },
+      onPointerDown: checkVirtualPointer,
+      onMouseDown: checkVirtualMouse,
+      onClick: checkVirtualMouse
+    };
+  }, [activeId, ariaActiveDescendantProp, commonOnKeyDown, disabledIndicesRef, focusItemOnOpen, listRef, nested, onNavigate, onOpenChange, open, openOnArrowKeyDown, orientation, rtl, selectedIndex, tree, virtual, virtualItemRef]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference,
+    floating,
+    item
+  } : {}, [enabled, reference, floating, item]);
+}
+
+const componentRoleToAriaRoleMap = /*#__PURE__*/new Map([['select', 'listbox'], ['combobox', 'listbox'], ['label', false]]);
+
+/**
+ * Adds base screen reader props to the reference and floating elements for a
+ * given floating element `role`.
+ * @see https://floating-ui.com/docs/useRole
+ */
+function useRole(context, props) {
+  var _componentRoleToAriaR;
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    floatingId
+  } = context;
+  const {
+    enabled = true,
+    role = 'dialog'
+  } = props;
+  const ariaRole = (_componentRoleToAriaR = componentRoleToAriaRoleMap.get(role)) != null ? _componentRoleToAriaR : role;
+  const referenceId = useId();
+  const parentId = useFloatingParentNodeId();
+  const isNested = parentId != null;
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    if (ariaRole === 'tooltip' || role === 'label') {
+      return {
+        ["aria-" + (role === 'label' ? 'labelledby' : 'describedby')]: open ? floatingId : undefined
+      };
+    }
+    return {
+      'aria-expanded': open ? 'true' : 'false',
+      'aria-haspopup': ariaRole === 'alertdialog' ? 'dialog' : ariaRole,
+      'aria-controls': open ? floatingId : undefined,
+      ...(ariaRole === 'listbox' && {
+        role: 'combobox'
+      }),
+      ...(ariaRole === 'menu' && {
+        id: referenceId
+      }),
+      ...(ariaRole === 'menu' && isNested && {
+        role: 'menuitem'
+      }),
+      ...(role === 'select' && {
+        'aria-autocomplete': 'none'
+      }),
+      ...(role === 'combobox' && {
+        'aria-autocomplete': 'list'
+      })
+    };
+  }, [ariaRole, floatingId, isNested, open, referenceId, role]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    const floatingProps = {
+      id: floatingId,
+      ...(ariaRole && {
+        role: ariaRole
+      })
+    };
+    if (ariaRole === 'tooltip' || role === 'label') {
+      return floatingProps;
+    }
+    return {
+      ...floatingProps,
+      ...(ariaRole === 'menu' && {
+        'aria-labelledby': referenceId
+      })
+    };
+  }, [ariaRole, floatingId, referenceId, role]);
+  const item = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(_ref => {
+    let {
+      active,
+      selected
+    } = _ref;
+    const commonProps = {
+      role: 'option',
+      ...(active && {
+        id: floatingId + "-option"
+      })
+    };
+
+    // For `menu`, we are unable to tell if the item is a `menuitemradio`
+    // or `menuitemcheckbox`. For backwards-compatibility reasons, also
+    // avoid defaulting to `menuitem` as it may overwrite custom role props.
+    switch (role) {
+      case 'select':
+        return {
+          ...commonProps,
+          'aria-selected': active && selected
+        };
+      case 'combobox':
+        {
+          return {
+            ...commonProps,
+            ...(active && {
+              'aria-selected': true
+            })
+          };
+        }
+    }
+    return {};
+  }, [floatingId, role]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference,
+    floating,
+    item
+  } : {}, [enabled, reference, floating, item]);
+}
+
+// Converts a JS style key like `backgroundColor` to a CSS transition-property
+// like `background-color`.
+const camelCaseToKebabCase = str => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? '-' : '') + $.toLowerCase());
+function execWithArgsOrReturn(valueOrFn, args) {
+  return typeof valueOrFn === 'function' ? valueOrFn(args) : valueOrFn;
+}
+function useDelayUnmount(open, durationMs) {
+  const [isMounted, setIsMounted] = react__WEBPACK_IMPORTED_MODULE_0__.useState(open);
+  if (open && !isMounted) {
+    setIsMounted(true);
+  }
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!open && isMounted) {
+      const timeout = setTimeout(() => setIsMounted(false), durationMs);
+      return () => clearTimeout(timeout);
+    }
+  }, [open, isMounted, durationMs]);
+  return isMounted;
+}
+/**
+ * Provides a status string to apply CSS transitions to a floating element,
+ * correctly handling placement-aware transitions.
+ * @see https://floating-ui.com/docs/useTransition#usetransitionstatus
+ */
+function useTransitionStatus(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    open,
+    elements: {
+      floating
+    }
+  } = context;
+  const {
+    duration = 250
+  } = props;
+  const isNumberDuration = typeof duration === 'number';
+  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
+  const [status, setStatus] = react__WEBPACK_IMPORTED_MODULE_0__.useState('unmounted');
+  const isMounted = useDelayUnmount(open, closeDuration);
+  if (!isMounted && status === 'close') {
+    setStatus('unmounted');
+  }
+  index(() => {
+    if (!floating) return;
+    if (open) {
+      setStatus('initial');
+      const frame = requestAnimationFrame(() => {
+        setStatus('open');
+      });
+      return () => {
+        cancelAnimationFrame(frame);
+      };
+    }
+    setStatus('close');
+  }, [open, floating]);
+  return {
+    isMounted,
+    status
+  };
+}
+/**
+ * Provides styles to apply CSS transitions to a floating element, correctly
+ * handling placement-aware transitions. Wrapper around `useTransitionStatus`.
+ * @see https://floating-ui.com/docs/useTransition#usetransitionstyles
+ */
+function useTransitionStyles(context, props) {
+  if (props === void 0) {
+    props = {};
+  }
+  const {
+    initial: unstable_initial = {
+      opacity: 0
+    },
+    open: unstable_open,
+    close: unstable_close,
+    common: unstable_common,
+    duration = 250
+  } = props;
+  const placement = context.placement;
+  const side = placement.split('-')[0];
+  const fnArgs = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    side,
+    placement
+  }), [side, placement]);
+  const isNumberDuration = typeof duration === 'number';
+  const openDuration = (isNumberDuration ? duration : duration.open) || 0;
+  const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
+  const [styles, setStyles] = react__WEBPACK_IMPORTED_MODULE_0__.useState(() => ({
+    ...execWithArgsOrReturn(unstable_common, fnArgs),
+    ...execWithArgsOrReturn(unstable_initial, fnArgs)
+  }));
+  const {
+    isMounted,
+    status
+  } = useTransitionStatus(context, {
+    duration
+  });
+  const initialRef = useLatestRef(unstable_initial);
+  const openRef = useLatestRef(unstable_open);
+  const closeRef = useLatestRef(unstable_close);
+  const commonRef = useLatestRef(unstable_common);
+  index(() => {
+    const initialStyles = execWithArgsOrReturn(initialRef.current, fnArgs);
+    const closeStyles = execWithArgsOrReturn(closeRef.current, fnArgs);
+    const commonStyles = execWithArgsOrReturn(commonRef.current, fnArgs);
+    const openStyles = execWithArgsOrReturn(openRef.current, fnArgs) || Object.keys(initialStyles).reduce((acc, key) => {
+      acc[key] = '';
+      return acc;
+    }, {});
+    if (status === 'initial') {
+      setStyles(styles => ({
+        transitionProperty: styles.transitionProperty,
+        ...commonStyles,
+        ...initialStyles
+      }));
+    }
+    if (status === 'open') {
+      setStyles({
+        transitionProperty: Object.keys(openStyles).map(camelCaseToKebabCase).join(','),
+        transitionDuration: openDuration + "ms",
+        ...commonStyles,
+        ...openStyles
+      });
+    }
+    if (status === 'close') {
+      const styles = closeStyles || initialStyles;
+      setStyles({
+        transitionProperty: Object.keys(styles).map(camelCaseToKebabCase).join(','),
+        transitionDuration: closeDuration + "ms",
+        ...commonStyles,
+        ...styles
+      });
+    }
+  }, [closeDuration, closeRef, initialRef, openRef, commonRef, openDuration, status, fnArgs]);
+  return {
+    isMounted,
+    styles
+  };
+}
+
+/**
+ * Provides a matching callback that can be used to focus an item as the user
+ * types, often used in tandem with `useListNavigation()`.
+ * @see https://floating-ui.com/docs/useTypeahead
+ */
+function useTypeahead(context, props) {
+  var _ref;
+  const {
+    open,
+    dataRef
+  } = context;
+  const {
+    listRef,
+    activeIndex,
+    onMatch: unstable_onMatch,
+    onTypingChange: unstable_onTypingChange,
+    enabled = true,
+    findMatch = null,
+    resetMs = 750,
+    ignoreKeys = [],
+    selectedIndex = null
+  } = props;
+  const timeoutIdRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
+  const stringRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef('');
+  const prevIndexRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef((_ref = selectedIndex != null ? selectedIndex : activeIndex) != null ? _ref : -1);
+  const matchIndexRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const onMatch = useEffectEvent(unstable_onMatch);
+  const onTypingChange = useEffectEvent(unstable_onTypingChange);
+  const findMatchRef = useLatestRef(findMatch);
+  const ignoreKeysRef = useLatestRef(ignoreKeys);
+  index(() => {
+    if (open) {
+      clearTimeout(timeoutIdRef.current);
+      matchIndexRef.current = null;
+      stringRef.current = '';
+    }
+  }, [open]);
+  index(() => {
+    // Sync arrow key navigation but not typeahead navigation.
+    if (open && stringRef.current === '') {
+      var _ref2;
+      prevIndexRef.current = (_ref2 = selectedIndex != null ? selectedIndex : activeIndex) != null ? _ref2 : -1;
+    }
+  }, [open, selectedIndex, activeIndex]);
+  const setTypingChange = useEffectEvent(value => {
+    if (value) {
+      if (!dataRef.current.typing) {
+        dataRef.current.typing = value;
+        onTypingChange(value);
+      }
+    } else {
+      if (dataRef.current.typing) {
+        dataRef.current.typing = value;
+        onTypingChange(value);
+      }
+    }
+  });
+  const onKeyDown = useEffectEvent(event => {
+    function getMatchingIndex(list, orderedList, string) {
+      const str = findMatchRef.current ? findMatchRef.current(orderedList, string) : orderedList.find(text => (text == null ? void 0 : text.toLocaleLowerCase().indexOf(string.toLocaleLowerCase())) === 0);
+      return str ? list.indexOf(str) : -1;
+    }
+    const listContent = listRef.current;
+    if (stringRef.current.length > 0 && stringRef.current[0] !== ' ') {
+      if (getMatchingIndex(listContent, listContent, stringRef.current) === -1) {
+        setTypingChange(false);
+      } else if (event.key === ' ') {
+        (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+      }
+    }
+    if (listContent == null || ignoreKeysRef.current.includes(event.key) ||
+    // Character key.
+    event.key.length !== 1 ||
+    // Modifier key.
+    event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    if (open && event.key !== ' ') {
+      (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.stopEvent)(event);
+      setTypingChange(true);
+    }
+
+    // Bail out if the list contains a word like "llama" or "aaron". TODO:
+    // allow it in this case, too.
+    const allowRapidSuccessionOfFirstLetter = listContent.every(text => {
+      var _text$, _text$2;
+      return text ? ((_text$ = text[0]) == null ? void 0 : _text$.toLocaleLowerCase()) !== ((_text$2 = text[1]) == null ? void 0 : _text$2.toLocaleLowerCase()) : true;
+    });
+
+    // Allows the user to cycle through items that start with the same letter
+    // in rapid succession.
+    if (allowRapidSuccessionOfFirstLetter && stringRef.current === event.key) {
+      stringRef.current = '';
+      prevIndexRef.current = matchIndexRef.current;
+    }
+    stringRef.current += event.key;
+    clearTimeout(timeoutIdRef.current);
+    timeoutIdRef.current = setTimeout(() => {
+      stringRef.current = '';
+      prevIndexRef.current = matchIndexRef.current;
+      setTypingChange(false);
+    }, resetMs);
+    const prevIndex = prevIndexRef.current;
+    const index = getMatchingIndex(listContent, [...listContent.slice((prevIndex || 0) + 1), ...listContent.slice(0, (prevIndex || 0) + 1)], stringRef.current);
+    if (index !== -1) {
+      onMatch(index);
+      matchIndexRef.current = index;
+    } else if (event.key !== ' ') {
+      stringRef.current = '';
+      setTypingChange(false);
+    }
+  });
+  const reference = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onKeyDown
+  }), [onKeyDown]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    return {
+      onKeyDown,
+      onKeyUp(event) {
+        if (event.key === ' ') {
+          setTypingChange(false);
+        }
+      }
+    };
+  }, [onKeyDown, setTypingChange]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    reference,
+    floating
+  } : {}, [enabled, reference, floating]);
+}
+
+function getArgsWithCustomFloatingHeight(state, height) {
+  return {
+    ...state,
+    rects: {
+      ...state.rects,
+      floating: {
+        ...state.rects.floating,
+        height
+      }
+    }
+  };
+}
+/**
+ * Positions the floating element such that an inner element inside of it is
+ * anchored to the reference element.
+ * @see https://floating-ui.com/docs/inner
+ */
+const inner = props => ({
+  name: 'inner',
+  options: props,
+  async fn(state) {
+    const {
+      listRef,
+      overflowRef,
+      onFallbackChange,
+      offset: innerOffset = 0,
+      index = 0,
+      minItemsVisible = 4,
+      referenceOverflowThreshold = 0,
+      scrollRef,
+      ...detectOverflowOptions
+    } = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.evaluate)(props, state);
+    const {
+      rects,
+      elements: {
+        floating
+      }
+    } = state;
+    const item = listRef.current[index];
+    const scrollEl = (scrollRef == null ? void 0 : scrollRef.current) || floating;
+
+    // Valid combinations:
+    // 1. Floating element is the scrollRef and has a border (default)
+    // 2. Floating element is not the scrollRef, floating element has a border
+    // 3. Floating element is not the scrollRef, scrollRef has a border
+    // Floating > {...getFloatingProps()} wrapper > scrollRef > items is not
+    // allowed as VoiceOver doesn't work.
+    const clientTop = floating.clientTop || scrollEl.clientTop;
+    const floatingIsBordered = floating.clientTop !== 0;
+    const scrollElIsBordered = scrollEl.clientTop !== 0;
+    const floatingIsScrollEl = floating === scrollEl;
+    if (true) {
+      if (!state.placement.startsWith('bottom')) {
+        warn('`placement` side must be "bottom" when using the `inner`', 'middleware.');
+      }
+    }
+    if (!item) {
+      return {};
+    }
+    const nextArgs = {
+      ...state,
+      ...(await (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_2__.offset)(-item.offsetTop - floating.clientTop - rects.reference.height / 2 - item.offsetHeight / 2 - innerOffset).fn(state))
+    };
+    const overflow = await (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.detectOverflow)(getArgsWithCustomFloatingHeight(nextArgs, scrollEl.scrollHeight + clientTop + floating.clientTop), detectOverflowOptions);
+    const refOverflow = await (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.detectOverflow)(nextArgs, {
+      ...detectOverflowOptions,
+      elementContext: 'reference'
+    });
+    const diffY = (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.max)(0, overflow.top);
+    const nextY = nextArgs.y + diffY;
+    const isScrollable = scrollEl.scrollHeight > scrollEl.clientHeight;
+    const rounder = isScrollable ? v => v : _floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.round;
+    const maxHeight = rounder((0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.max)(0, scrollEl.scrollHeight + (floatingIsBordered && floatingIsScrollEl || scrollElIsBordered ? clientTop * 2 : 0) - diffY - (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.max)(0, overflow.bottom)));
+    scrollEl.style.maxHeight = maxHeight + "px";
+    scrollEl.scrollTop = diffY;
+
+    // There is not enough space, fallback to standard anchored positioning
+    if (onFallbackChange) {
+      const shouldFallback = scrollEl.offsetHeight < item.offsetHeight * (0,_floating_ui_utils__WEBPACK_IMPORTED_MODULE_6__.min)(minItemsVisible, listRef.current.length) - 1 || refOverflow.top >= -referenceOverflowThreshold || refOverflow.bottom >= -referenceOverflowThreshold;
+      react_dom__WEBPACK_IMPORTED_MODULE_1__.flushSync(() => onFallbackChange(shouldFallback));
+    }
+    if (overflowRef) {
+      overflowRef.current = await (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_3__.detectOverflow)(getArgsWithCustomFloatingHeight({
+        ...nextArgs,
+        y: nextY
+      }, scrollEl.offsetHeight + clientTop + floating.clientTop), detectOverflowOptions);
+    }
+    return {
+      y: nextY
+    };
+  }
+});
+/**
+ * Changes the `inner` middleware's `offset` upon a `wheel` event to
+ * expand the floating element's height, revealing more list items.
+ * @see https://floating-ui.com/docs/inner
+ */
+function useInnerOffset(context, props) {
+  const {
+    open,
+    elements
+  } = context;
+  const {
+    enabled = true,
+    overflowRef,
+    scrollRef,
+    onChange: unstable_onChange
+  } = props;
+  const onChange = useEffectEvent(unstable_onChange);
+  const controlledScrollingRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const prevScrollTopRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const initialOverflowRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!enabled) return;
+    function onWheel(e) {
+      if (e.ctrlKey || !el || overflowRef.current == null) {
+        return;
+      }
+      const dY = e.deltaY;
+      const isAtTop = overflowRef.current.top >= -0.5;
+      const isAtBottom = overflowRef.current.bottom >= -0.5;
+      const remainingScroll = el.scrollHeight - el.clientHeight;
+      const sign = dY < 0 ? -1 : 1;
+      const method = dY < 0 ? 'max' : 'min';
+      if (el.scrollHeight <= el.clientHeight) {
+        return;
+      }
+      if (!isAtTop && dY > 0 || !isAtBottom && dY < 0) {
+        e.preventDefault();
+        react_dom__WEBPACK_IMPORTED_MODULE_1__.flushSync(() => {
+          onChange(d => d + Math[method](dY, remainingScroll * sign));
+        });
+      } else if (/firefox/i.test((0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getUserAgent)())) {
+        // Needed to propagate scrolling during momentum scrolling phase once
+        // it gets limited by the boundary. UX improvement, not critical.
+        el.scrollTop += dY;
+      }
+    }
+    const el = (scrollRef == null ? void 0 : scrollRef.current) || elements.floating;
+    if (open && el) {
+      el.addEventListener('wheel', onWheel);
+
+      // Wait for the position to be ready.
+      requestAnimationFrame(() => {
+        prevScrollTopRef.current = el.scrollTop;
+        if (overflowRef.current != null) {
+          initialOverflowRef.current = {
+            ...overflowRef.current
+          };
+        }
+      });
+      return () => {
+        prevScrollTopRef.current = null;
+        initialOverflowRef.current = null;
+        el.removeEventListener('wheel', onWheel);
+      };
+    }
+  }, [enabled, open, elements.floating, overflowRef, scrollRef, onChange]);
+  const floating = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    onKeyDown() {
+      controlledScrollingRef.current = true;
+    },
+    onWheel() {
+      controlledScrollingRef.current = false;
+    },
+    onPointerMove() {
+      controlledScrollingRef.current = false;
+    },
+    onScroll() {
+      const el = (scrollRef == null ? void 0 : scrollRef.current) || elements.floating;
+      if (!overflowRef.current || !el || !controlledScrollingRef.current) {
+        return;
+      }
+      if (prevScrollTopRef.current !== null) {
+        const scrollDiff = el.scrollTop - prevScrollTopRef.current;
+        if (overflowRef.current.bottom < -0.5 && scrollDiff < -1 || overflowRef.current.top < -0.5 && scrollDiff > 1) {
+          react_dom__WEBPACK_IMPORTED_MODULE_1__.flushSync(() => onChange(d => d + scrollDiff));
+        }
+      }
+
+      // [Firefox] Wait for the height change to have been applied.
+      requestAnimationFrame(() => {
+        prevScrollTopRef.current = el.scrollTop;
+      });
+    }
+  }), [elements.floating, onChange, overflowRef, scrollRef]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => enabled ? {
+    floating
+  } : {}, [enabled, floating]);
+}
+
+function isPointInPolygon(point, polygon) {
+  const [x, y] = point;
+  let isInside = false;
+  const length = polygon.length;
+  for (let i = 0, j = length - 1; i < length; j = i++) {
+    const [xi, yi] = polygon[i] || [0, 0];
+    const [xj, yj] = polygon[j] || [0, 0];
+    const intersect = yi >= y !== yj >= y && x <= (xj - xi) * (y - yi) / (yj - yi) + xi;
+    if (intersect) {
+      isInside = !isInside;
+    }
+  }
+  return isInside;
+}
+function isInside(point, rect) {
+  return point[0] >= rect.x && point[0] <= rect.x + rect.width && point[1] >= rect.y && point[1] <= rect.y + rect.height;
+}
+/**
+ * Generates a safe polygon area that the user can traverse without closing the
+ * floating element once leaving the reference element.
+ * @see https://floating-ui.com/docs/useHover#safepolygon
+ */
+function safePolygon(options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    buffer = 0.5,
+    blockPointerEvents = false,
+    requireIntent = true
+  } = options;
+  let timeoutId;
+  let hasLanded = false;
+  let lastX = null;
+  let lastY = null;
+  let lastCursorTime = performance.now();
+  function getCursorSpeed(x, y) {
+    const currentTime = performance.now();
+    const elapsedTime = currentTime - lastCursorTime;
+    if (lastX === null || lastY === null || elapsedTime === 0) {
+      lastX = x;
+      lastY = y;
+      lastCursorTime = currentTime;
+      return null;
+    }
+    const deltaX = x - lastX;
+    const deltaY = y - lastY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const speed = distance / elapsedTime; // px / ms
+
+    lastX = x;
+    lastY = y;
+    lastCursorTime = currentTime;
+    return speed;
+  }
+  const fn = _ref => {
+    let {
+      x,
+      y,
+      placement,
+      elements,
+      onClose,
+      nodeId,
+      tree
+    } = _ref;
+    return function onMouseMove(event) {
+      function close() {
+        clearTimeout(timeoutId);
+        onClose();
+      }
+      clearTimeout(timeoutId);
+      if (!elements.domReference || !elements.floating || placement == null || x == null || y == null) {
+        return;
+      }
+      const {
+        clientX,
+        clientY
+      } = event;
+      const clientPoint = [clientX, clientY];
+      const target = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.getTarget)(event);
+      const isLeave = event.type === 'mouseleave';
+      const isOverFloatingEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(elements.floating, target);
+      const isOverReferenceEl = (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(elements.domReference, target);
+      const refRect = elements.domReference.getBoundingClientRect();
+      const rect = elements.floating.getBoundingClientRect();
+      const side = placement.split('-')[0];
+      const cursorLeaveFromRight = x > rect.right - rect.width / 2;
+      const cursorLeaveFromBottom = y > rect.bottom - rect.height / 2;
+      const isOverReferenceRect = isInside(clientPoint, refRect);
+      const isFloatingWider = rect.width > refRect.width;
+      const isFloatingTaller = rect.height > refRect.height;
+      const left = (isFloatingWider ? refRect : rect).left;
+      const right = (isFloatingWider ? refRect : rect).right;
+      const top = (isFloatingTaller ? refRect : rect).top;
+      const bottom = (isFloatingTaller ? refRect : rect).bottom;
+      if (isOverFloatingEl) {
+        hasLanded = true;
+        if (!isLeave) {
+          return;
+        }
+      }
+      if (isOverReferenceEl) {
+        hasLanded = false;
+      }
+      if (isOverReferenceEl && !isLeave) {
+        hasLanded = true;
+        return;
+      }
+
+      // Prevent overlapping floating element from being stuck in an open-close
+      // loop: https://github.com/floating-ui/floating-ui/issues/1910
+      if (isLeave && (0,_floating_ui_react_dom__WEBPACK_IMPORTED_MODULE_4__.isElement)(event.relatedTarget) && (0,_floating_ui_react_utils__WEBPACK_IMPORTED_MODULE_5__.contains)(elements.floating, event.relatedTarget)) {
+        return;
+      }
+
+      // If any nested child is open, abort.
+      if (tree && getChildren(tree.nodesRef.current, nodeId).some(_ref2 => {
+        let {
+          context
+        } = _ref2;
+        return context == null ? void 0 : context.open;
+      })) {
+        return;
+      }
+
+      // If the pointer is leaving from the opposite side, the "buffer" logic
+      // creates a point where the floating element remains open, but should be
+      // ignored.
+      // A constant of 1 handles floating point rounding errors.
+      if (side === 'top' && y >= refRect.bottom - 1 || side === 'bottom' && y <= refRect.top + 1 || side === 'left' && x >= refRect.right - 1 || side === 'right' && x <= refRect.left + 1) {
+        return close();
+      }
+
+      // Ignore when the cursor is within the rectangular trough between the
+      // two elements. Since the triangle is created from the cursor point,
+      // which can start beyond the ref element's edge, traversing back and
+      // forth from the ref to the floating element can cause it to close. This
+      // ensures it always remains open in that case.
+      let rectPoly = [];
+      switch (side) {
+        case 'top':
+          rectPoly = [[left, refRect.top + 1], [left, rect.bottom - 1], [right, rect.bottom - 1], [right, refRect.top + 1]];
+          break;
+        case 'bottom':
+          rectPoly = [[left, rect.top + 1], [left, refRect.bottom - 1], [right, refRect.bottom - 1], [right, rect.top + 1]];
+          break;
+        case 'left':
+          rectPoly = [[rect.right - 1, bottom], [rect.right - 1, top], [refRect.left + 1, top], [refRect.left + 1, bottom]];
+          break;
+        case 'right':
+          rectPoly = [[refRect.right - 1, bottom], [refRect.right - 1, top], [rect.left + 1, top], [rect.left + 1, bottom]];
+          break;
+      }
+      function getPolygon(_ref3) {
+        let [x, y] = _ref3;
+        switch (side) {
+          case 'top':
+            {
+              const cursorPointOne = [isFloatingWider ? x + buffer / 2 : cursorLeaveFromRight ? x + buffer * 4 : x - buffer * 4, y + buffer + 1];
+              const cursorPointTwo = [isFloatingWider ? x - buffer / 2 : cursorLeaveFromRight ? x + buffer * 4 : x - buffer * 4, y + buffer + 1];
+              const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.bottom - buffer : isFloatingWider ? rect.bottom - buffer : rect.top], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.bottom - buffer : rect.top : rect.bottom - buffer]];
+              return [cursorPointOne, cursorPointTwo, ...commonPoints];
+            }
+          case 'bottom':
+            {
+              const cursorPointOne = [isFloatingWider ? x + buffer / 2 : cursorLeaveFromRight ? x + buffer * 4 : x - buffer * 4, y - buffer];
+              const cursorPointTwo = [isFloatingWider ? x - buffer / 2 : cursorLeaveFromRight ? x + buffer * 4 : x - buffer * 4, y - buffer];
+              const commonPoints = [[rect.left, cursorLeaveFromRight ? rect.top + buffer : isFloatingWider ? rect.top + buffer : rect.bottom], [rect.right, cursorLeaveFromRight ? isFloatingWider ? rect.top + buffer : rect.bottom : rect.top + buffer]];
+              return [cursorPointOne, cursorPointTwo, ...commonPoints];
+            }
+          case 'left':
+            {
+              const cursorPointOne = [x + buffer + 1, isFloatingTaller ? y + buffer / 2 : cursorLeaveFromBottom ? y + buffer * 4 : y - buffer * 4];
+              const cursorPointTwo = [x + buffer + 1, isFloatingTaller ? y - buffer / 2 : cursorLeaveFromBottom ? y + buffer * 4 : y - buffer * 4];
+              const commonPoints = [[cursorLeaveFromBottom ? rect.right - buffer : isFloatingTaller ? rect.right - buffer : rect.left, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.right - buffer : rect.left : rect.right - buffer, rect.bottom]];
+              return [...commonPoints, cursorPointOne, cursorPointTwo];
+            }
+          case 'right':
+            {
+              const cursorPointOne = [x - buffer, isFloatingTaller ? y + buffer / 2 : cursorLeaveFromBottom ? y + buffer * 4 : y - buffer * 4];
+              const cursorPointTwo = [x - buffer, isFloatingTaller ? y - buffer / 2 : cursorLeaveFromBottom ? y + buffer * 4 : y - buffer * 4];
+              const commonPoints = [[cursorLeaveFromBottom ? rect.left + buffer : isFloatingTaller ? rect.left + buffer : rect.right, rect.top], [cursorLeaveFromBottom ? isFloatingTaller ? rect.left + buffer : rect.right : rect.left + buffer, rect.bottom]];
+              return [cursorPointOne, cursorPointTwo, ...commonPoints];
+            }
+        }
+      }
+      if (isPointInPolygon([clientX, clientY], rectPoly)) {
+        return;
+      }
+      if (hasLanded && !isOverReferenceRect) {
+        return close();
+      }
+      if (!isLeave && requireIntent) {
+        const cursorSpeed = getCursorSpeed(event.clientX, event.clientY);
+        const cursorSpeedThreshold = 0.1;
+        if (cursorSpeed !== null && cursorSpeed < cursorSpeedThreshold) {
+          return close();
+        }
+      }
+      if (!isPointInPolygon([clientX, clientY], getPolygon([x, y]))) {
+        close();
+      } else if (!hasLanded && requireIntent) {
+        timeoutId = window.setTimeout(close, 40);
+      }
+    };
+  };
+  fn.__options = {
+    blockPointerEvents
+  };
+  return fn;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@floating-ui/react/dist/floating-ui.react.utils.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TYPEABLE_SELECTOR: () => (/* binding */ TYPEABLE_SELECTOR),
+/* harmony export */   activeElement: () => (/* binding */ activeElement),
+/* harmony export */   contains: () => (/* binding */ contains),
+/* harmony export */   getDocument: () => (/* binding */ getDocument),
+/* harmony export */   getPlatform: () => (/* binding */ getPlatform),
+/* harmony export */   getTarget: () => (/* binding */ getTarget),
+/* harmony export */   getUserAgent: () => (/* binding */ getUserAgent),
+/* harmony export */   isAndroid: () => (/* binding */ isAndroid),
+/* harmony export */   isEventTargetWithin: () => (/* binding */ isEventTargetWithin),
+/* harmony export */   isJSDOM: () => (/* binding */ isJSDOM),
+/* harmony export */   isMac: () => (/* binding */ isMac),
+/* harmony export */   isMouseLikePointerType: () => (/* binding */ isMouseLikePointerType),
+/* harmony export */   isReactEvent: () => (/* binding */ isReactEvent),
+/* harmony export */   isRootElement: () => (/* binding */ isRootElement),
+/* harmony export */   isSafari: () => (/* binding */ isSafari),
+/* harmony export */   isTypeableCombobox: () => (/* binding */ isTypeableCombobox),
+/* harmony export */   isTypeableElement: () => (/* binding */ isTypeableElement),
+/* harmony export */   isVirtualClick: () => (/* binding */ isVirtualClick),
+/* harmony export */   isVirtualPointerEvent: () => (/* binding */ isVirtualPointerEvent),
+/* harmony export */   stopEvent: () => (/* binding */ stopEvent)
+/* harmony export */ });
+/* harmony import */ var _floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @floating-ui/utils/dom */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+
+
+function activeElement(doc) {
+  let activeElement = doc.activeElement;
+  while (((_activeElement = activeElement) == null || (_activeElement = _activeElement.shadowRoot) == null ? void 0 : _activeElement.activeElement) != null) {
+    var _activeElement;
+    activeElement = activeElement.shadowRoot.activeElement;
+  }
+  return activeElement;
+}
+function contains(parent, child) {
+  if (!parent || !child) {
+    return false;
+  }
+  const rootNode = child.getRootNode == null ? void 0 : child.getRootNode();
+
+  // First, attempt with faster native method
+  if (parent.contains(child)) {
+    return true;
+  }
+
+  // then fallback to custom implementation with Shadow DOM support
+  if (rootNode && (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isShadowRoot)(rootNode)) {
+    let next = child;
+    while (next) {
+      if (parent === next) {
+        return true;
+      }
+      // @ts-ignore
+      next = next.parentNode || next.host;
+    }
+  }
+
+  // Give up, the result is false
+  return false;
+}
+// Avoid Chrome DevTools blue warning.
+function getPlatform() {
+  const uaData = navigator.userAgentData;
+  if (uaData != null && uaData.platform) {
+    return uaData.platform;
+  }
+  return navigator.platform;
+}
+function getUserAgent() {
+  const uaData = navigator.userAgentData;
+  if (uaData && Array.isArray(uaData.brands)) {
+    return uaData.brands.map(_ref => {
+      let {
+        brand,
+        version
+      } = _ref;
+      return brand + "/" + version;
+    }).join(' ');
+  }
+  return navigator.userAgent;
+}
+
+// License: https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/utils/src/isVirtualEvent.ts
+function isVirtualClick(event) {
+  // FIXME: Firefox is now emitting a deprecation warning for `mozInputSource`.
+  // Try to find a workaround for this. `react-aria` source still has the check.
+  if (event.mozInputSource === 0 && event.isTrusted) {
+    return true;
+  }
+  if (isAndroid() && event.pointerType) {
+    return event.type === 'click' && event.buttons === 1;
+  }
+  return event.detail === 0 && !event.pointerType;
+}
+function isVirtualPointerEvent(event) {
+  if (isJSDOM()) return false;
+  return !isAndroid() && event.width === 0 && event.height === 0 || isAndroid() && event.width === 1 && event.height === 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === 'mouse' ||
+  // iOS VoiceOver returns 0.333• for width/height.
+  event.width < 1 && event.height < 1 && event.pressure === 0 && event.detail === 0 && event.pointerType === 'touch';
+}
+function isSafari() {
+  // Chrome DevTools does not complain about navigator.vendor
+  return /apple/i.test(navigator.vendor);
+}
+function isAndroid() {
+  const re = /android/i;
+  return re.test(getPlatform()) || re.test(getUserAgent());
+}
+function isMac() {
+  return getPlatform().toLowerCase().startsWith('mac') && !navigator.maxTouchPoints;
+}
+function isJSDOM() {
+  return getUserAgent().includes('jsdom/');
+}
+function isMouseLikePointerType(pointerType, strict) {
+  // On some Linux machines with Chromium, mouse inputs return a `pointerType`
+  // of "pen": https://github.com/floating-ui/floating-ui/issues/2015
+  const values = ['mouse', 'pen'];
+  if (!strict) {
+    values.push('', undefined);
+  }
+  return values.includes(pointerType);
+}
+function isReactEvent(event) {
+  return 'nativeEvent' in event;
+}
+function isRootElement(element) {
+  return element.matches('html,body');
+}
+function getDocument(node) {
+  return (node == null ? void 0 : node.ownerDocument) || document;
+}
+function isEventTargetWithin(event, node) {
+  if (node == null) {
+    return false;
+  }
+  if ('composedPath' in event) {
+    return event.composedPath().includes(node);
+  }
+
+  // TS thinks `event` is of type never as it assumes all browsers support composedPath, but browsers without shadow dom don't
+  const e = event;
+  return e.target != null && node.contains(e.target);
+}
+function getTarget(event) {
+  if ('composedPath' in event) {
+    return event.composedPath()[0];
+  }
+
+  // TS thinks `event` is of type never as it assumes all browsers support
+  // `composedPath()`, but browsers without shadow DOM don't.
+  return event.target;
+}
+const TYPEABLE_SELECTOR = "input:not([type='hidden']):not([disabled])," + "[contenteditable]:not([contenteditable='false']),textarea:not([disabled])";
+function isTypeableElement(element) {
+  return (0,_floating_ui_utils_dom__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(element) && element.matches(TYPEABLE_SELECTOR);
+}
+function stopEvent(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+function isTypeableCombobox(element) {
+  if (!element) return false;
+  return element.getAttribute('role') === 'combobox' && isTypeableElement(element);
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs":
+/*!************************************************************************!*\
+  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getComputedStyle: () => (/* binding */ getComputedStyle),
+/* harmony export */   getContainingBlock: () => (/* binding */ getContainingBlock),
+/* harmony export */   getDocumentElement: () => (/* binding */ getDocumentElement),
+/* harmony export */   getFrameElement: () => (/* binding */ getFrameElement),
+/* harmony export */   getNearestOverflowAncestor: () => (/* binding */ getNearestOverflowAncestor),
+/* harmony export */   getNodeName: () => (/* binding */ getNodeName),
+/* harmony export */   getNodeScroll: () => (/* binding */ getNodeScroll),
+/* harmony export */   getOverflowAncestors: () => (/* binding */ getOverflowAncestors),
+/* harmony export */   getParentNode: () => (/* binding */ getParentNode),
+/* harmony export */   getWindow: () => (/* binding */ getWindow),
+/* harmony export */   isContainingBlock: () => (/* binding */ isContainingBlock),
+/* harmony export */   isElement: () => (/* binding */ isElement),
+/* harmony export */   isHTMLElement: () => (/* binding */ isHTMLElement),
+/* harmony export */   isLastTraversableNode: () => (/* binding */ isLastTraversableNode),
+/* harmony export */   isNode: () => (/* binding */ isNode),
+/* harmony export */   isOverflowElement: () => (/* binding */ isOverflowElement),
+/* harmony export */   isShadowRoot: () => (/* binding */ isShadowRoot),
+/* harmony export */   isTableElement: () => (/* binding */ isTableElement),
+/* harmony export */   isTopLayer: () => (/* binding */ isTopLayer),
+/* harmony export */   isWebKit: () => (/* binding */ isWebKit)
+/* harmony export */ });
+function hasWindow() {
+  return typeof window !== 'undefined';
+}
+function getNodeName(node) {
+  if (isNode(node)) {
+    return (node.nodeName || '').toLowerCase();
+  }
+  // Mocked nodes in testing environments may not be instances of Node. By
+  // returning `#document` an infinite loop won't occur.
+  // https://github.com/floating-ui/floating-ui/issues/2317
+  return '#document';
+}
+function getWindow(node) {
+  var _node$ownerDocument;
+  return (node == null || (_node$ownerDocument = node.ownerDocument) == null ? void 0 : _node$ownerDocument.defaultView) || window;
+}
+function getDocumentElement(node) {
+  var _ref;
+  return (_ref = (isNode(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+}
+function isNode(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Node || value instanceof getWindow(value).Node;
+}
+function isElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof Element || value instanceof getWindow(value).Element;
+}
+function isHTMLElement(value) {
+  if (!hasWindow()) {
+    return false;
+  }
+  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+}
+function isShadowRoot(value) {
+  if (!hasWindow() || typeof ShadowRoot === 'undefined') {
+    return false;
+  }
+  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
+}
+function isOverflowElement(element) {
+  const {
+    overflow,
+    overflowX,
+    overflowY,
+    display
+  } = getComputedStyle(element);
+  return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !['inline', 'contents'].includes(display);
+}
+function isTableElement(element) {
+  return ['table', 'td', 'th'].includes(getNodeName(element));
+}
+function isTopLayer(element) {
+  return [':popover-open', ':modal'].some(selector => {
+    try {
+      return element.matches(selector);
+    } catch (e) {
+      return false;
+    }
+  });
+}
+function isContainingBlock(elementOrCss) {
+  const webkit = isWebKit();
+  const css = isElement(elementOrCss) ? getComputedStyle(elementOrCss) : elementOrCss;
+
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+  // https://drafts.csswg.org/css-transforms-2/#individual-transforms
+  return ['transform', 'translate', 'scale', 'rotate', 'perspective'].some(value => css[value] ? css[value] !== 'none' : false) || (css.containerType ? css.containerType !== 'normal' : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== 'none' : false) || !webkit && (css.filter ? css.filter !== 'none' : false) || ['transform', 'translate', 'scale', 'rotate', 'perspective', 'filter'].some(value => (css.willChange || '').includes(value)) || ['paint', 'layout', 'strict', 'content'].some(value => (css.contain || '').includes(value));
+}
+function getContainingBlock(element) {
+  let currentNode = getParentNode(element);
+  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
+    if (isContainingBlock(currentNode)) {
+      return currentNode;
+    } else if (isTopLayer(currentNode)) {
+      return null;
+    }
+    currentNode = getParentNode(currentNode);
+  }
+  return null;
+}
+function isWebKit() {
+  if (typeof CSS === 'undefined' || !CSS.supports) return false;
+  return CSS.supports('-webkit-backdrop-filter', 'none');
+}
+function isLastTraversableNode(node) {
+  return ['html', 'body', '#document'].includes(getNodeName(node));
+}
+function getComputedStyle(element) {
+  return getWindow(element).getComputedStyle(element);
+}
+function getNodeScroll(element) {
+  if (isElement(element)) {
+    return {
+      scrollLeft: element.scrollLeft,
+      scrollTop: element.scrollTop
+    };
+  }
+  return {
+    scrollLeft: element.scrollX,
+    scrollTop: element.scrollY
+  };
+}
+function getParentNode(node) {
+  if (getNodeName(node) === 'html') {
+    return node;
+  }
+  const result =
+  // Step into the shadow DOM of the parent of a slotted node.
+  node.assignedSlot ||
+  // DOM Element detected.
+  node.parentNode ||
+  // ShadowRoot detected.
+  isShadowRoot(node) && node.host ||
+  // Fallback.
+  getDocumentElement(node);
+  return isShadowRoot(result) ? result.host : result;
+}
+function getNearestOverflowAncestor(node) {
+  const parentNode = getParentNode(node);
+  if (isLastTraversableNode(parentNode)) {
+    return node.ownerDocument ? node.ownerDocument.body : node.body;
+  }
+  if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {
+    return parentNode;
+  }
+  return getNearestOverflowAncestor(parentNode);
+}
+function getOverflowAncestors(node, list, traverseIframes) {
+  var _node$ownerDocument2;
+  if (list === void 0) {
+    list = [];
+  }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
+  const scrollableAncestor = getNearestOverflowAncestor(node);
+  const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
+  const win = getWindow(scrollableAncestor);
+  if (isBody) {
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
+  }
+  return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
+}
+function getFrameElement(win) {
+  return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs":
+/*!********************************************************************!*\
+  !*** ./node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs ***!
+  \********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   alignments: () => (/* binding */ alignments),
+/* harmony export */   clamp: () => (/* binding */ clamp),
+/* harmony export */   createCoords: () => (/* binding */ createCoords),
+/* harmony export */   evaluate: () => (/* binding */ evaluate),
+/* harmony export */   expandPaddingObject: () => (/* binding */ expandPaddingObject),
+/* harmony export */   floor: () => (/* binding */ floor),
+/* harmony export */   getAlignment: () => (/* binding */ getAlignment),
+/* harmony export */   getAlignmentAxis: () => (/* binding */ getAlignmentAxis),
+/* harmony export */   getAlignmentSides: () => (/* binding */ getAlignmentSides),
+/* harmony export */   getAxisLength: () => (/* binding */ getAxisLength),
+/* harmony export */   getExpandedPlacements: () => (/* binding */ getExpandedPlacements),
+/* harmony export */   getOppositeAlignmentPlacement: () => (/* binding */ getOppositeAlignmentPlacement),
+/* harmony export */   getOppositeAxis: () => (/* binding */ getOppositeAxis),
+/* harmony export */   getOppositeAxisPlacements: () => (/* binding */ getOppositeAxisPlacements),
+/* harmony export */   getOppositePlacement: () => (/* binding */ getOppositePlacement),
+/* harmony export */   getPaddingObject: () => (/* binding */ getPaddingObject),
+/* harmony export */   getSide: () => (/* binding */ getSide),
+/* harmony export */   getSideAxis: () => (/* binding */ getSideAxis),
+/* harmony export */   max: () => (/* binding */ max),
+/* harmony export */   min: () => (/* binding */ min),
+/* harmony export */   placements: () => (/* binding */ placements),
+/* harmony export */   rectToClientRect: () => (/* binding */ rectToClientRect),
+/* harmony export */   round: () => (/* binding */ round),
+/* harmony export */   sides: () => (/* binding */ sides)
+/* harmony export */ });
+/**
+ * Custom positioning reference element.
+ * @see https://floating-ui.com/docs/virtual-elements
+ */
+
+const sides = ['top', 'right', 'bottom', 'left'];
+const alignments = ['start', 'end'];
+const placements = /*#__PURE__*/sides.reduce((acc, side) => acc.concat(side, side + "-" + alignments[0], side + "-" + alignments[1]), []);
+const min = Math.min;
+const max = Math.max;
+const round = Math.round;
+const floor = Math.floor;
+const createCoords = v => ({
+  x: v,
+  y: v
+});
+const oppositeSideMap = {
+  left: 'right',
+  right: 'left',
+  bottom: 'top',
+  top: 'bottom'
+};
+const oppositeAlignmentMap = {
+  start: 'end',
+  end: 'start'
+};
+function clamp(start, value, end) {
+  return max(start, min(value, end));
+}
+function evaluate(value, param) {
+  return typeof value === 'function' ? value(param) : value;
+}
+function getSide(placement) {
+  return placement.split('-')[0];
+}
+function getAlignment(placement) {
+  return placement.split('-')[1];
+}
+function getOppositeAxis(axis) {
+  return axis === 'x' ? 'y' : 'x';
+}
+function getAxisLength(axis) {
+  return axis === 'y' ? 'height' : 'width';
+}
+function getSideAxis(placement) {
+  return ['top', 'bottom'].includes(getSide(placement)) ? 'y' : 'x';
+}
+function getAlignmentAxis(placement) {
+  return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === 'x' ? alignment === (rtl ? 'end' : 'start') ? 'right' : 'left' : alignment === 'start' ? 'bottom' : 'top';
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.replace(/start|end/g, alignment => oppositeAlignmentMap[alignment]);
+}
+function getSideList(side, isStart, rtl) {
+  const lr = ['left', 'right'];
+  const rl = ['right', 'left'];
+  const tb = ['top', 'bottom'];
+  const bt = ['bottom', 'top'];
+  switch (side) {
+    case 'top':
+    case 'bottom':
+      if (rtl) return isStart ? rl : lr;
+      return isStart ? lr : rl;
+    case 'left':
+    case 'right':
+      return isStart ? tb : bt;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list = getSideList(getSide(placement), direction === 'start', rtl);
+  if (alignment) {
+    list = list.map(side => side + "-" + alignment);
+    if (flipAlignment) {
+      list = list.concat(list.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list;
+}
+function getOppositePlacement(placement) {
+  return placement.replace(/left|right|bottom|top/g, side => oppositeSideMap[side]);
+}
+function expandPaddingObject(padding) {
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
+  };
+}
+function getPaddingObject(padding) {
+  return typeof padding !== 'number' ? expandPaddingObject(padding) : {
+    top: padding,
+    right: padding,
+    bottom: padding,
+    left: padding
+  };
+}
+function rectToClientRect(rect) {
+  const {
+    x,
+    y,
+    width,
+    height
+  } = rect;
+  return {
+    width,
+    height,
+    top: y,
+    left: x,
+    right: x + width,
+    bottom: y + height,
+    x,
+    y
+  };
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ActionIcon: () => (/* binding */ ActionIcon)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Loader_Loader_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../Loader/Loader.mjs */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Transition/Transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs");
+/* harmony import */ var _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../UnstyledButton/UnstyledButton.mjs */ "./node_modules/@mantine/core/esm/components/UnstyledButton/UnstyledButton.mjs");
+/* harmony import */ var _ActionIconGroup_ActionIconGroup_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ActionIconGroup/ActionIconGroup.mjs */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroup/ActionIconGroup.mjs");
+/* harmony import */ var _ActionIconGroupSection_ActionIconGroupSection_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ActionIconGroupSection/ActionIconGroupSection.mjs */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroupSection/ActionIconGroupSection.mjs");
+/* harmony import */ var _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ActionIcon.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)(
+  (theme, { size, radius, variant, gradient, color, autoContrast }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      root: {
+        "--ai-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "ai-size"),
+        "--ai-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+        "--ai-bg": color || variant ? colors.background : void 0,
+        "--ai-hover": color || variant ? colors.hover : void 0,
+        "--ai-hover-color": color || variant ? colors.hoverColor : void 0,
+        "--ai-color": colors.color,
+        "--ai-bd": color || variant ? colors.border : void 0
+      }
+    };
+  }
+);
+const ActionIcon = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ActionIcon", defaultProps, _props);
+  const {
+    className,
+    unstyled,
+    variant,
+    classNames,
+    styles,
+    style,
+    loading,
+    loaderProps,
+    size,
+    color,
+    radius,
+    __staticSelector,
+    gradient,
+    vars,
+    children,
+    disabled,
+    "data-disabled": dataDisabled,
+    autoContrast,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: ["ActionIcon", __staticSelector],
+    props,
+    className,
+    style,
+    classes: _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_9__.UnstyledButton,
+    {
+      ...getStyles("root", { active: !disabled && !loading && !dataDisabled }),
+      ...others,
+      unstyled,
+      variant,
+      size,
+      disabled: disabled || loading,
+      ref,
+      mod: [{ loading, disabled: disabled || dataDisabled }, mod],
+      children: [
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_10__.Transition, { mounted: !!loading, transition: "slide-down", duration: 150, children: (transitionStyles) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__.Box, { component: "span", ...getStyles("loader", { style: transitionStyles }), "aria-hidden": true, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Loader_Loader_mjs__WEBPACK_IMPORTED_MODULE_12__.Loader, { color: "var(--ai-color)", size: "calc(var(--ai-size) * 0.55)", ...loaderProps }) }) }),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__.Box, { component: "span", mod: { loading }, ...getStyles("icon"), children })
+      ]
+    }
+  );
+});
+ActionIcon.classes = _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ActionIcon.displayName = "@mantine/core/ActionIcon";
+ActionIcon.Group = _ActionIconGroup_ActionIconGroup_mjs__WEBPACK_IMPORTED_MODULE_13__.ActionIconGroup;
+ActionIcon.GroupSection = _ActionIconGroupSection_ActionIconGroupSection_mjs__WEBPACK_IMPORTED_MODULE_14__.ActionIconGroupSection;
+
+
+//# sourceMappingURL=ActionIcon.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.module.css.mjs":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.module.css.mjs ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_8d3f4000","icon":"m_8d3afb97","loader":"m_302b9fb1","group":"m_1a0f1b21","groupSection":"m_437b6484"};
+
+
+//# sourceMappingURL=ActionIcon.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroup/ActionIconGroup.mjs":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroup/ActionIconGroup.mjs ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ActionIconGroup: () => (/* binding */ ActionIconGroup)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../ActionIcon.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  orientation: "horizontal"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { borderWidth }) => ({
+  group: { "--ai-border-width": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__.rem)(borderWidth) }
+}));
+const ActionIconGroup = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ActionIconGroup", defaultProps, _props);
+  const {
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    orientation,
+    vars,
+    borderWidth,
+    variant,
+    mod,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ActionIconGroup", defaultProps, _props);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "ActionIconGroup",
+    props,
+    classes: _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver,
+    rootSelector: "group"
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__.Box,
+    {
+      ...getStyles("group"),
+      ref,
+      variant,
+      mod: [{ "data-orientation": orientation }, mod],
+      role: "group",
+      ...others
+    }
+  );
+});
+ActionIconGroup.classes = _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ActionIconGroup.displayName = "@mantine/core/ActionIconGroup";
+
+
+//# sourceMappingURL=ActionIconGroup.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroupSection/ActionIconGroupSection.mjs":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ActionIcon/ActionIconGroupSection/ActionIconGroupSection.mjs ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ActionIconGroupSection: () => (/* binding */ ActionIconGroupSection)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../ActionIcon.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)(
+  (theme, { radius, color, gradient, variant, autoContrast, size }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      groupSection: {
+        "--section-height": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "section-height"),
+        "--section-padding-x": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "section-padding-x"),
+        "--section-fz": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size),
+        "--section-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+        "--section-bg": color || variant ? colors.background : void 0,
+        "--section-color": colors.color,
+        "--section-bd": color || variant ? colors.border : void 0
+      }
+    };
+  }
+);
+const ActionIconGroupSection = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ActionIconGroupSection", defaultProps, _props);
+  const {
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    variant,
+    gradient,
+    radius,
+    autoContrast,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ActionIconGroupSection", defaultProps, _props);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "ActionIconGroupSection",
+    props,
+    classes: _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver,
+    rootSelector: "groupSection"
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__.Box, { ...getStyles("groupSection"), ref, variant, ...others });
+});
+ActionIconGroupSection.classes = _ActionIcon_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ActionIconGroupSection.displayName = "@mantine/core/ActionIconGroupSection";
+
+
+//# sourceMappingURL=ActionIconGroupSection.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Anchor/Anchor.mjs":
 /*!*********************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Anchor/Anchor.mjs ***!
@@ -2379,6 +10287,1096 @@ CloseIcon.displayName = "@mantine/core/CloseIcon";
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerProvider: () => (/* binding */ DrawerProvider),
+/* harmony export */   useDrawerContext: () => (/* binding */ useDrawerContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [DrawerProvider, useDrawerContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
+  "Drawer component was not found in tree"
+);
+
+
+//# sourceMappingURL=Drawer.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Drawer: () => (/* binding */ Drawer)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./DrawerBody.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs");
+/* harmony import */ var _DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./DrawerCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs");
+/* harmony import */ var _DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./DrawerContent.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs");
+/* harmony import */ var _DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./DrawerHeader.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs");
+/* harmony import */ var _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DrawerOverlay.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs");
+/* harmony import */ var _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DrawerRoot.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs");
+/* harmony import */ var _DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DrawerStack.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs");
+/* harmony import */ var _DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./DrawerTitle.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  closeOnClickOutside: true,
+  withinPortal: true,
+  lockScroll: true,
+  trapFocus: true,
+  returnFocus: true,
+  closeOnEscape: true,
+  keepMounted: false,
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
+  withOverlay: true,
+  withCloseButton: true
+};
+const Drawer = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__.factory)((_props, ref) => {
+  const {
+    title,
+    withOverlay,
+    overlayProps,
+    withCloseButton,
+    closeButtonProps,
+    children,
+    opened,
+    stackId,
+    zIndex,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__.useProps)("Drawer", defaultProps, _props);
+  const ctx = (0,_DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__.useDrawerStackContext)();
+  const hasHeader = !!title || withCloseButton;
+  const stackProps = ctx && stackId ? {
+    closeOnEscape: ctx.currentId === stackId,
+    trapFocus: ctx.currentId === stackId,
+    zIndex: ctx.getZIndex(stackId)
+  } : {};
+  const overlayVisible = withOverlay === false ? false : stackId && ctx ? ctx.currentId === stackId : opened;
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (ctx && stackId) {
+      opened ? ctx.addModal(stackId, zIndex || (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal")) : ctx.removeModal(stackId);
+    }
+  }, [opened, stackId, zIndex]);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.DrawerRoot,
+    {
+      ref,
+      opened,
+      zIndex: ctx && stackId ? ctx.getZIndex(stackId) : zIndex,
+      ...others,
+      ...stackProps,
+      children: [
+        withOverlay && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.DrawerOverlay,
+          {
+            visible: overlayVisible,
+            transitionProps: ctx && stackId ? { duration: 0 } : void 0,
+            ...overlayProps
+          }
+        ),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__.DrawerContent, { __hidden: ctx && stackId && opened ? stackId !== ctx.currentId : false, children: [
+          hasHeader && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.DrawerHeader, { children: [
+            title && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.DrawerTitle, { children: title }),
+            withCloseButton && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerCloseButton, { ...closeButtonProps })
+          ] }),
+          /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__.DrawerBody, { children })
+        ] })
+      ]
+    }
+  );
+});
+Drawer.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__["default"];
+Drawer.displayName = "@mantine/core/Drawer";
+Drawer.Root = _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.DrawerRoot;
+Drawer.Overlay = _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.DrawerOverlay;
+Drawer.Content = _DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__.DrawerContent;
+Drawer.Body = _DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__.DrawerBody;
+Drawer.Header = _DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.DrawerHeader;
+Drawer.Title = _DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.DrawerTitle;
+Drawer.CloseButton = _DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerCloseButton;
+Drawer.Stack = _DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__.DrawerStack;
+
+
+//# sourceMappingURL=Drawer.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_f11b401e","header":"m_5a7c2c9","content":"m_b8a05bbd","inner":"m_31cd769a"};
+
+
+//# sourceMappingURL=Drawer.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerBody: () => (/* binding */ DrawerBody)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseBody.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseBody.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerBody = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerBody", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseBody,
+    {
+      ref,
+      ...ctx.getStyles("body", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+DrawerBody.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+DrawerBody.displayName = "@mantine/core/DrawerBody";
+
+
+//# sourceMappingURL=DrawerBody.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerCloseButton: () => (/* binding */ DrawerCloseButton)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseCloseButton.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerCloseButton = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerCloseButton", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseCloseButton,
+    {
+      ref,
+      ...ctx.getStyles("close", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+DrawerCloseButton.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+DrawerCloseButton.displayName = "@mantine/core/DrawerCloseButton";
+
+
+//# sourceMappingURL=DrawerCloseButton.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerContent: () => (/* binding */ DrawerContent)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../ModalBase/ModalBaseContent.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseContent.mjs");
+/* harmony import */ var _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/NativeScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/NativeScrollArea.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerContent = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerContent", defaultProps, _props);
+  const { classNames, className, style, styles, vars, children, radius, __hidden, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  const Scroll = ctx.scrollAreaComponent || _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__.NativeScrollArea;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__.ModalBaseContent,
+    {
+      ...ctx.getStyles("content", { className, style, styles, classNames }),
+      innerProps: ctx.getStyles("inner", { className, style, styles, classNames }),
+      ref,
+      ...others,
+      radius: radius || ctx.radius || 0,
+      "data-hidden": __hidden || void 0,
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Scroll, { style: { height: "calc(100vh - var(--drawer-offset) * 2)" }, children })
+    }
+  );
+});
+DrawerContent.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+DrawerContent.displayName = "@mantine/core/DrawerContent";
+
+
+//# sourceMappingURL=DrawerContent.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerHeader: () => (/* binding */ DrawerHeader)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseHeader.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseHeader.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerHeader = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerHeader", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseHeader,
+    {
+      ref,
+      ...ctx.getStyles("header", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+DrawerHeader.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+DrawerHeader.displayName = "@mantine/core/DrawerHeader";
+
+
+//# sourceMappingURL=DrawerHeader.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerOverlay: () => (/* binding */ DrawerOverlay)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseOverlay.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseOverlay.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerOverlay = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerOverlay", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseOverlay,
+    {
+      ref,
+      ...ctx.getStyles("overlay", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+DrawerOverlay.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+DrawerOverlay.displayName = "@mantine/core/DrawerOverlay";
+
+
+//# sourceMappingURL=DrawerOverlay.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerRoot: () => (/* binding */ DrawerRoot)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/DirectionProvider/DirectionProvider.mjs */ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs");
+/* harmony import */ var _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../ModalBase/ModalBase.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.mjs");
+/* harmony import */ var _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../ScrollArea/ScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getDrawerAlign(position) {
+  switch (position) {
+    case "top":
+      return "flex-start";
+    case "bottom":
+      return "flex-end";
+    default:
+      return void 0;
+  }
+}
+function getDrawerFlex(position) {
+  if (position === "top" || position === "bottom") {
+    return "0 0 calc(100% - var(--drawer-offset, 0rem) * 2)";
+  }
+  return void 0;
+}
+const transitions = {
+  top: "slide-down",
+  bottom: "slide-up",
+  left: "slide-right",
+  right: "slide-left"
+};
+const rtlTransitions = {
+  top: "slide-down",
+  bottom: "slide-up",
+  right: "slide-right",
+  left: "slide-left"
+};
+const defaultProps = {
+  closeOnClickOutside: true,
+  withinPortal: true,
+  lockScroll: true,
+  trapFocus: true,
+  returnFocus: true,
+  closeOnEscape: true,
+  keepMounted: false,
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
+  position: "left"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)((_, { position, size, offset }) => ({
+  root: {
+    "--drawer-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "drawer-size"),
+    "--drawer-flex": getDrawerFlex(position),
+    "--drawer-height": position === "left" || position === "right" ? void 0 : "var(--drawer-size)",
+    "--drawer-align": getDrawerAlign(position),
+    "--drawer-justify": position === "right" ? "flex-end" : void 0,
+    "--drawer-offset": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__.rem)(offset)
+  }
+}));
+const DrawerRoot = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__.useProps)("DrawerRoot", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    scrollAreaComponent,
+    position,
+    transitionProps,
+    radius,
+    ...others
+  } = props;
+  const { dir } = (0,_core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_9__.useDirection)();
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__.useStyles)({
+    name: "Drawer",
+    classes: _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"],
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  const drawerTransition = (dir === "rtl" ? rtlTransitions : transitions)[position];
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerProvider, { value: { scrollAreaComponent, getStyles, radius }, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_13__.ModalBase,
+    {
+      ref,
+      ...getStyles("root"),
+      transitionProps: { transition: drawerTransition, ...transitionProps },
+      "data-offset-scrollbars": scrollAreaComponent === _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_14__.ScrollArea.Autosize || void 0,
+      unstyled,
+      ...others
+    }
+  ) });
+});
+DrawerRoot.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"];
+DrawerRoot.displayName = "@mantine/core/DrawerRoot";
+
+
+//# sourceMappingURL=DrawerRoot.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerStack: () => (/* binding */ DrawerStack),
+/* harmony export */   useDrawerStackContext: () => (/* binding */ useDrawerStackContext)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-optional-context/create-optional-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [DrawerStackProvider, useDrawerStackContext] = (0,_core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createOptionalContext)();
+function DrawerStack({ children }) {
+  const [stack, setStack] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+  const [maxZIndex, setMaxZIndex] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)((0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__.getDefaultZIndex)("modal"));
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    DrawerStackProvider,
+    {
+      value: {
+        stack,
+        addModal: (id, zIndex) => {
+          setStack((current) => [.../* @__PURE__ */ new Set([...current, id])]);
+          setMaxZIndex(
+            (current) => typeof zIndex === "number" && typeof current === "number" ? Math.max(current, zIndex) : current
+          );
+        },
+        removeModal: (id) => setStack((current) => current.filter((currentId) => currentId !== id)),
+        getZIndex: (id) => `calc(${maxZIndex} + ${stack.indexOf(id)} + 1)`,
+        currentId: stack[stack.length - 1],
+        maxZIndex
+      },
+      children
+    }
+  );
+}
+DrawerStack.displayName = "@mantine/core/DrawerStack";
+
+
+//# sourceMappingURL=DrawerStack.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DrawerTitle: () => (/* binding */ DrawerTitle)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseTitle.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseTitle.mjs");
+/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
+/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const DrawerTitle = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerTitle", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseTitle,
+    {
+      ref,
+      ...ctx.getStyles("title", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+DrawerTitle.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+DrawerTitle.displayName = "@mantine/core/DrawerTitle";
+
+
+//# sourceMappingURL=DrawerTitle.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/FloatingArrow.mjs":
+/*!********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/FloatingArrow.mjs ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FloatingArrow: () => (/* binding */ FloatingArrow)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/DirectionProvider/DirectionProvider.mjs */ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs");
+/* harmony import */ var _get_arrow_position_styles_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./get-arrow-position-styles.mjs */ "./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/get-arrow-position-styles.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const FloatingArrow = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({
+    position,
+    arrowSize,
+    arrowOffset,
+    arrowRadius,
+    arrowPosition,
+    visible,
+    arrowX,
+    arrowY,
+    style,
+    ...others
+  }, ref) => {
+    const { dir } = (0,_core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_3__.useDirection)();
+    if (!visible) {
+      return null;
+    }
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      "div",
+      {
+        ...others,
+        ref,
+        style: {
+          ...style,
+          ...(0,_get_arrow_position_styles_mjs__WEBPACK_IMPORTED_MODULE_4__.getArrowPositionStyles)({
+            position,
+            arrowSize,
+            arrowOffset,
+            arrowRadius,
+            arrowPosition,
+            dir,
+            arrowX,
+            arrowY
+          })
+        }
+      }
+    );
+  }
+);
+FloatingArrow.displayName = "@mantine/core/FloatingArrow";
+
+
+//# sourceMappingURL=FloatingArrow.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/get-arrow-position-styles.mjs":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/get-arrow-position-styles.mjs ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getArrowPositionStyles: () => (/* binding */ getArrowPositionStyles)
+/* harmony export */ });
+'use client';
+function horizontalSide(placement, arrowY, arrowOffset, arrowPosition) {
+  if (placement === "center" || arrowPosition === "center") {
+    return { top: arrowY };
+  }
+  if (placement === "end") {
+    return { bottom: arrowOffset };
+  }
+  if (placement === "start") {
+    return { top: arrowOffset };
+  }
+  return {};
+}
+function verticalSide(placement, arrowX, arrowOffset, arrowPosition, dir) {
+  if (placement === "center" || arrowPosition === "center") {
+    return { left: arrowX };
+  }
+  if (placement === "end") {
+    return { [dir === "ltr" ? "right" : "left"]: arrowOffset };
+  }
+  if (placement === "start") {
+    return { [dir === "ltr" ? "left" : "right"]: arrowOffset };
+  }
+  return {};
+}
+const radiusByFloatingSide = {
+  bottom: "borderTopLeftRadius",
+  left: "borderTopRightRadius",
+  right: "borderBottomLeftRadius",
+  top: "borderBottomRightRadius"
+};
+function getArrowPositionStyles({
+  position,
+  arrowSize,
+  arrowOffset,
+  arrowRadius,
+  arrowPosition,
+  arrowX,
+  arrowY,
+  dir
+}) {
+  const [side, placement = "center"] = position.split("-");
+  const baseStyles = {
+    width: arrowSize,
+    height: arrowSize,
+    transform: "rotate(45deg)",
+    position: "absolute",
+    [radiusByFloatingSide[side]]: arrowRadius
+  };
+  const arrowPlacement = -arrowSize / 2;
+  if (side === "left") {
+    return {
+      ...baseStyles,
+      ...horizontalSide(placement, arrowY, arrowOffset, arrowPosition),
+      right: arrowPlacement,
+      borderLeftColor: "transparent",
+      borderBottomColor: "transparent",
+      clipPath: "polygon(100% 0, 0 0, 100% 100%)"
+    };
+  }
+  if (side === "right") {
+    return {
+      ...baseStyles,
+      ...horizontalSide(placement, arrowY, arrowOffset, arrowPosition),
+      left: arrowPlacement,
+      borderRightColor: "transparent",
+      borderTopColor: "transparent",
+      clipPath: "polygon(0 100%, 0 0, 100% 100%)"
+    };
+  }
+  if (side === "top") {
+    return {
+      ...baseStyles,
+      ...verticalSide(placement, arrowX, arrowOffset, arrowPosition, dir),
+      bottom: arrowPlacement,
+      borderTopColor: "transparent",
+      borderLeftColor: "transparent",
+      clipPath: "polygon(0 100%, 100% 100%, 100% 0)"
+    };
+  }
+  if (side === "bottom") {
+    return {
+      ...baseStyles,
+      ...verticalSide(placement, arrowX, arrowOffset, arrowPosition, dir),
+      top: arrowPlacement,
+      borderBottomColor: "transparent",
+      borderRightColor: "transparent",
+      clipPath: "polygon(0 100%, 0 0, 100% 0)"
+    };
+  }
+  return {};
+}
+
+
+//# sourceMappingURL=get-arrow-position-styles.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Floating/get-floating-position/get-floating-position.mjs":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Floating/get-floating-position/get-floating-position.mjs ***!
+  \************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getFloatingPosition: () => (/* binding */ getFloatingPosition)
+/* harmony export */ });
+'use client';
+function getFloatingPosition(dir, position) {
+  if (dir === "rtl" && (position.includes("right") || position.includes("left"))) {
+    const [side, placement] = position.split("-");
+    const flippedPosition = side === "right" ? "left" : "right";
+    return placement === void 0 ? flippedPosition : `${flippedPosition}-${placement}`;
+  }
+  return position;
+}
+
+
+//# sourceMappingURL=get-floating-position.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/FocusTrap/FocusTrap.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/FocusTrap/FocusTrap.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FocusTrap: () => (/* binding */ FocusTrap),
+/* harmony export */   FocusTrapInitialFocus: () => (/* binding */ FocusTrapInitialFocus)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-focus-trap/use-focus-trap.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/is-element/is-element.mjs */ "./node_modules/@mantine/core/esm/core/utils/is-element/is-element.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _VisuallyHidden_VisuallyHidden_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../VisuallyHidden/VisuallyHidden.mjs */ "./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function FocusTrap({
+  children,
+  active = true,
+  refProp = "ref",
+  innerRef
+}) {
+  const focusTrapRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useFocusTrap)(active);
+  const ref = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRef)(focusTrapRef, innerRef);
+  if (!(0,_core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_5__.isElement)(children)) {
+    return children;
+  }
+  return (0,react__WEBPACK_IMPORTED_MODULE_1__.cloneElement)(children, { [refProp]: ref });
+}
+function FocusTrapInitialFocus(props) {
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_VisuallyHidden_VisuallyHidden_mjs__WEBPACK_IMPORTED_MODULE_6__.VisuallyHidden, { tabIndex: -1, "data-autofocus": true, ...props });
+}
+FocusTrap.displayName = "@mantine/core/FocusTrap";
+FocusTrapInitialFocus.displayName = "@mantine/core/FocusTrapInitialFocus";
+FocusTrap.InitialFocus = FocusTrapInitialFocus;
+
+
+//# sourceMappingURL=FocusTrap.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Group/Group.mjs":
 /*!*******************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Group/Group.mjs ***!
@@ -4013,6 +13011,901 @@ Oval.displayName = "@mantine/core/Oval";
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseProvider: () => (/* binding */ ModalBaseProvider),
+/* harmony export */   useModalBaseContext: () => (/* binding */ useModalBaseContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [ModalBaseProvider, useModalBaseContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
+  "ModalBase component was not found in tree"
+);
+
+
+//# sourceMappingURL=ModalBase.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBase: () => (/* binding */ ModalBase)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_remove_scroll__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-remove-scroll */ "./node_modules/react-remove-scroll/dist/es2015/Combination.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Portal/OptionalPortal.mjs */ "./node_modules/@mantine/core/esm/components/Portal/OptionalPortal.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _use_modal_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./use-modal.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ModalBase = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({
+    keepMounted,
+    opened,
+    onClose,
+    id,
+    transitionProps,
+    onExitTransitionEnd,
+    onEnterTransitionEnd,
+    trapFocus,
+    closeOnEscape,
+    returnFocus,
+    closeOnClickOutside,
+    withinPortal,
+    portalProps,
+    lockScroll,
+    children,
+    zIndex,
+    shadow,
+    padding,
+    __vars,
+    unstyled,
+    removeScrollProps,
+    ...others
+  }, ref) => {
+    const { _id, titleMounted, bodyMounted, shouldLockScroll, setTitleMounted, setBodyMounted } = (0,_use_modal_mjs__WEBPACK_IMPORTED_MODULE_3__.useModal)({ id, transitionProps, opened, trapFocus, closeOnEscape, onClose, returnFocus });
+    const { key: removeScrollKey, ...otherRemoveScrollProps } = removeScrollProps || {};
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_4__.OptionalPortal, { ...portalProps, withinPortal, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_5__.ModalBaseProvider,
+      {
+        value: {
+          opened,
+          onClose,
+          closeOnClickOutside,
+          onExitTransitionEnd,
+          onEnterTransitionEnd,
+          transitionProps: { ...transitionProps, keepMounted },
+          getTitleId: () => `${_id}-title`,
+          getBodyId: () => `${_id}-body`,
+          titleMounted,
+          bodyMounted,
+          setTitleMounted,
+          setBodyMounted,
+          trapFocus,
+          closeOnEscape,
+          zIndex,
+          unstyled
+        },
+        children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          react_remove_scroll__WEBPACK_IMPORTED_MODULE_6__["default"],
+          {
+            enabled: shouldLockScroll && lockScroll,
+            ...otherRemoveScrollProps,
+            children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+              _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__.Box,
+              {
+                ref,
+                ...others,
+                __vars: {
+                  ...__vars,
+                  "--mb-z-index": (zIndex || (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_8__.getDefaultZIndex)("modal")).toString(),
+                  "--mb-shadow": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_9__.getShadow)(shadow),
+                  "--mb-padding": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_9__.getSpacing)(padding)
+                },
+                children
+              }
+            )
+          },
+          removeScrollKey
+        )
+      }
+    ) });
+  }
+);
+ModalBase.displayName = "@mantine/core/ModalBase";
+
+
+//# sourceMappingURL=ModalBase.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"title":"m_615af6c9","header":"m_b5489c3c","inner":"m_60c222c7","content":"m_fd1ab0aa","close":"m_606cb269","body":"m_5df29311"};
+
+
+//# sourceMappingURL=ModalBase.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseBody.mjs":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseBody.mjs ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseBody: () => (/* binding */ ModalBaseBody)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _use_modal_body_id_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./use-modal-body-id.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-body-id.mjs");
+/* harmony import */ var _ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ModalBase.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ModalBaseBody = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ className, ...others }, ref) => {
+    const bodyId = (0,_use_modal_body_id_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalBodyId)();
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_4__.useModalBaseContext)();
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__.Box,
+      {
+        ref,
+        ...others,
+        id: bodyId,
+        className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"].body]: !ctx.unstyled }, className)
+      }
+    );
+  }
+);
+ModalBaseBody.displayName = "@mantine/core/ModalBaseBody";
+
+
+//# sourceMappingURL=ModalBaseBody.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseCloseButton.mjs":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseCloseButton.mjs ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseCloseButton: () => (/* binding */ ModalBaseCloseButton)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _CloseButton_CloseButton_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../CloseButton/CloseButton.mjs */ "./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalBase.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+const ModalBaseCloseButton = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ className, onClick, ...others }, ref) => {
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalBaseContext)();
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _CloseButton_CloseButton_mjs__WEBPACK_IMPORTED_MODULE_4__.CloseButton,
+      {
+        ref,
+        ...others,
+        onClick: (event) => {
+          ctx.onClose();
+          onClick?.(event);
+        },
+        className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__["default"].close]: !ctx.unstyled }, className),
+        unstyled: ctx.unstyled
+      }
+    );
+  }
+);
+ModalBaseCloseButton.displayName = "@mantine/core/ModalBaseCloseButton";
+
+
+//# sourceMappingURL=ModalBaseCloseButton.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseContent.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseContent.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseContent: () => (/* binding */ ModalBaseContent)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _FocusTrap_FocusTrap_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../FocusTrap/FocusTrap.mjs */ "./node_modules/@mantine/core/esm/components/FocusTrap/FocusTrap.mjs");
+/* harmony import */ var _Paper_Paper_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../Paper/Paper.mjs */ "./node_modules/@mantine/core/esm/components/Paper/Paper.mjs");
+/* harmony import */ var _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Transition/Transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalBase.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+const ModalBaseContent = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ transitionProps, className, innerProps, onKeyDown, style, ...others }, ref) => {
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalBaseContext)();
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_4__.Transition,
+      {
+        mounted: ctx.opened,
+        transition: "pop",
+        ...ctx.transitionProps,
+        onExited: () => {
+          ctx.onExitTransitionEnd?.();
+          ctx.transitionProps?.onExited?.();
+        },
+        onEntered: () => {
+          ctx.onEnterTransitionEnd?.();
+          ctx.transitionProps?.onEntered?.();
+        },
+        ...transitionProps,
+        children: (transitionStyles) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          "div",
+          {
+            ...innerProps,
+            className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__["default"].inner]: !ctx.unstyled }, innerProps.className),
+            children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_FocusTrap_FocusTrap_mjs__WEBPACK_IMPORTED_MODULE_6__.FocusTrap, { active: ctx.opened && ctx.trapFocus, innerRef: ref, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+              _Paper_Paper_mjs__WEBPACK_IMPORTED_MODULE_7__.Paper,
+              {
+                ...others,
+                component: "section",
+                role: "dialog",
+                tabIndex: -1,
+                "aria-modal": true,
+                "aria-describedby": ctx.bodyMounted ? ctx.getBodyId() : void 0,
+                "aria-labelledby": ctx.titleMounted ? ctx.getTitleId() : void 0,
+                style: [style, transitionStyles],
+                className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__["default"].content]: !ctx.unstyled }, className),
+                unstyled: ctx.unstyled,
+                children: others.children
+              }
+            ) })
+          }
+        )
+      }
+    );
+  }
+);
+ModalBaseContent.displayName = "@mantine/core/ModalBaseContent";
+
+
+//# sourceMappingURL=ModalBaseContent.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseHeader.mjs":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseHeader.mjs ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseHeader: () => (/* binding */ ModalBaseHeader)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ModalBase.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ModalBaseHeader = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ className, ...others }, ref) => {
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalBaseContext)();
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_4__.Box,
+      {
+        component: "header",
+        ref,
+        className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_5__["default"].header]: !ctx.unstyled }, className),
+        ...others
+      }
+    );
+  }
+);
+ModalBaseHeader.displayName = "@mantine/core/ModalBaseHeader";
+
+
+//# sourceMappingURL=ModalBaseHeader.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseOverlay.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseOverlay.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseOverlay: () => (/* binding */ ModalBaseOverlay)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Overlay_Overlay_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Overlay/Overlay.mjs */ "./node_modules/@mantine/core/esm/components/Overlay/Overlay.mjs");
+/* harmony import */ var _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Transition/Transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _use_modal_transition_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./use-modal-transition.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-transition.mjs");
+'use client';
+
+
+
+
+
+
+
+const ModalBaseOverlay = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ onClick, transitionProps, style, visible, ...others }, ref) => {
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useModalBaseContext)();
+    const transition = (0,_use_modal_transition_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalTransition)(transitionProps);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_4__.Transition,
+      {
+        mounted: visible !== void 0 ? visible : ctx.opened,
+        ...transition,
+        transition: "fade",
+        children: (transitionStyles) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _Overlay_Overlay_mjs__WEBPACK_IMPORTED_MODULE_5__.Overlay,
+          {
+            ref,
+            fixed: true,
+            style: [style, transitionStyles],
+            zIndex: ctx.zIndex,
+            unstyled: ctx.unstyled,
+            onClick: (event) => {
+              onClick?.(event);
+              ctx.closeOnClickOutside && ctx.onClose();
+            },
+            ...others
+          }
+        )
+      }
+    );
+  }
+);
+ModalBaseOverlay.displayName = "@mantine/core/ModalBaseOverlay";
+
+
+//# sourceMappingURL=ModalBaseOverlay.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseTitle.mjs":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseTitle.mjs ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBaseTitle: () => (/* binding */ ModalBaseTitle)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+/* harmony import */ var _use_modal_title_id_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./use-modal-title-id.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-title-id.mjs");
+/* harmony import */ var _ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ModalBase.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ModalBaseTitle = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ className, ...others }, ref) => {
+    const id = (0,_use_modal_title_id_mjs__WEBPACK_IMPORTED_MODULE_3__.useModalTitle)();
+    const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_4__.useModalBaseContext)();
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__.Box,
+      {
+        component: "h2",
+        ref,
+        className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])({ [_ModalBase_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"].title]: !ctx.unstyled }, className),
+        ...others,
+        id
+      }
+    );
+  }
+);
+ModalBaseTitle.displayName = "@mantine/core/ModalBaseTitle";
+
+
+//# sourceMappingURL=ModalBaseTitle.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/NativeScrollArea.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/NativeScrollArea.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NativeScrollArea: () => (/* binding */ NativeScrollArea)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+'use client';
+
+
+function NativeScrollArea({ children }) {
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children });
+}
+
+
+//# sourceMappingURL=NativeScrollArea.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/use-lock-scroll.mjs":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/use-lock-scroll.mjs ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useLockScroll: () => (/* binding */ useLockScroll)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs");
+'use client';
+
+
+
+function useLockScroll({ opened, transitionDuration }) {
+  const [shouldLockScroll, setShouldLockScroll] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(opened);
+  const timeout = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(-1);
+  const reduceMotion = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_1__.useReducedMotion)();
+  const _transitionDuration = reduceMotion ? 0 : transitionDuration;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (opened) {
+      setShouldLockScroll(true);
+      window.clearTimeout(timeout.current);
+    } else if (_transitionDuration === 0) {
+      setShouldLockScroll(false);
+    } else {
+      timeout.current = window.setTimeout(() => setShouldLockScroll(false), _transitionDuration);
+    }
+    return () => window.clearTimeout(timeout.current);
+  }, [opened, _transitionDuration]);
+  return shouldLockScroll;
+}
+
+
+//# sourceMappingURL=use-lock-scroll.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-body-id.mjs":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/use-modal-body-id.mjs ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useModalBodyId: () => (/* binding */ useModalBodyId)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+'use client';
+
+
+
+function useModalBodyId() {
+  const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_1__.useModalBaseContext)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    ctx.setBodyMounted(true);
+    return () => ctx.setBodyMounted(false);
+  }, []);
+  return ctx.getBodyId();
+}
+
+
+//# sourceMappingURL=use-modal-body-id.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-title-id.mjs":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/use-modal-title-id.mjs ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useModalTitle: () => (/* binding */ useModalTitle)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+'use client';
+
+
+
+function useModalTitle() {
+  const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_1__.useModalBaseContext)();
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    ctx.setTitleMounted(true);
+    return () => ctx.setTitleMounted(false);
+  }, []);
+  return ctx.getTitleId();
+}
+
+
+//# sourceMappingURL=use-modal-title-id.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal-transition.mjs":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/use-modal-transition.mjs ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useModalTransition: () => (/* binding */ useModalTransition)
+/* harmony export */ });
+/* harmony import */ var _ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalBase.context.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.context.mjs");
+'use client';
+
+
+const DEFAULT_TRANSITION = {
+  duration: 200,
+  timingFunction: "ease",
+  transition: "fade"
+};
+function useModalTransition(transitionOverride) {
+  const ctx = (0,_ModalBase_context_mjs__WEBPACK_IMPORTED_MODULE_0__.useModalBaseContext)();
+  return { ...DEFAULT_TRANSITION, ...ctx.transitionProps, ...transitionOverride };
+}
+
+
+//# sourceMappingURL=use-modal-transition.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ModalBase/use-modal.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ModalBase/use-modal.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useModal: () => (/* binding */ useModal)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-id/use-id.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-window-event/use-window-event.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-focus-return/use-focus-return.mjs");
+/* harmony import */ var _use_lock_scroll_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./use-lock-scroll.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/use-lock-scroll.mjs");
+'use client';
+
+
+
+
+function useModal({
+  id,
+  transitionProps,
+  opened,
+  trapFocus,
+  closeOnEscape,
+  onClose,
+  returnFocus
+}) {
+  const _id = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_1__.useId)(id);
+  const [titleMounted, setTitleMounted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [bodyMounted, setBodyMounted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const transitionDuration = typeof transitionProps?.duration === "number" ? transitionProps?.duration : 200;
+  const shouldLockScroll = (0,_use_lock_scroll_mjs__WEBPACK_IMPORTED_MODULE_2__.useLockScroll)({ opened, transitionDuration });
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useWindowEvent)(
+    "keydown",
+    (event) => {
+      if (event.key === "Escape" && closeOnEscape && !event.isComposing && opened) {
+        const shouldTrigger = event.target?.getAttribute("data-mantine-stop-propagation") !== "true";
+        shouldTrigger && onClose();
+      }
+    },
+    { capture: true }
+  );
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useFocusReturn)({ opened, shouldReturnFocus: trapFocus && returnFocus });
+  return {
+    _id,
+    titleMounted,
+    bodyMounted,
+    shouldLockScroll,
+    setTitleMounted,
+    setBodyMounted
+  };
+}
+
+
+//# sourceMappingURL=use-modal.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Overlay/Overlay.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Overlay/Overlay.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Overlay: () => (/* binding */ Overlay)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_color_functions_rgba_rgba_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/color-functions/rgba/rgba.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/color-functions/rgba/rgba.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Overlay_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Overlay.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Overlay/Overlay.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal")
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)(
+  (_, { gradient, color, backgroundOpacity, blur, radius, zIndex }) => ({
+    root: {
+      "--overlay-bg": gradient || (color !== void 0 || backgroundOpacity !== void 0) && (0,_core_MantineProvider_color_functions_rgba_rgba_mjs__WEBPACK_IMPORTED_MODULE_5__.rgba)(color || "#000", backgroundOpacity ?? 0.6) || void 0,
+      "--overlay-filter": blur ? `blur(${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__.rem)(blur)})` : void 0,
+      "--overlay-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_7__.getRadius)(radius),
+      "--overlay-z-index": zIndex?.toString()
+    }
+  })
+);
+const Overlay = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_8__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_9__.useProps)("Overlay", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    fixed,
+    center,
+    children,
+    radius,
+    zIndex,
+    gradient,
+    blur,
+    color,
+    backgroundOpacity,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__.useStyles)({
+    name: "Overlay",
+    props,
+    classes: _Overlay_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__.Box, { ref, ...getStyles("root"), mod: [{ center, fixed }, mod], ...others, children });
+});
+Overlay.classes = _Overlay_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"];
+Overlay.displayName = "@mantine/core/Overlay";
+
+
+//# sourceMappingURL=Overlay.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Overlay/Overlay.module.css.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Overlay/Overlay.module.css.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_9814e45f"};
+
+
+//# sourceMappingURL=Overlay.module.css.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Paper/Paper.mjs":
 /*!*******************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Paper/Paper.mjs ***!
@@ -4124,6 +14017,1806 @@ var classes = {"root":"m_1b7284a3"};
 
 
 //# sourceMappingURL=Paper.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Portal/OptionalPortal.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Portal/OptionalPortal.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OptionalPortal: () => (/* binding */ OptionalPortal)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_Mantine_context_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/Mantine.context.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/Mantine.context.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Portal_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Portal.mjs */ "./node_modules/@mantine/core/esm/components/Portal/Portal.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const OptionalPortal = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)(
+  ({ withinPortal = true, children, ...others }, ref) => {
+    const env = (0,_core_MantineProvider_Mantine_context_mjs__WEBPACK_IMPORTED_MODULE_4__.useMantineEnv)();
+    if (env === "test" || !withinPortal) {
+      return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children });
+    }
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Portal_mjs__WEBPACK_IMPORTED_MODULE_5__.Portal, { ref, ...others, children });
+  }
+);
+OptionalPortal.displayName = "@mantine/core/OptionalPortal";
+
+
+//# sourceMappingURL=OptionalPortal.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Portal/Portal.mjs":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Portal/Portal.mjs ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Portal: () => (/* binding */ Portal)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createPortalNode(props) {
+  const node = document.createElement("div");
+  node.setAttribute("data-portal", "true");
+  typeof props.className === "string" && node.classList.add(...props.className.split(" ").filter(Boolean));
+  typeof props.style === "object" && Object.assign(node.style, props.style);
+  typeof props.id === "string" && node.setAttribute("id", props.id);
+  return node;
+}
+function getTargetNode({ target, reuseTargetNode, ...others }) {
+  if (target) {
+    if (typeof target === "string") {
+      return document.querySelector(target) || createPortalNode(others);
+    }
+    return target;
+  }
+  if (reuseTargetNode) {
+    const existingNode = document.querySelector("[data-mantine-shared-portal-node]");
+    if (existingNode) {
+      return existingNode;
+    }
+    const node = createPortalNode(others);
+    node.setAttribute("data-mantine-shared-portal-node", "true");
+    document.body.appendChild(node);
+    return node;
+  }
+  return createPortalNode(others);
+}
+const defaultProps = {
+  reuseTargetNode: true
+};
+const Portal = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__.factory)((props, ref) => {
+  const { children, target, reuseTargetNode, ...others } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__.useProps)("Portal", defaultProps, props);
+  const [mounted, setMounted] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const nodeRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_6__.useIsomorphicEffect)(() => {
+    setMounted(true);
+    nodeRef.current = getTargetNode({ target, reuseTargetNode, ...others });
+    (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_7__.assignRef)(ref, nodeRef.current);
+    if (!target && !reuseTargetNode && nodeRef.current) {
+      document.body.appendChild(nodeRef.current);
+    }
+    return () => {
+      if (!target && !reuseTargetNode && nodeRef.current) {
+        document.body.removeChild(nodeRef.current);
+      }
+    };
+  }, [target]);
+  if (!mounted || !nodeRef.current) {
+    return null;
+  }
+  return (0,react_dom__WEBPACK_IMPORTED_MODULE_2__.createPortal)(/* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children }), nodeRef.current);
+});
+Portal.displayName = "@mantine/core/Portal";
+
+
+//# sourceMappingURL=Portal.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaProvider: () => (/* binding */ ScrollAreaProvider),
+/* harmony export */   useScrollAreaContext: () => (/* binding */ useScrollAreaContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [ScrollAreaProvider, useScrollAreaContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
+  "ScrollArea.Root component was not found in tree"
+);
+
+
+//# sourceMappingURL=ScrollArea.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollArea: () => (/* binding */ ScrollArea),
+/* harmony export */   ScrollAreaAutosize: () => (/* binding */ ScrollAreaAutosize)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react/dist/floating-ui.react.mjs");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ScrollAreaCorner_ScrollAreaCorner_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ScrollAreaCorner/ScrollAreaCorner.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaCorner/ScrollAreaCorner.mjs");
+/* harmony import */ var _ScrollAreaRoot_ScrollAreaRoot_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ScrollAreaRoot/ScrollAreaRoot.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaRoot/ScrollAreaRoot.mjs");
+/* harmony import */ var _ScrollAreaScrollbar_ScrollAreaScrollbar_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ScrollAreaScrollbar/ScrollAreaScrollbar.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbar.mjs");
+/* harmony import */ var _ScrollAreaThumb_ScrollAreaThumb_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ScrollAreaThumb/ScrollAreaThumb.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaThumb/ScrollAreaThumb.mjs");
+/* harmony import */ var _ScrollAreaViewport_ScrollAreaViewport_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ScrollAreaViewport/ScrollAreaViewport.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaViewport/ScrollAreaViewport.mjs");
+/* harmony import */ var _ScrollArea_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ScrollArea.module.css.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  scrollHideDelay: 1e3,
+  type: "hover",
+  scrollbars: "xy"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)(
+  (_, { scrollbarSize, overscrollBehavior }) => ({
+    root: {
+      "--scrollarea-scrollbar-size": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__.rem)(scrollbarSize),
+      "--scrollarea-over-scroll-behavior": overscrollBehavior
+    }
+  })
+);
+const ScrollArea = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ScrollArea", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    scrollbarSize,
+    vars,
+    type,
+    scrollHideDelay,
+    viewportProps,
+    viewportRef,
+    onScrollPositionChange,
+    children,
+    offsetScrollbars,
+    scrollbars,
+    onBottomReached,
+    onTopReached,
+    overscrollBehavior,
+    ...others
+  } = props;
+  const [scrollbarHovered, setScrollbarHovered] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const [verticalThumbVisible, setVerticalThumbVisible] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const [horizontalThumbVisible, setHorizontalThumbVisible] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "ScrollArea",
+    props,
+    classes: _ScrollArea_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  const localViewportRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const combinedViewportRef = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_9__.useMergeRefs)([viewportRef, localViewportRef]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (!localViewportRef.current) {
+      return;
+    }
+    if (offsetScrollbars !== "present") {
+      return;
+    }
+    const element = localViewportRef.current;
+    const observer = new ResizeObserver(() => {
+      const { scrollHeight, clientHeight, scrollWidth, clientWidth } = element;
+      setVerticalThumbVisible(scrollHeight > clientHeight);
+      setHorizontalThumbVisible(scrollWidth > clientWidth);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [localViewportRef, offsetScrollbars]);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _ScrollAreaRoot_ScrollAreaRoot_mjs__WEBPACK_IMPORTED_MODULE_10__.ScrollAreaRoot,
+    {
+      getStyles,
+      type: type === "never" ? "always" : type,
+      scrollHideDelay,
+      ref,
+      scrollbars,
+      ...getStyles("root"),
+      ...others,
+      children: [
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _ScrollAreaViewport_ScrollAreaViewport_mjs__WEBPACK_IMPORTED_MODULE_11__.ScrollAreaViewport,
+          {
+            ...viewportProps,
+            ...getStyles("viewport", { style: viewportProps?.style }),
+            ref: combinedViewportRef,
+            "data-offset-scrollbars": offsetScrollbars === true ? "xy" : offsetScrollbars || void 0,
+            "data-scrollbars": scrollbars || void 0,
+            "data-horizontal-hidden": offsetScrollbars === "present" && !horizontalThumbVisible ? "true" : void 0,
+            "data-vertical-hidden": offsetScrollbars === "present" && !verticalThumbVisible ? "true" : void 0,
+            onScroll: (e) => {
+              viewportProps?.onScroll?.(e);
+              onScrollPositionChange?.({ x: e.currentTarget.scrollLeft, y: e.currentTarget.scrollTop });
+              const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+              if (scrollTop - (scrollHeight - clientHeight) >= -0.6) {
+                onBottomReached?.();
+              }
+              if (scrollTop === 0) {
+                onTopReached?.();
+              }
+            },
+            children
+          }
+        ),
+        (scrollbars === "xy" || scrollbars === "x") && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _ScrollAreaScrollbar_ScrollAreaScrollbar_mjs__WEBPACK_IMPORTED_MODULE_12__.ScrollAreaScrollbar,
+          {
+            ...getStyles("scrollbar"),
+            orientation: "horizontal",
+            "data-hidden": type === "never" || offsetScrollbars === "present" && !horizontalThumbVisible ? true : void 0,
+            forceMount: true,
+            onMouseEnter: () => setScrollbarHovered(true),
+            onMouseLeave: () => setScrollbarHovered(false),
+            children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaThumb_ScrollAreaThumb_mjs__WEBPACK_IMPORTED_MODULE_13__.ScrollAreaThumb, { ...getStyles("thumb") })
+          }
+        ),
+        (scrollbars === "xy" || scrollbars === "y") && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _ScrollAreaScrollbar_ScrollAreaScrollbar_mjs__WEBPACK_IMPORTED_MODULE_12__.ScrollAreaScrollbar,
+          {
+            ...getStyles("scrollbar"),
+            orientation: "vertical",
+            "data-hidden": type === "never" || offsetScrollbars === "present" && !verticalThumbVisible ? true : void 0,
+            forceMount: true,
+            onMouseEnter: () => setScrollbarHovered(true),
+            onMouseLeave: () => setScrollbarHovered(false),
+            children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaThumb_ScrollAreaThumb_mjs__WEBPACK_IMPORTED_MODULE_13__.ScrollAreaThumb, { ...getStyles("thumb") })
+          }
+        ),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _ScrollAreaCorner_ScrollAreaCorner_mjs__WEBPACK_IMPORTED_MODULE_14__.ScrollAreaCorner,
+          {
+            ...getStyles("corner"),
+            "data-hovered": scrollbarHovered || void 0,
+            "data-hidden": type === "never" || void 0
+          }
+        )
+      ]
+    }
+  );
+});
+ScrollArea.displayName = "@mantine/core/ScrollArea";
+const ScrollAreaAutosize = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((props, ref) => {
+  const {
+    children,
+    classNames,
+    styles,
+    scrollbarSize,
+    scrollHideDelay,
+    type,
+    dir,
+    offsetScrollbars,
+    viewportRef,
+    onScrollPositionChange,
+    unstyled,
+    variant,
+    viewportProps,
+    scrollbars,
+    style,
+    vars,
+    onBottomReached,
+    onTopReached,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ScrollAreaAutosize", defaultProps, props);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_15__.Box, { ...others, ref, style: [{ display: "flex", overflow: "auto" }, style], children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_15__.Box, { style: { display: "flex", flexDirection: "column", flex: 1 }, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    ScrollArea,
+    {
+      classNames,
+      styles,
+      scrollHideDelay,
+      scrollbarSize,
+      type,
+      dir,
+      offsetScrollbars,
+      viewportRef,
+      onScrollPositionChange,
+      unstyled,
+      variant,
+      viewportProps,
+      vars,
+      scrollbars,
+      onBottomReached,
+      onTopReached,
+      children
+    }
+  ) }) });
+});
+ScrollArea.classes = _ScrollArea_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ScrollAreaAutosize.displayName = "@mantine/core/ScrollAreaAutosize";
+ScrollAreaAutosize.classes = _ScrollArea_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ScrollArea.Autosize = ScrollAreaAutosize;
+
+
+//# sourceMappingURL=ScrollArea.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.module.css.mjs":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.module.css.mjs ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_d57069b5","viewport":"m_c0783ff9","viewportInner":"m_f8f631dd","scrollbar":"m_c44ba933","thumb":"m_d8b5e363","corner":"m_21657268","content":"m_b1336c6"};
+
+
+//# sourceMappingURL=ScrollArea.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaCorner/ScrollAreaCorner.mjs":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaCorner/ScrollAreaCorner.mjs ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Corner: () => (/* binding */ Corner),
+/* harmony export */   ScrollAreaCorner: () => (/* binding */ ScrollAreaCorner)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../use-resize-observer.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/use-resize-observer.mjs");
+'use client';
+
+
+
+
+
+const Corner = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((props, ref) => {
+  const { style, ...others } = props;
+  const ctx = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+  const [width, setWidth] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  const [height, setHeight] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  const hasSize = Boolean(width && height);
+  (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_3__.useResizeObserver)(ctx.scrollbarX, () => {
+    const h = ctx.scrollbarX?.offsetHeight || 0;
+    ctx.onCornerHeightChange(h);
+    setHeight(h);
+  });
+  (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_3__.useResizeObserver)(ctx.scrollbarY, () => {
+    const w = ctx.scrollbarY?.offsetWidth || 0;
+    ctx.onCornerWidthChange(w);
+    setWidth(w);
+  });
+  return hasSize ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { ...others, ref, style: { ...style, width, height } }) : null;
+});
+const ScrollAreaCorner = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((props, ref) => {
+  const ctx = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+  const hasBothScrollbarsVisible = Boolean(ctx.scrollbarX && ctx.scrollbarY);
+  const hasCorner = ctx.type !== "scroll" && hasBothScrollbarsVisible;
+  return hasCorner ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Corner, { ...props, ref }) : null;
+});
+
+
+//# sourceMappingURL=ScrollAreaCorner.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaRoot/ScrollAreaRoot.mjs":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaRoot/ScrollAreaRoot.mjs ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaRoot: () => (/* binding */ ScrollAreaRoot)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  scrollHideDelay: 1e3,
+  type: "hover"
+};
+const ScrollAreaRoot = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((_props, ref) => {
+  const { type, scrollHideDelay, scrollbars, getStyles, ...others } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__.useProps)(
+    "ScrollAreaRoot",
+    defaultProps,
+    _props
+  );
+  const [scrollArea, setScrollArea] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [viewport, setViewport] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [content, setContent] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [scrollbarX, setScrollbarX] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [scrollbarY, setScrollbarY] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [cornerWidth, setCornerWidth] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  const [cornerHeight, setCornerHeight] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  const [scrollbarXEnabled, setScrollbarXEnabled] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const [scrollbarYEnabled, setScrollbarYEnabled] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const rootRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRef)(ref, (node) => setScrollArea(node));
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_5__.ScrollAreaProvider,
+    {
+      value: {
+        type,
+        scrollHideDelay,
+        scrollArea,
+        viewport,
+        onViewportChange: setViewport,
+        content,
+        onContentChange: setContent,
+        scrollbarX,
+        onScrollbarXChange: setScrollbarX,
+        scrollbarXEnabled,
+        onScrollbarXEnabledChange: setScrollbarXEnabled,
+        scrollbarY,
+        onScrollbarYChange: setScrollbarY,
+        scrollbarYEnabled,
+        onScrollbarYEnabledChange: setScrollbarYEnabled,
+        onCornerWidthChange: setCornerWidth,
+        onCornerHeightChange: setCornerHeight,
+        getStyles
+      },
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_6__.Box,
+        {
+          ...others,
+          ref: rootRef,
+          __vars: {
+            "--sa-corner-width": scrollbars !== "xy" ? "0px" : `${cornerWidth}px`,
+            "--sa-corner-height": scrollbars !== "xy" ? "0px" : `${cornerHeight}px`
+          }
+        }
+      )
+    }
+  );
+});
+ScrollAreaRoot.displayName = "@mantine/core/ScrollAreaRoot";
+
+
+//# sourceMappingURL=ScrollAreaRoot.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbar.mjs":
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbar.mjs ***!
+  \**********************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbar: () => (/* binding */ ScrollAreaScrollbar)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _ScrollAreaScrollbarAuto_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ScrollAreaScrollbarAuto.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarAuto.mjs");
+/* harmony import */ var _ScrollAreaScrollbarHover_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ScrollAreaScrollbarHover.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarHover.mjs");
+/* harmony import */ var _ScrollAreaScrollbarScroll_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ScrollAreaScrollbarScroll.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarScroll.mjs");
+/* harmony import */ var _ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ScrollAreaScrollbarVisible.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarVisible.mjs");
+'use client';
+
+
+
+
+
+
+
+
+const ScrollAreaScrollbar = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, forwardedRef) => {
+    const { forceMount, ...scrollbarProps } = props;
+    const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const { onScrollbarXEnabledChange, onScrollbarYEnabledChange } = context;
+    const isHorizontal = props.orientation === "horizontal";
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      isHorizontal ? onScrollbarXEnabledChange(true) : onScrollbarYEnabledChange(true);
+      return () => {
+        isHorizontal ? onScrollbarXEnabledChange(false) : onScrollbarYEnabledChange(false);
+      };
+    }, [isHorizontal, onScrollbarXEnabledChange, onScrollbarYEnabledChange]);
+    return context.type === "hover" ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaScrollbarHover_mjs__WEBPACK_IMPORTED_MODULE_3__.ScrollAreaScrollbarHover, { ...scrollbarProps, ref: forwardedRef, forceMount }) : context.type === "scroll" ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaScrollbarScroll_mjs__WEBPACK_IMPORTED_MODULE_4__.ScrollAreaScrollbarScroll, { ...scrollbarProps, ref: forwardedRef, forceMount }) : context.type === "auto" ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaScrollbarAuto_mjs__WEBPACK_IMPORTED_MODULE_5__.ScrollAreaScrollbarAuto, { ...scrollbarProps, ref: forwardedRef, forceMount }) : context.type === "always" ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_6__.ScrollAreaScrollbarVisible, { ...scrollbarProps, ref: forwardedRef }) : null;
+  }
+);
+ScrollAreaScrollbar.displayName = "@mantine/core/ScrollAreaScrollbar";
+
+
+//# sourceMappingURL=ScrollAreaScrollbar.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarAuto.mjs":
+/*!**************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarAuto.mjs ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarAuto: () => (/* binding */ ScrollAreaScrollbarAuto)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../use-resize-observer.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/use-resize-observer.mjs");
+/* harmony import */ var _ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ScrollAreaScrollbarVisible.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarVisible.mjs");
+'use client';
+
+
+
+
+
+
+
+const ScrollAreaScrollbarAuto = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, ref) => {
+    const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const { forceMount, ...scrollbarProps } = props;
+    const [visible, setVisible] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const isHorizontal = props.orientation === "horizontal";
+    const handleResize = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDebouncedCallback)(() => {
+      if (context.viewport) {
+        const isOverflowX = context.viewport.offsetWidth < context.viewport.scrollWidth;
+        const isOverflowY = context.viewport.offsetHeight < context.viewport.scrollHeight;
+        setVisible(isHorizontal ? isOverflowX : isOverflowY);
+      }
+    }, 10);
+    (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_4__.useResizeObserver)(context.viewport, handleResize);
+    (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_4__.useResizeObserver)(context.content, handleResize);
+    if (forceMount || visible) {
+      return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        _ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_5__.ScrollAreaScrollbarVisible,
+        {
+          "data-state": visible ? "visible" : "hidden",
+          ...scrollbarProps,
+          ref
+        }
+      );
+    }
+    return null;
+  }
+);
+ScrollAreaScrollbarAuto.displayName = "@mantine/core/ScrollAreaScrollbarAuto";
+
+
+//# sourceMappingURL=ScrollAreaScrollbarAuto.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarHover.mjs":
+/*!***************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarHover.mjs ***!
+  \***************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarHover: () => (/* binding */ ScrollAreaScrollbarHover)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _ScrollAreaScrollbarAuto_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ScrollAreaScrollbarAuto.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarAuto.mjs");
+'use client';
+
+
+
+
+
+const ScrollAreaScrollbarHover = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, ref) => {
+    const { forceMount, ...scrollbarProps } = props;
+    const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const [visible, setVisible] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      const { scrollArea } = context;
+      let hideTimer = 0;
+      if (scrollArea) {
+        const handlePointerEnter = () => {
+          window.clearTimeout(hideTimer);
+          setVisible(true);
+        };
+        const handlePointerLeave = () => {
+          hideTimer = window.setTimeout(() => setVisible(false), context.scrollHideDelay);
+        };
+        scrollArea.addEventListener("pointerenter", handlePointerEnter);
+        scrollArea.addEventListener("pointerleave", handlePointerLeave);
+        return () => {
+          window.clearTimeout(hideTimer);
+          scrollArea.removeEventListener("pointerenter", handlePointerEnter);
+          scrollArea.removeEventListener("pointerleave", handlePointerLeave);
+        };
+      }
+      return void 0;
+    }, [context.scrollArea, context.scrollHideDelay]);
+    if (forceMount || visible) {
+      return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        _ScrollAreaScrollbarAuto_mjs__WEBPACK_IMPORTED_MODULE_3__.ScrollAreaScrollbarAuto,
+        {
+          "data-state": visible ? "visible" : "hidden",
+          ...scrollbarProps,
+          ref
+        }
+      );
+    }
+    return null;
+  }
+);
+ScrollAreaScrollbarHover.displayName = "@mantine/core/ScrollAreaScrollbarHover";
+
+
+//# sourceMappingURL=ScrollAreaScrollbarHover.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarScroll.mjs":
+/*!****************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarScroll.mjs ***!
+  \****************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarScroll: () => (/* binding */ ScrollAreaScrollbarScroll)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/compose-event-handlers.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/compose-event-handlers.mjs");
+/* harmony import */ var _ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ScrollAreaScrollbarVisible.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarVisible.mjs");
+'use client';
+
+
+
+
+
+
+
+const ScrollAreaScrollbarScroll = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, red) => {
+    const { forceMount, ...scrollbarProps } = props;
+    const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const isHorizontal = props.orientation === "horizontal";
+    const [state, setState] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)("hidden");
+    const debounceScrollEnd = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDebouncedCallback)(() => setState("idle"), 100);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      if (state === "idle") {
+        const hideTimer = window.setTimeout(() => setState("hidden"), context.scrollHideDelay);
+        return () => window.clearTimeout(hideTimer);
+      }
+      return void 0;
+    }, [state, context.scrollHideDelay]);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      const { viewport } = context;
+      const scrollDirection = isHorizontal ? "scrollLeft" : "scrollTop";
+      if (viewport) {
+        let prevScrollPos = viewport[scrollDirection];
+        const handleScroll = () => {
+          const scrollPos = viewport[scrollDirection];
+          const hasScrollInDirectionChanged = prevScrollPos !== scrollPos;
+          if (hasScrollInDirectionChanged) {
+            setState("scrolling");
+            debounceScrollEnd();
+          }
+          prevScrollPos = scrollPos;
+        };
+        viewport.addEventListener("scroll", handleScroll);
+        return () => viewport.removeEventListener("scroll", handleScroll);
+      }
+      return void 0;
+    }, [context.viewport, isHorizontal, debounceScrollEnd]);
+    if (forceMount || state !== "hidden") {
+      return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        _ScrollAreaScrollbarVisible_mjs__WEBPACK_IMPORTED_MODULE_4__.ScrollAreaScrollbarVisible,
+        {
+          "data-state": state === "hidden" ? "hidden" : "visible",
+          ...scrollbarProps,
+          ref: red,
+          onPointerEnter: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_5__.composeEventHandlers)(props.onPointerEnter, () => setState("interacting")),
+          onPointerLeave: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_5__.composeEventHandlers)(props.onPointerLeave, () => setState("idle"))
+        }
+      );
+    }
+    return null;
+  }
+);
+
+
+//# sourceMappingURL=ScrollAreaScrollbarScroll.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarVisible.mjs":
+/*!*****************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollAreaScrollbarVisible.mjs ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarVisible: () => (/* binding */ ScrollAreaScrollbarVisible)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/DirectionProvider/DirectionProvider.mjs */ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _utils_get_thumb_ratio_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/get-thumb-ratio.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-ratio.mjs");
+/* harmony import */ var _utils_get_thumb_offset_from_scroll_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/get-thumb-offset-from-scroll.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-offset-from-scroll.mjs");
+/* harmony import */ var _utils_get_scroll_position_from_pointer_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/get-scroll-position-from-pointer.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-scroll-position-from-pointer.mjs");
+/* harmony import */ var _ScrollbarX_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ScrollbarX.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarX.mjs");
+/* harmony import */ var _ScrollbarY_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ScrollbarY.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarY.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ScrollAreaScrollbarVisible = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((props, forwardedRef) => {
+  const { orientation = "vertical", ...scrollbarProps } = props;
+  const { dir } = (0,_core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_3__.useDirection)();
+  const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_4__.useScrollAreaContext)();
+  const thumbRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const pointerOffsetRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(0);
+  const [sizes, setSizes] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+    content: 0,
+    viewport: 0,
+    scrollbar: { size: 0, paddingStart: 0, paddingEnd: 0 }
+  });
+  const thumbRatio = (0,_utils_get_thumb_ratio_mjs__WEBPACK_IMPORTED_MODULE_5__.getThumbRatio)(sizes.viewport, sizes.content);
+  const commonProps = {
+    ...scrollbarProps,
+    sizes,
+    onSizesChange: setSizes,
+    hasThumb: Boolean(thumbRatio > 0 && thumbRatio < 1),
+    onThumbChange: (thumb) => {
+      thumbRef.current = thumb;
+    },
+    onThumbPointerUp: () => {
+      pointerOffsetRef.current = 0;
+    },
+    onThumbPointerDown: (pointerPos) => {
+      pointerOffsetRef.current = pointerPos;
+    }
+  };
+  const getScrollPosition = (pointerPos, direction) => (0,_utils_get_scroll_position_from_pointer_mjs__WEBPACK_IMPORTED_MODULE_6__.getScrollPositionFromPointer)(pointerPos, pointerOffsetRef.current, sizes, direction);
+  if (orientation === "horizontal") {
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _ScrollbarX_mjs__WEBPACK_IMPORTED_MODULE_7__.ScrollAreaScrollbarX,
+      {
+        ...commonProps,
+        ref: forwardedRef,
+        onThumbPositionChange: () => {
+          if (context.viewport && thumbRef.current) {
+            const scrollPos = context.viewport.scrollLeft;
+            const offset = (0,_utils_get_thumb_offset_from_scroll_mjs__WEBPACK_IMPORTED_MODULE_8__.getThumbOffsetFromScroll)(scrollPos, sizes, dir);
+            thumbRef.current.style.transform = `translate3d(${offset}px, 0, 0)`;
+          }
+        },
+        onWheelScroll: (scrollPos) => {
+          if (context.viewport) {
+            context.viewport.scrollLeft = scrollPos;
+          }
+        },
+        onDragScroll: (pointerPos) => {
+          if (context.viewport) {
+            context.viewport.scrollLeft = getScrollPosition(pointerPos, dir);
+          }
+        }
+      }
+    );
+  }
+  if (orientation === "vertical") {
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _ScrollbarY_mjs__WEBPACK_IMPORTED_MODULE_9__.ScrollAreaScrollbarY,
+      {
+        ...commonProps,
+        ref: forwardedRef,
+        onThumbPositionChange: () => {
+          if (context.viewport && thumbRef.current) {
+            const scrollPos = context.viewport.scrollTop;
+            const offset = (0,_utils_get_thumb_offset_from_scroll_mjs__WEBPACK_IMPORTED_MODULE_8__.getThumbOffsetFromScroll)(scrollPos, sizes);
+            if (sizes.scrollbar.size === 0) {
+              thumbRef.current.style.setProperty("--thumb-opacity", "0");
+            } else {
+              thumbRef.current.style.setProperty("--thumb-opacity", "1");
+            }
+            thumbRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
+          }
+        },
+        onWheelScroll: (scrollPos) => {
+          if (context.viewport) {
+            context.viewport.scrollTop = scrollPos;
+          }
+        },
+        onDragScroll: (pointerPos) => {
+          if (context.viewport) {
+            context.viewport.scrollTop = getScrollPosition(pointerPos);
+          }
+        }
+      }
+    );
+  }
+  return null;
+});
+ScrollAreaScrollbarVisible.displayName = "@mantine/core/ScrollAreaScrollbarVisible";
+
+
+//# sourceMappingURL=ScrollAreaScrollbarVisible.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.context.mjs":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.context.mjs ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollbarProvider: () => (/* binding */ ScrollbarProvider),
+/* harmony export */   useScrollbarContext: () => (/* binding */ useScrollbarContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [ScrollbarProvider, useScrollbarContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
+  "ScrollAreaScrollbar was not found in tree"
+);
+
+
+//# sourceMappingURL=Scrollbar.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.mjs":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.mjs ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Scrollbar: () => (/* binding */ Scrollbar)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/utils/use-callback-ref/use-callback-ref.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../use-resize-observer.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/use-resize-observer.mjs");
+/* harmony import */ var _utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/compose-event-handlers.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/compose-event-handlers.mjs");
+/* harmony import */ var _Scrollbar_context_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Scrollbar.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.context.mjs");
+'use client';
+
+
+
+
+
+
+
+
+const Scrollbar = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((props, forwardedRef) => {
+  const {
+    sizes,
+    hasThumb,
+    onThumbChange,
+    onThumbPointerUp,
+    onThumbPointerDown,
+    onThumbPositionChange,
+    onDragScroll,
+    onWheelScroll,
+    onResize,
+    ...scrollbarProps
+  } = props;
+  const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+  const [scrollbar, setScrollbar] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const composeRefs = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useMergedRef)(forwardedRef, (node) => setScrollbar(node));
+  const rectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const prevWebkitUserSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)("");
+  const { viewport } = context;
+  const maxScrollPos = sizes.content - sizes.viewport;
+  const handleWheelScroll = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useCallbackRef)(onWheelScroll);
+  const handleThumbPositionChange = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useCallbackRef)(onThumbPositionChange);
+  const handleResize = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_5__.useDebouncedCallback)(onResize, 10);
+  const handleDragScroll = (event) => {
+    if (rectRef.current) {
+      const x = event.clientX - rectRef.current.left;
+      const y = event.clientY - rectRef.current.top;
+      onDragScroll({ x, y });
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    const handleWheel = (event) => {
+      const element = event.target;
+      const isScrollbarWheel = scrollbar?.contains(element);
+      if (isScrollbarWheel) {
+        handleWheelScroll(event, maxScrollPos);
+      }
+    };
+    document.addEventListener("wheel", handleWheel, { passive: false });
+    return () => document.removeEventListener("wheel", handleWheel, { passive: false });
+  }, [viewport, scrollbar, maxScrollPos, handleWheelScroll]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(handleThumbPositionChange, [sizes, handleThumbPositionChange]);
+  (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_6__.useResizeObserver)(scrollbar, handleResize);
+  (0,_use_resize_observer_mjs__WEBPACK_IMPORTED_MODULE_6__.useResizeObserver)(context.content, handleResize);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _Scrollbar_context_mjs__WEBPACK_IMPORTED_MODULE_7__.ScrollbarProvider,
+    {
+      value: {
+        scrollbar,
+        hasThumb,
+        onThumbChange: (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useCallbackRef)(onThumbChange),
+        onThumbPointerUp: (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useCallbackRef)(onThumbPointerUp),
+        onThumbPositionChange: handleThumbPositionChange,
+        onThumbPointerDown: (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useCallbackRef)(onThumbPointerDown)
+      },
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        "div",
+        {
+          ...scrollbarProps,
+          ref: composeRefs,
+          "data-mantine-scrollbar": true,
+          style: { position: "absolute", ...scrollbarProps.style },
+          onPointerDown: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_8__.composeEventHandlers)(props.onPointerDown, (event) => {
+            event.preventDefault();
+            const mainPointer = 0;
+            if (event.button === mainPointer) {
+              const element = event.target;
+              element.setPointerCapture(event.pointerId);
+              rectRef.current = scrollbar.getBoundingClientRect();
+              prevWebkitUserSelectRef.current = document.body.style.webkitUserSelect;
+              document.body.style.webkitUserSelect = "none";
+              handleDragScroll(event);
+            }
+          }),
+          onPointerMove: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_8__.composeEventHandlers)(props.onPointerMove, handleDragScroll),
+          onPointerUp: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_8__.composeEventHandlers)(props.onPointerUp, (event) => {
+            const element = event.target;
+            if (element.hasPointerCapture(event.pointerId)) {
+              event.preventDefault();
+              element.releasePointerCapture(event.pointerId);
+            }
+          }),
+          onLostPointerCapture: () => {
+            document.body.style.webkitUserSelect = prevWebkitUserSelectRef.current;
+            rectRef.current = null;
+          }
+        }
+      )
+    }
+  );
+});
+
+
+//# sourceMappingURL=Scrollbar.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarX.mjs":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarX.mjs ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarX: () => (/* binding */ ScrollAreaScrollbarX)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _utils_is_scrolling_within_scrollbar_bounds_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/is-scrolling-within-scrollbar-bounds.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/is-scrolling-within-scrollbar-bounds.mjs");
+/* harmony import */ var _utils_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/get-thumb-size.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs");
+/* harmony import */ var _utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/to-int.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/to-int.mjs");
+/* harmony import */ var _Scrollbar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Scrollbar.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+const ScrollAreaScrollbarX = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, forwardedRef) => {
+    const { sizes, onSizesChange, style, ...others } = props;
+    const ctx = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const [computedStyle, setComputedStyle] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)();
+    const ref = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+    const composeRefs = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useMergedRef)(forwardedRef, ref, ctx.onScrollbarXChange);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      if (ref.current) {
+        setComputedStyle(getComputedStyle(ref.current));
+      }
+    }, [ref]);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _Scrollbar_mjs__WEBPACK_IMPORTED_MODULE_4__.Scrollbar,
+      {
+        "data-orientation": "horizontal",
+        ...others,
+        ref: composeRefs,
+        sizes,
+        style: {
+          ...style,
+          ["--sa-thumb-width"]: `${(0,_utils_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getThumbSize)(sizes)}px`
+        },
+        onThumbPointerDown: (pointerPos) => props.onThumbPointerDown(pointerPos.x),
+        onDragScroll: (pointerPos) => props.onDragScroll(pointerPos.x),
+        onWheelScroll: (event, maxScrollPos) => {
+          if (ctx.viewport) {
+            const scrollPos = ctx.viewport.scrollLeft + event.deltaX;
+            props.onWheelScroll(scrollPos);
+            if ((0,_utils_is_scrolling_within_scrollbar_bounds_mjs__WEBPACK_IMPORTED_MODULE_6__.isScrollingWithinScrollbarBounds)(scrollPos, maxScrollPos)) {
+              event.preventDefault();
+            }
+          }
+        },
+        onResize: () => {
+          if (ref.current && ctx.viewport && computedStyle) {
+            onSizesChange({
+              content: ctx.viewport.scrollWidth,
+              viewport: ctx.viewport.offsetWidth,
+              scrollbar: {
+                size: ref.current.clientWidth,
+                paddingStart: (0,_utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__.toInt)(computedStyle.paddingLeft),
+                paddingEnd: (0,_utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__.toInt)(computedStyle.paddingRight)
+              }
+            });
+          }
+        }
+      }
+    );
+  }
+);
+ScrollAreaScrollbarX.displayName = "@mantine/core/ScrollAreaScrollbarX";
+
+
+//# sourceMappingURL=ScrollbarX.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarY.mjs":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/ScrollbarY.mjs ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaScrollbarY: () => (/* binding */ ScrollAreaScrollbarY)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _utils_is_scrolling_within_scrollbar_bounds_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/is-scrolling-within-scrollbar-bounds.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/is-scrolling-within-scrollbar-bounds.mjs");
+/* harmony import */ var _utils_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/get-thumb-size.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs");
+/* harmony import */ var _utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/to-int.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/to-int.mjs");
+/* harmony import */ var _Scrollbar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Scrollbar.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+const ScrollAreaScrollbarY = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, forwardedRef) => {
+    const { sizes, onSizesChange, style, ...others } = props;
+    const context = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+    const [computedStyle, setComputedStyle] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)();
+    const ref = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+    const composeRefs = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useMergedRef)(forwardedRef, ref, context.onScrollbarYChange);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+      if (ref.current) {
+        setComputedStyle(window.getComputedStyle(ref.current));
+      }
+    }, []);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _Scrollbar_mjs__WEBPACK_IMPORTED_MODULE_4__.Scrollbar,
+      {
+        ...others,
+        "data-orientation": "vertical",
+        ref: composeRefs,
+        sizes,
+        style: {
+          ["--sa-thumb-height"]: `${(0,_utils_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getThumbSize)(sizes)}px`,
+          ...style
+        },
+        onThumbPointerDown: (pointerPos) => props.onThumbPointerDown(pointerPos.y),
+        onDragScroll: (pointerPos) => props.onDragScroll(pointerPos.y),
+        onWheelScroll: (event, maxScrollPos) => {
+          if (context.viewport) {
+            const scrollPos = context.viewport.scrollTop + event.deltaY;
+            props.onWheelScroll(scrollPos);
+            if ((0,_utils_is_scrolling_within_scrollbar_bounds_mjs__WEBPACK_IMPORTED_MODULE_6__.isScrollingWithinScrollbarBounds)(scrollPos, maxScrollPos)) {
+              event.preventDefault();
+            }
+          }
+        },
+        onResize: () => {
+          if (ref.current && context.viewport && computedStyle) {
+            onSizesChange({
+              content: context.viewport.scrollHeight,
+              viewport: context.viewport.offsetHeight,
+              scrollbar: {
+                size: ref.current.clientHeight,
+                paddingStart: (0,_utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__.toInt)(computedStyle.paddingTop),
+                paddingEnd: (0,_utils_to_int_mjs__WEBPACK_IMPORTED_MODULE_7__.toInt)(computedStyle.paddingBottom)
+              }
+            });
+          }
+        }
+      }
+    );
+  }
+);
+ScrollAreaScrollbarY.displayName = "@mantine/core/ScrollAreaScrollbarY";
+
+
+//# sourceMappingURL=ScrollbarY.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaThumb/ScrollAreaThumb.mjs":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaThumb/ScrollAreaThumb.mjs ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaThumb: () => (/* binding */ ScrollAreaThumb),
+/* harmony export */   Thumb: () => (/* binding */ Thumb)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+/* harmony import */ var _ScrollAreaScrollbar_Scrollbar_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ScrollAreaScrollbar/Scrollbar.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaScrollbar/Scrollbar.context.mjs");
+/* harmony import */ var _utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/compose-event-handlers.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/compose-event-handlers.mjs");
+/* harmony import */ var _utils_add_unlinked_scroll_listener_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/add-unlinked-scroll-listener.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/add-unlinked-scroll-listener.mjs");
+'use client';
+
+
+
+
+
+
+
+
+const Thumb = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)((props, forwardedRef) => {
+  const { style, ...others } = props;
+  const scrollAreaContext = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useScrollAreaContext)();
+  const scrollbarContext = (0,_ScrollAreaScrollbar_Scrollbar_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useScrollbarContext)();
+  const { onThumbPositionChange } = scrollbarContext;
+  const composedRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRef)(forwardedRef, (node) => scrollbarContext.onThumbChange(node));
+  const removeUnlinkedScrollListenerRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(void 0);
+  const debounceScrollEnd = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_5__.useDebouncedCallback)(() => {
+    if (removeUnlinkedScrollListenerRef.current) {
+      removeUnlinkedScrollListenerRef.current();
+      removeUnlinkedScrollListenerRef.current = void 0;
+    }
+  }, 100);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    const { viewport } = scrollAreaContext;
+    if (viewport) {
+      const handleScroll = () => {
+        debounceScrollEnd();
+        if (!removeUnlinkedScrollListenerRef.current) {
+          const listener = (0,_utils_add_unlinked_scroll_listener_mjs__WEBPACK_IMPORTED_MODULE_6__.addUnlinkedScrollListener)(viewport, onThumbPositionChange);
+          removeUnlinkedScrollListenerRef.current = listener;
+          onThumbPositionChange();
+        }
+      };
+      onThumbPositionChange();
+      viewport.addEventListener("scroll", handleScroll);
+      return () => viewport.removeEventListener("scroll", handleScroll);
+    }
+    return void 0;
+  }, [scrollAreaContext.viewport, debounceScrollEnd, onThumbPositionChange]);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    "div",
+    {
+      "data-state": scrollbarContext.hasThumb ? "visible" : "hidden",
+      ...others,
+      ref: composedRef,
+      style: {
+        width: "var(--sa-thumb-width)",
+        height: "var(--sa-thumb-height)",
+        ...style
+      },
+      onPointerDownCapture: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_7__.composeEventHandlers)(props.onPointerDownCapture, (event) => {
+        const thumb = event.target;
+        const thumbRect = thumb.getBoundingClientRect();
+        const x = event.clientX - thumbRect.left;
+        const y = event.clientY - thumbRect.top;
+        scrollbarContext.onThumbPointerDown({ x, y });
+      }),
+      onPointerUp: (0,_utils_compose_event_handlers_mjs__WEBPACK_IMPORTED_MODULE_7__.composeEventHandlers)(props.onPointerUp, scrollbarContext.onThumbPointerUp)
+    }
+  );
+});
+Thumb.displayName = "@mantine/core/ScrollAreaThumb";
+const ScrollAreaThumb = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  (props, forwardedRef) => {
+    const { forceMount, ...thumbProps } = props;
+    const scrollbarContext = (0,_ScrollAreaScrollbar_Scrollbar_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useScrollbarContext)();
+    if (forceMount || scrollbarContext.hasThumb) {
+      return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Thumb, { ref: forwardedRef, ...thumbProps });
+    }
+    return null;
+  }
+);
+ScrollAreaThumb.displayName = "@mantine/core/ScrollAreaThumb";
+
+
+//# sourceMappingURL=ScrollAreaThumb.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaViewport/ScrollAreaViewport.mjs":
+/*!********************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/ScrollAreaViewport/ScrollAreaViewport.mjs ***!
+  \********************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ScrollAreaViewport: () => (/* binding */ ScrollAreaViewport)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../ScrollArea.context.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.context.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ScrollAreaViewport = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ children, style, ...others }, ref) => {
+    const ctx = (0,_ScrollArea_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useScrollAreaContext)();
+    const rootRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_4__.useMergedRef)(ref, ctx.onViewportChange);
+    return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_5__.Box,
+      {
+        ...others,
+        ref: rootRef,
+        style: {
+          overflowX: ctx.scrollbarXEnabled ? "scroll" : "hidden",
+          overflowY: ctx.scrollbarYEnabled ? "scroll" : "hidden",
+          ...style
+        },
+        children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { ...ctx.getStyles("content"), ref: ctx.onContentChange, children })
+      }
+    );
+  }
+);
+ScrollAreaViewport.displayName = "@mantine/core/ScrollAreaViewport";
+
+
+//# sourceMappingURL=ScrollAreaViewport.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/use-resize-observer.mjs":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/use-resize-observer.mjs ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useResizeObserver: () => (/* binding */ useResizeObserver)
+/* harmony export */ });
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/utils/use-callback-ref/use-callback-ref.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs");
+'use client';
+
+
+function useResizeObserver(element, onResize) {
+  const handleResize = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_0__.useCallbackRef)(onResize);
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_1__.useIsomorphicEffect)(() => {
+    let rAF = 0;
+    if (element) {
+      const resizeObserver = new ResizeObserver(() => {
+        cancelAnimationFrame(rAF);
+        rAF = window.requestAnimationFrame(handleResize);
+      });
+      resizeObserver.observe(element);
+      return () => {
+        window.cancelAnimationFrame(rAF);
+        resizeObserver.unobserve(element);
+      };
+    }
+    return void 0;
+  }, [element, handleResize]);
+}
+
+
+//# sourceMappingURL=use-resize-observer.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/add-unlinked-scroll-listener.mjs":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/add-unlinked-scroll-listener.mjs ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addUnlinkedScrollListener: () => (/* binding */ addUnlinkedScrollListener)
+/* harmony export */ });
+'use client';
+function addUnlinkedScrollListener(node, handler = () => {
+}) {
+  let prevPosition = { left: node.scrollLeft, top: node.scrollTop };
+  let rAF = 0;
+  (function loop() {
+    const position = { left: node.scrollLeft, top: node.scrollTop };
+    const isHorizontalScroll = prevPosition.left !== position.left;
+    const isVerticalScroll = prevPosition.top !== position.top;
+    if (isHorizontalScroll || isVerticalScroll) {
+      handler();
+    }
+    prevPosition = position;
+    rAF = window.requestAnimationFrame(loop);
+  })();
+  return () => window.cancelAnimationFrame(rAF);
+}
+
+
+//# sourceMappingURL=add-unlinked-scroll-listener.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/compose-event-handlers.mjs":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/compose-event-handlers.mjs ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   composeEventHandlers: () => (/* binding */ composeEventHandlers)
+/* harmony export */ });
+'use client';
+function composeEventHandlers(originalEventHandler, ourEventHandler, { checkForDefaultPrevented = true } = {}) {
+  return (event) => {
+    originalEventHandler?.(event);
+    if (checkForDefaultPrevented === false || !event.defaultPrevented) {
+      ourEventHandler?.(event);
+    }
+  };
+}
+
+
+//# sourceMappingURL=compose-event-handlers.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-scroll-position-from-pointer.mjs":
+/*!*********************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-scroll-position-from-pointer.mjs ***!
+  \*********************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getScrollPositionFromPointer: () => (/* binding */ getScrollPositionFromPointer)
+/* harmony export */ });
+/* harmony import */ var _get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-thumb-size.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs");
+/* harmony import */ var _linear_scale_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./linear-scale.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/linear-scale.mjs");
+'use client';
+
+
+
+function getScrollPositionFromPointer(pointerPos, pointerOffset, sizes, dir = "ltr") {
+  const thumbSizePx = (0,_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_0__.getThumbSize)(sizes);
+  const thumbCenter = thumbSizePx / 2;
+  const offset = pointerOffset || thumbCenter;
+  const thumbOffsetFromEnd = thumbSizePx - offset;
+  const minPointerPos = sizes.scrollbar.paddingStart + offset;
+  const maxPointerPos = sizes.scrollbar.size - sizes.scrollbar.paddingEnd - thumbOffsetFromEnd;
+  const maxScrollPos = sizes.content - sizes.viewport;
+  const scrollRange = dir === "ltr" ? [0, maxScrollPos] : [maxScrollPos * -1, 0];
+  const interpolate = (0,_linear_scale_mjs__WEBPACK_IMPORTED_MODULE_1__.linearScale)([minPointerPos, maxPointerPos], scrollRange);
+  return interpolate(pointerPos);
+}
+
+
+//# sourceMappingURL=get-scroll-position-from-pointer.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-offset-from-scroll.mjs":
+/*!*****************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-offset-from-scroll.mjs ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getThumbOffsetFromScroll: () => (/* binding */ getThumbOffsetFromScroll)
+/* harmony export */ });
+/* harmony import */ var _get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-thumb-size.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs");
+/* harmony import */ var _linear_scale_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./linear-scale.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/linear-scale.mjs");
+'use client';
+
+
+
+function clamp(value, [min, max]) {
+  return Math.min(max, Math.max(min, value));
+}
+function getThumbOffsetFromScroll(scrollPos, sizes, dir = "ltr") {
+  const thumbSizePx = (0,_get_thumb_size_mjs__WEBPACK_IMPORTED_MODULE_0__.getThumbSize)(sizes);
+  const scrollbarPadding = sizes.scrollbar.paddingStart + sizes.scrollbar.paddingEnd;
+  const scrollbar = sizes.scrollbar.size - scrollbarPadding;
+  const maxScrollPos = sizes.content - sizes.viewport;
+  const maxThumbPos = scrollbar - thumbSizePx;
+  const scrollClampRange = dir === "ltr" ? [0, maxScrollPos] : [maxScrollPos * -1, 0];
+  const scrollWithoutMomentum = clamp(scrollPos, scrollClampRange);
+  const interpolate = (0,_linear_scale_mjs__WEBPACK_IMPORTED_MODULE_1__.linearScale)([0, maxScrollPos], [0, maxThumbPos]);
+  return interpolate(scrollWithoutMomentum);
+}
+
+
+//# sourceMappingURL=get-thumb-offset-from-scroll.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-ratio.mjs":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-ratio.mjs ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getThumbRatio: () => (/* binding */ getThumbRatio)
+/* harmony export */ });
+'use client';
+function getThumbRatio(viewportSize, contentSize) {
+  const ratio = viewportSize / contentSize;
+  return Number.isNaN(ratio) ? 0 : ratio;
+}
+
+
+//# sourceMappingURL=get-thumb-ratio.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-size.mjs ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getThumbSize: () => (/* binding */ getThumbSize)
+/* harmony export */ });
+/* harmony import */ var _get_thumb_ratio_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-thumb-ratio.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/get-thumb-ratio.mjs");
+'use client';
+
+
+function getThumbSize(sizes) {
+  const ratio = (0,_get_thumb_ratio_mjs__WEBPACK_IMPORTED_MODULE_0__.getThumbRatio)(sizes.viewport, sizes.content);
+  const scrollbarPadding = sizes.scrollbar.paddingStart + sizes.scrollbar.paddingEnd;
+  const thumbSize = (sizes.scrollbar.size - scrollbarPadding) * ratio;
+  return Math.max(thumbSize, 18);
+}
+
+
+//# sourceMappingURL=get-thumb-size.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/is-scrolling-within-scrollbar-bounds.mjs":
+/*!*************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/is-scrolling-within-scrollbar-bounds.mjs ***!
+  \*************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isScrollingWithinScrollbarBounds: () => (/* binding */ isScrollingWithinScrollbarBounds)
+/* harmony export */ });
+'use client';
+function isScrollingWithinScrollbarBounds(scrollPos, maxScrollPos) {
+  return scrollPos > 0 && scrollPos < maxScrollPos;
+}
+
+
+//# sourceMappingURL=is-scrolling-within-scrollbar-bounds.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/linear-scale.mjs":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/linear-scale.mjs ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   linearScale: () => (/* binding */ linearScale)
+/* harmony export */ });
+'use client';
+function linearScale(input, output) {
+  return (value) => {
+    if (input[0] === input[1] || output[0] === output[1]) {
+      return output[0];
+    }
+    const ratio = (output[1] - output[0]) / (input[1] - input[0]);
+    return output[0] + ratio * (value - input[0]);
+  };
+}
+
+
+//# sourceMappingURL=linear-scale.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/ScrollArea/utils/to-int.mjs":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/ScrollArea/utils/to-int.mjs ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   toInt: () => (/* binding */ toInt)
+/* harmony export */ });
+'use client';
+function toInt(value) {
+  return value ? parseInt(value, 10) : 0;
+}
+
+
+//# sourceMappingURL=to-int.mjs.map
 
 
 /***/ }),
@@ -4437,6 +16130,75 @@ TextInput.displayName = "@mantine/core/TextInput";
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Textarea/Textarea.mjs":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Textarea/Textarea.mjs ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Textarea: () => (/* binding */ Textarea)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_textarea_autosize__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-textarea-autosize */ "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.browser.development.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_env_get_env_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-env/get-env.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-env/get-env.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../InputBase/InputBase.mjs */ "./node_modules/@mantine/core/esm/components/InputBase/InputBase.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const Textarea = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((props, ref) => {
+  const { autosize, maxRows, minRows, __staticSelector, resize, ...others } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)(
+    "Textarea",
+    defaultProps,
+    props
+  );
+  const shouldAutosize = autosize && (0,_core_utils_get_env_get_env_mjs__WEBPACK_IMPORTED_MODULE_5__.getEnv)() !== "test";
+  const autosizeProps = shouldAutosize ? { maxRows, minRows } : {};
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_6__.InputBase,
+    {
+      component: shouldAutosize ? react_textarea_autosize__WEBPACK_IMPORTED_MODULE_7__["default"] : "textarea",
+      ref,
+      ...others,
+      __staticSelector: __staticSelector || "Textarea",
+      multiline: true,
+      "data-no-overflow": autosize && maxRows === void 0 || void 0,
+      __vars: { "--input-resize": resize },
+      ...autosizeProps
+    }
+  );
+});
+Textarea.classes = _InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_6__.InputBase.classes;
+Textarea.displayName = "@mantine/core/Textarea";
+
+
+//# sourceMappingURL=Textarea.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Title/Title.mjs":
 /*!*******************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Title/Title.mjs ***!
@@ -4625,6 +16387,741 @@ function getTitleSize(order, size) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Tooltip: () => (/* binding */ Tooltip)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/utils/is-element/is-element.mjs */ "./node_modules/@mantine/core/esm/core/utils/is-element/is-element.mjs");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_utils_get_ref_prop_get_ref_prop_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../core/utils/get-ref-prop/get-ref-prop.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-ref-prop/get-ref-prop.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/DirectionProvider/DirectionProvider.mjs */ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs");
+/* harmony import */ var _Floating_FloatingArrow_FloatingArrow_mjs__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../Floating/FloatingArrow/FloatingArrow.mjs */ "./node_modules/@mantine/core/esm/components/Floating/FloatingArrow/FloatingArrow.mjs");
+/* harmony import */ var _Floating_get_floating_position_get_floating_position_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Floating/get-floating-position/get-floating-position.mjs */ "./node_modules/@mantine/core/esm/components/Floating/get-floating-position/get-floating-position.mjs");
+/* harmony import */ var _Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../Portal/OptionalPortal.mjs */ "./node_modules/@mantine/core/esm/components/Portal/OptionalPortal.mjs");
+/* harmony import */ var _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../Transition/Transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs");
+/* harmony import */ var _Transition_get_transition_props_get_transition_props_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../Transition/get-transition-props/get-transition-props.mjs */ "./node_modules/@mantine/core/esm/components/Transition/get-transition-props/get-transition-props.mjs");
+/* harmony import */ var _TooltipFloating_TooltipFloating_mjs__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./TooltipFloating/TooltipFloating.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/TooltipFloating.mjs");
+/* harmony import */ var _TooltipGroup_TooltipGroup_mjs__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./TooltipGroup/TooltipGroup.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.mjs");
+/* harmony import */ var _use_tooltip_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./use-tooltip.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/use-tooltip.mjs");
+/* harmony import */ var _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Tooltip.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  position: "top",
+  refProp: "ref",
+  withinPortal: true,
+  arrowSize: 4,
+  arrowOffset: 5,
+  arrowRadius: 0,
+  arrowPosition: "side",
+  offset: 5,
+  transitionProps: { duration: 100, transition: "fade" },
+  events: { hover: true, focus: false, touch: false },
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("popover"),
+  positionDependencies: [],
+  middlewares: { flip: true, shift: true, inline: false }
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)(
+  (theme, { radius, color, variant, autoContrast }) => {
+    const colors = theme.variantColorResolver({
+      theme,
+      color: color || theme.primaryColor,
+      autoContrast,
+      variant: variant || "filled"
+    });
+    return {
+      tooltip: {
+        "--tooltip-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getRadius)(radius),
+        "--tooltip-bg": color ? colors.background : void 0,
+        "--tooltip-color": color ? colors.color : void 0
+      }
+    };
+  }
+);
+const Tooltip = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Tooltip", defaultProps, _props);
+  const {
+    children,
+    position,
+    refProp,
+    label,
+    openDelay,
+    closeDelay,
+    onPositionChange,
+    opened,
+    defaultOpened,
+    withinPortal,
+    radius,
+    color,
+    classNames,
+    styles,
+    unstyled,
+    style,
+    className,
+    withArrow,
+    arrowSize,
+    arrowOffset,
+    arrowRadius,
+    arrowPosition,
+    offset,
+    transitionProps,
+    multiline,
+    events,
+    zIndex,
+    disabled,
+    // Scheduled for removal in 9.0
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    positionDependencies,
+    onClick,
+    onMouseEnter,
+    onMouseLeave,
+    inline,
+    variant,
+    keepMounted,
+    vars,
+    portalProps,
+    mod,
+    floatingStrategy,
+    middlewares,
+    autoContrast,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Tooltip", defaultProps, props);
+  const { dir } = (0,_core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_8__.useDirection)();
+  const arrowRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const tooltip = (0,_use_tooltip_mjs__WEBPACK_IMPORTED_MODULE_9__.useTooltip)({
+    position: (0,_Floating_get_floating_position_get_floating_position_mjs__WEBPACK_IMPORTED_MODULE_10__.getFloatingPosition)(dir, position),
+    closeDelay,
+    openDelay,
+    onPositionChange,
+    opened,
+    defaultOpened,
+    events,
+    arrowRef,
+    arrowOffset,
+    offset: typeof offset === "number" ? offset + (withArrow ? arrowSize / 2 : 0) : offset,
+    positionDependencies: [...positionDependencies, children],
+    inline,
+    strategy: floatingStrategy,
+    middlewares
+  });
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_11__.useStyles)({
+    name: "Tooltip",
+    props,
+    classes: _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_12__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "tooltip",
+    vars,
+    varsResolver
+  });
+  if (!(0,_core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_13__.isElement)(children)) {
+    throw new Error(
+      "[@mantine/core] Tooltip component children should be an element or a component that accepts ref, fragments, strings, numbers and other primitive values are not supported"
+    );
+  }
+  const targetRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_14__.useMergedRef)(tooltip.reference, (0,_core_utils_get_ref_prop_get_ref_prop_mjs__WEBPACK_IMPORTED_MODULE_15__.getRefProp)(children), ref);
+  const transition = (0,_Transition_get_transition_props_get_transition_props_mjs__WEBPACK_IMPORTED_MODULE_16__.getTransitionProps)(transitionProps, { duration: 100, transition: "fade" });
+  const _childrenProps = children.props;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [
+    /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_17__.OptionalPortal, { ...portalProps, withinPortal, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_18__.Transition,
+      {
+        ...transition,
+        keepMounted,
+        mounted: !disabled && !!tooltip.opened,
+        duration: tooltip.isGroupPhase ? 10 : transition.duration,
+        children: (transitionStyles) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+          _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_19__.Box,
+          {
+            ...others,
+            "data-fixed": floatingStrategy === "fixed" || void 0,
+            variant,
+            mod: [{ multiline }, mod],
+            ...tooltip.getFloatingProps({
+              ref: tooltip.floating,
+              className: getStyles("tooltip").className,
+              style: {
+                ...getStyles("tooltip").style,
+                ...transitionStyles,
+                zIndex,
+                top: tooltip.y ?? 0,
+                left: tooltip.x ?? 0
+              }
+            }),
+            children: [
+              label,
+              /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+                _Floating_FloatingArrow_FloatingArrow_mjs__WEBPACK_IMPORTED_MODULE_20__.FloatingArrow,
+                {
+                  ref: arrowRef,
+                  arrowX: tooltip.arrowX,
+                  arrowY: tooltip.arrowY,
+                  visible: withArrow,
+                  position: tooltip.placement,
+                  arrowSize,
+                  arrowOffset,
+                  arrowRadius,
+                  arrowPosition,
+                  ...getStyles("arrow")
+                }
+              )
+            ]
+          }
+        )
+      }
+    ) }),
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.cloneElement)(
+      children,
+      tooltip.getReferenceProps({
+        onClick,
+        onMouseEnter,
+        onMouseLeave,
+        onMouseMove: props.onMouseMove,
+        onPointerDown: props.onPointerDown,
+        onPointerEnter: props.onPointerEnter,
+        className: (0,clsx__WEBPACK_IMPORTED_MODULE_2__["default"])(className, _childrenProps.className),
+        ..._childrenProps,
+        [refProp]: targetRef
+      })
+    )
+  ] });
+});
+Tooltip.classes = _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_12__["default"];
+Tooltip.displayName = "@mantine/core/Tooltip";
+Tooltip.Floating = _TooltipFloating_TooltipFloating_mjs__WEBPACK_IMPORTED_MODULE_21__.TooltipFloating;
+Tooltip.Group = _TooltipGroup_TooltipGroup_mjs__WEBPACK_IMPORTED_MODULE_22__.TooltipGroup;
+
+
+//# sourceMappingURL=Tooltip.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.module.css.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.module.css.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"tooltip":"m_1b3c8819","arrow":"m_f898399f"};
+
+
+//# sourceMappingURL=Tooltip.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/TooltipFloating.mjs":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/TooltipFloating.mjs ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TooltipFloating: () => (/* binding */ TooltipFloating)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs");
+/* harmony import */ var _core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../core/utils/is-element/is-element.mjs */ "./node_modules/@mantine/core/esm/core/utils/is-element/is-element.mjs");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_utils_get_ref_prop_get_ref_prop_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../../core/utils/get-ref-prop/get-ref-prop.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-ref-prop/get-ref-prop.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs");
+/* harmony import */ var _core_MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_get_style_object_get_style_object_mjs__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../../core/Box/get-style-object/get-style-object.mjs */ "./node_modules/@mantine/core/esm/core/Box/get-style-object/get-style-object.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../Portal/OptionalPortal.mjs */ "./node_modules/@mantine/core/esm/components/Portal/OptionalPortal.mjs");
+/* harmony import */ var _use_floating_tooltip_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./use-floating-tooltip.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/use-floating-tooltip.mjs");
+/* harmony import */ var _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Tooltip.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  refProp: "ref",
+  withinPortal: true,
+  offset: 10,
+  position: "right",
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("popover")
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)((theme, { radius, color }) => ({
+  tooltip: {
+    "--tooltip-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getRadius)(radius),
+    "--tooltip-bg": color ? (0,_core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_6__.getThemeColor)(color, theme) : void 0,
+    "--tooltip-color": color ? "var(--mantine-color-white)" : void 0
+  }
+}));
+const TooltipFloating = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__.useProps)("TooltipFloating", defaultProps, _props);
+  const {
+    children,
+    refProp,
+    withinPortal,
+    style,
+    className,
+    classNames,
+    styles,
+    unstyled,
+    radius,
+    color,
+    label,
+    offset,
+    position,
+    multiline,
+    zIndex,
+    disabled,
+    defaultOpened,
+    variant,
+    vars,
+    portalProps,
+    ...others
+  } = props;
+  const theme = (0,_core_MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_9__.useMantineTheme)();
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__.useStyles)({
+    name: "TooltipFloating",
+    props,
+    classes: _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "tooltip",
+    vars,
+    varsResolver
+  });
+  const { handleMouseMove, x, y, opened, boundaryRef, floating, setOpened } = (0,_use_floating_tooltip_mjs__WEBPACK_IMPORTED_MODULE_12__.useFloatingTooltip)({
+    offset,
+    position,
+    defaultOpened
+  });
+  if (!(0,_core_utils_is_element_is_element_mjs__WEBPACK_IMPORTED_MODULE_13__.isElement)(children)) {
+    throw new Error(
+      "[@mantine/core] Tooltip.Floating component children should be an element or a component that accepts ref, fragments, strings, numbers and other primitive values are not supported"
+    );
+  }
+  const targetRef = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_14__.useMergedRef)(boundaryRef, (0,_core_utils_get_ref_prop_get_ref_prop_mjs__WEBPACK_IMPORTED_MODULE_15__.getRefProp)(children), ref);
+  const _childrenProps = children.props;
+  const onMouseEnter = (event) => {
+    _childrenProps.onMouseEnter?.(event);
+    handleMouseMove(event);
+    setOpened(true);
+  };
+  const onMouseLeave = (event) => {
+    _childrenProps.onMouseLeave?.(event);
+    setOpened(false);
+  };
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [
+    /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Portal_OptionalPortal_mjs__WEBPACK_IMPORTED_MODULE_16__.OptionalPortal, { ...portalProps, withinPortal, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+      _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_17__.Box,
+      {
+        ...others,
+        ...getStyles("tooltip", {
+          style: {
+            ...(0,_core_Box_get_style_object_get_style_object_mjs__WEBPACK_IMPORTED_MODULE_18__.getStyleObject)(style, theme),
+            zIndex,
+            display: !disabled && opened ? "block" : "none",
+            top: (y && Math.round(y)) ?? "",
+            left: (x && Math.round(x)) ?? ""
+          }
+        }),
+        variant,
+        ref: floating,
+        mod: { multiline },
+        children: label
+      }
+    ) }),
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.cloneElement)(children, {
+      ..._childrenProps,
+      [refProp]: targetRef,
+      onMouseEnter,
+      onMouseLeave
+    })
+  ] });
+});
+TooltipFloating.classes = _Tooltip_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"];
+TooltipFloating.displayName = "@mantine/core/TooltipFloating";
+
+
+//# sourceMappingURL=TooltipFloating.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/use-floating-tooltip.mjs":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/TooltipFloating/use-floating-tooltip.mjs ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useFloatingTooltip: () => (/* binding */ useFloatingTooltip)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react/dist/floating-ui.react.mjs");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs");
+'use client';
+
+
+
+function useFloatingTooltip({
+  offset,
+  position,
+  defaultOpened
+}) {
+  const [opened, setOpened] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(defaultOpened);
+  const boundaryRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const { x, y, elements, refs, update, placement } = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.useFloating)({
+    placement: position,
+    middleware: [
+      (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_2__.shift)({
+        crossAxis: true,
+        padding: 5,
+        rootBoundary: "document"
+      })
+    ]
+  });
+  const horizontalOffset = placement.includes("right") ? offset : position.includes("left") ? offset * -1 : 0;
+  const verticalOffset = placement.includes("bottom") ? offset : position.includes("top") ? offset * -1 : 0;
+  const handleMouseMove = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(
+    ({ clientX, clientY }) => {
+      refs.setPositionReference({
+        getBoundingClientRect() {
+          return {
+            width: 0,
+            height: 0,
+            x: clientX,
+            y: clientY,
+            left: clientX + horizontalOffset,
+            top: clientY + verticalOffset,
+            right: clientX,
+            bottom: clientY
+          };
+        }
+      });
+    },
+    [elements.reference]
+  );
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (refs.floating.current) {
+      const boundary = boundaryRef.current;
+      boundary.addEventListener("mousemove", handleMouseMove);
+      const parents = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_3__.getOverflowAncestors)(refs.floating.current);
+      parents.forEach((parent) => {
+        parent.addEventListener("scroll", update);
+      });
+      return () => {
+        boundary.removeEventListener("mousemove", handleMouseMove);
+        parents.forEach((parent) => {
+          parent.removeEventListener("scroll", update);
+        });
+      };
+    }
+    return void 0;
+  }, [elements.reference, refs.floating.current, update, handleMouseMove, opened]);
+  return { handleMouseMove, x, y, opened, setOpened, boundaryRef, floating: refs.setFloating };
+}
+
+
+//# sourceMappingURL=use-floating-tooltip.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.context.mjs":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.context.mjs ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TooltipGroupProvider: () => (/* binding */ TooltipGroupProvider),
+/* harmony export */   useTooltipGroupContext: () => (/* binding */ useTooltipGroupContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+const TooltipGroupContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(false);
+const TooltipGroupProvider = TooltipGroupContext.Provider;
+const useTooltipGroupContext = () => (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(TooltipGroupContext);
+
+
+//# sourceMappingURL=TooltipGroup.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.mjs":
+/*!*****************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.mjs ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TooltipGroup: () => (/* binding */ TooltipGroup)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react/dist/floating-ui.react.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _TooltipGroup_context_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TooltipGroup.context.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.context.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  openDelay: 0,
+  closeDelay: 0
+};
+function TooltipGroup(props) {
+  const { openDelay, closeDelay, children } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__.useProps)("TooltipGroup", defaultProps, props);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_TooltipGroup_context_mjs__WEBPACK_IMPORTED_MODULE_4__.TooltipGroupProvider, { value: true, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_floating_ui_react__WEBPACK_IMPORTED_MODULE_5__.FloatingDelayGroup, { delay: { open: openDelay, close: closeDelay }, children }) });
+}
+TooltipGroup.displayName = "@mantine/core/TooltipGroup";
+TooltipGroup.extend = (c) => c;
+
+
+//# sourceMappingURL=TooltipGroup.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Tooltip/use-tooltip.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Tooltip/use-tooltip.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useTooltip: () => (/* binding */ useTooltip)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react-dom/dist/floating-ui.react-dom.mjs");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/react/dist/floating-ui.react.mjs");
+/* harmony import */ var _floating_ui_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @floating-ui/react */ "./node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-id/use-id.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs");
+/* harmony import */ var _TooltipGroup_TooltipGroup_context_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TooltipGroup/TooltipGroup.context.mjs */ "./node_modules/@mantine/core/esm/components/Tooltip/TooltipGroup/TooltipGroup.context.mjs");
+'use client';
+
+
+
+
+
+function getDefaultMiddlewares(middlewares) {
+  if (middlewares === void 0) {
+    return { shift: true, flip: true };
+  }
+  const result = { ...middlewares };
+  if (middlewares.shift === void 0) {
+    result.shift = true;
+  }
+  if (middlewares.flip === void 0) {
+    result.flip = true;
+  }
+  return result;
+}
+function getTooltipMiddlewares(settings) {
+  const middlewaresOptions = getDefaultMiddlewares(settings.middlewares);
+  const middlewares = [(0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.offset)(settings.offset)];
+  if (middlewaresOptions.shift) {
+    middlewares.push(
+      (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.shift)(
+        typeof middlewaresOptions.shift === "boolean" ? { padding: 8 } : { padding: 8, ...middlewaresOptions.shift }
+      )
+    );
+  }
+  if (middlewaresOptions.flip) {
+    middlewares.push(
+      typeof middlewaresOptions.flip === "boolean" ? (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.flip)() : (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.flip)(middlewaresOptions.flip)
+    );
+  }
+  middlewares.push((0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.arrow)({ element: settings.arrowRef, padding: settings.arrowOffset }));
+  if (middlewaresOptions.inline) {
+    middlewares.push(
+      typeof middlewaresOptions.inline === "boolean" ? (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.inline)() : (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.inline)(middlewaresOptions.inline)
+    );
+  } else if (settings.inline) {
+    middlewares.push((0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_1__.inline)());
+  }
+  return middlewares;
+}
+function useTooltip(settings) {
+  const [uncontrolledOpened, setUncontrolledOpened] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(settings.defaultOpened);
+  const controlled = typeof settings.opened === "boolean";
+  const opened = controlled ? settings.opened : uncontrolledOpened;
+  const withinGroup = (0,_TooltipGroup_TooltipGroup_context_mjs__WEBPACK_IMPORTED_MODULE_2__.useTooltipGroupContext)();
+  const uid = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useId)();
+  const onChange = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(
+    (_opened) => {
+      setUncontrolledOpened(_opened);
+      if (_opened) {
+        setCurrentId(uid);
+      }
+    },
+    [uid]
+  );
+  const {
+    x,
+    y,
+    context,
+    refs,
+    placement,
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} }
+  } = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useFloating)({
+    strategy: settings.strategy,
+    placement: settings.position,
+    open: opened,
+    onOpenChange: onChange,
+    middleware: getTooltipMiddlewares(settings),
+    whileElementsMounted: _floating_ui_react__WEBPACK_IMPORTED_MODULE_5__.autoUpdate
+  });
+  const { delay: groupDelay, currentId, setCurrentId } = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useDelayGroup)(context, { id: uid });
+  const { getReferenceProps, getFloatingProps } = (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useInteractions)([
+    (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useHover)(context, {
+      enabled: settings.events?.hover,
+      delay: withinGroup ? groupDelay : { open: settings.openDelay, close: settings.closeDelay },
+      mouseOnly: !settings.events?.touch
+    }),
+    (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useFocus)(context, { enabled: settings.events?.focus, visibleOnly: true }),
+    (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useRole)(context, { role: "tooltip" }),
+    // Cannot be used with controlled tooltip, page jumps
+    (0,_floating_ui_react__WEBPACK_IMPORTED_MODULE_4__.useDismiss)(context, { enabled: typeof settings.opened === "undefined" })
+  ]);
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_6__.useDidUpdate)(() => {
+    settings.onPositionChange?.(placement);
+  }, [placement]);
+  const isGroupPhase = opened && currentId && currentId !== uid;
+  return {
+    x,
+    y,
+    arrowX,
+    arrowY,
+    reference: refs.setReference,
+    floating: refs.setFloating,
+    getFloatingProps,
+    getReferenceProps,
+    isGroupPhase,
+    opened,
+    placement
+  };
+}
+
+
+//# sourceMappingURL=use-tooltip.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs":
 /*!*****************************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Transition/Transition.mjs ***!
@@ -4701,6 +17198,32 @@ Transition.displayName = "@mantine/core/Transition";
 
 
 //# sourceMappingURL=Transition.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Transition/get-transition-props/get-transition-props.mjs":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Transition/get-transition-props/get-transition-props.mjs ***!
+  \************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getTransitionProps: () => (/* binding */ getTransitionProps)
+/* harmony export */ });
+'use client';
+const defaultTransition = {
+  duration: 100,
+  transition: "fade"
+};
+function getTransitionProps(transitionProps, componentTransition) {
+  return { ...defaultTransition, ...componentTransition, ...transitionProps };
+}
+
+
+//# sourceMappingURL=get-transition-props.mjs.map
 
 
 /***/ }),
@@ -5124,6 +17647,87 @@ var classes = {"root":"m_87cf2631"};
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.mjs":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.mjs ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   VisuallyHidden: () => (/* binding */ VisuallyHidden)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _VisuallyHidden_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./VisuallyHidden.module.css.mjs */ "./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const VisuallyHidden = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("VisuallyHidden", defaultProps, _props);
+  const { classNames, className, style, styles, unstyled, vars, ...others } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_5__.useStyles)({
+    name: "VisuallyHidden",
+    classes: _VisuallyHidden_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"],
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__.Box, { component: "span", ref, ...getStyles("root"), ...others });
+});
+VisuallyHidden.classes = _VisuallyHidden_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"];
+VisuallyHidden.displayName = "@mantine/core/VisuallyHidden";
+
+
+//# sourceMappingURL=VisuallyHidden.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.module.css.mjs":
+/*!************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/VisuallyHidden/VisuallyHidden.module.css.mjs ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_515a97f8"};
+
+
+//# sourceMappingURL=VisuallyHidden.module.css.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/core/Box/Box.mjs":
 /*!*********************************************************!*\
   !*** ./node_modules/@mantine/core/esm/core/Box/Box.mjs ***!
@@ -5328,6 +17932,40 @@ function getBoxStyle({
 
 
 //# sourceMappingURL=get-box-style.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/core/Box/get-style-object/get-style-object.mjs":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/Box/get-style-object/get-style-object.mjs ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getStyleObject: () => (/* binding */ getStyleObject)
+/* harmony export */ });
+'use client';
+function getStyleObject(style, theme) {
+  if (Array.isArray(style)) {
+    return [...style].reduce(
+      (acc, item) => ({ ...acc, ...getStyleObject(item, theme) }),
+      {}
+    );
+  }
+  if (typeof style === "function") {
+    return style(theme);
+  }
+  if (style == null) {
+    return {};
+  }
+  return style;
+}
+
+
+//# sourceMappingURL=get-style-object.mjs.map
 
 
 /***/ }),
@@ -6089,6 +18727,65 @@ function useRandomClassName() {
 
 
 //# sourceMappingURL=use-random-classname.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   DirectionContext: () => (/* binding */ DirectionContext),
+/* harmony export */   DirectionProvider: () => (/* binding */ DirectionProvider),
+/* harmony export */   useDirection: () => (/* binding */ useDirection)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs");
+'use client';
+
+
+
+
+const DirectionContext = (0,react__WEBPACK_IMPORTED_MODULE_1__.createContext)({
+  dir: "ltr",
+  toggleDirection: () => {
+  },
+  setDirection: () => {
+  }
+});
+function useDirection() {
+  return (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(DirectionContext);
+}
+function DirectionProvider({
+  children,
+  initialDirection = "ltr",
+  detectDirection = true
+}) {
+  const [dir, setDir] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(initialDirection);
+  const setDirection = (direction) => {
+    setDir(direction);
+    document.documentElement.setAttribute("dir", direction);
+  };
+  const toggleDirection = () => setDirection(dir === "ltr" ? "rtl" : "ltr");
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicEffect)(() => {
+    if (detectDirection) {
+      const direction = document.documentElement.getAttribute("dir");
+      if (direction === "rtl" || direction === "ltr") {
+        setDirection(direction);
+      }
+    }
+  }, []);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(DirectionContext.Provider, { value: { dir, toggleDirection, setDirection }, children });
+}
+
+
+//# sourceMappingURL=DirectionProvider.mjs.map
 
 
 /***/ }),
@@ -9522,6 +22219,63 @@ function getDefaultZIndex(level) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/core/utils/get-env/get-env.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/utils/get-env/get-env.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getEnv: () => (/* binding */ getEnv)
+/* harmony export */ });
+'use client';
+function getEnv() {
+  if (typeof process !== "undefined" && process.env && "development") {
+    return "development";
+  }
+  return "development";
+}
+
+
+//# sourceMappingURL=get-env.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/core/utils/get-ref-prop/get-ref-prop.mjs":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/utils/get-ref-prop/get-ref-prop.mjs ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getRefProp: () => (/* binding */ getRefProp)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function getRefProp(element) {
+  const version = react__WEBPACK_IMPORTED_MODULE_0__.version;
+  if (typeof react__WEBPACK_IMPORTED_MODULE_0__.version !== "string") {
+    return element?.ref;
+  }
+  if (version.startsWith("18.")) {
+    return element?.ref;
+  }
+  return element?.props?.ref;
+}
+
+
+//# sourceMappingURL=get-ref-prop.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs":
 /*!*************************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs ***!
@@ -9604,6 +22358,40 @@ function getSortedBreakpoints(values, breakpoints) {
 
 
 //# sourceMappingURL=get-sorted-breakpoints.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/core/utils/is-element/is-element.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/utils/is-element/is-element.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isElement: () => (/* binding */ isElement)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function isElement(value) {
+  if (Array.isArray(value) || value === null) {
+    return false;
+  }
+  if (typeof value === "object") {
+    if (value.type === react__WEBPACK_IMPORTED_MODULE_0__.Fragment) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
+
+//# sourceMappingURL=is-element.mjs.map
 
 
 /***/ }),
@@ -9823,6 +22611,80 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs":
+/*!*******************************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-debounced-callback/use-debounced-callback.mjs ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useDebouncedCallback: () => (/* binding */ useDebouncedCallback)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _utils_use_callback_ref_use_callback_ref_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/use-callback-ref/use-callback-ref.mjs */ "./node_modules/@mantine/hooks/esm/utils/use-callback-ref/use-callback-ref.mjs");
+'use client';
+
+
+
+function useDebouncedCallback(callback, options) {
+  const { delay, flushOnUnmount, leading } = typeof options === "number" ? { delay: options, flushOnUnmount: false, leading: false } : options;
+  const handleCallback = (0,_utils_use_callback_ref_use_callback_ref_mjs__WEBPACK_IMPORTED_MODULE_1__.useCallbackRef)(callback);
+  const debounceTimerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(0);
+  const lastCallback = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    const currentCallback = Object.assign(
+      (...args) => {
+        window.clearTimeout(debounceTimerRef.current);
+        const isFirstCall = currentCallback._isFirstCall;
+        currentCallback._isFirstCall = false;
+        if (leading && isFirstCall) {
+          handleCallback(...args);
+          return;
+        }
+        function clearTimeoutAndLeadingRef() {
+          window.clearTimeout(debounceTimerRef.current);
+          debounceTimerRef.current = 0;
+          currentCallback._isFirstCall = true;
+        }
+        const flush = () => {
+          if (debounceTimerRef.current !== 0) {
+            clearTimeoutAndLeadingRef();
+            handleCallback(...args);
+          }
+        };
+        const cancel = () => {
+          clearTimeoutAndLeadingRef();
+        };
+        currentCallback.flush = flush;
+        currentCallback.cancel = cancel;
+        debounceTimerRef.current = window.setTimeout(flush, delay);
+      },
+      { flush: () => {
+      }, cancel: () => {
+      }, _isFirstCall: true }
+    );
+    return currentCallback;
+  }, [handleCallback, delay, leading]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(
+    () => () => {
+      if (flushOnUnmount) {
+        lastCallback.flush();
+      } else {
+        lastCallback.cancel();
+      }
+    },
+    [lastCallback, flushOnUnmount]
+  );
+  return lastCallback;
+}
+
+
+//# sourceMappingURL=use-debounced-callback.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs":
 /*!***************************************************************************!*\
   !*** ./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs ***!
@@ -9904,6 +22766,265 @@ function useDisclosure(initialState = false, options = {}) {
 
 
 //# sourceMappingURL=use-disclosure.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-focus-return/use-focus-return.mjs":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-focus-return/use-focus-return.mjs ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useFocusReturn: () => (/* binding */ useFocusReturn)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _use_did_update_use_did_update_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../use-did-update/use-did-update.mjs */ "./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs");
+'use client';
+
+
+
+function useFocusReturn({
+  opened,
+  shouldReturnFocus = true
+}) {
+  const lastActiveElement = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const returnFocus = () => {
+    if (lastActiveElement.current && "focus" in lastActiveElement.current && typeof lastActiveElement.current.focus === "function") {
+      lastActiveElement.current?.focus({ preventScroll: true });
+    }
+  };
+  (0,_use_did_update_use_did_update_mjs__WEBPACK_IMPORTED_MODULE_1__.useDidUpdate)(() => {
+    let timeout = -1;
+    const clearFocusTimeout = (event) => {
+      if (event.key === "Tab") {
+        window.clearTimeout(timeout);
+      }
+    };
+    document.addEventListener("keydown", clearFocusTimeout);
+    if (opened) {
+      lastActiveElement.current = document.activeElement;
+    } else if (shouldReturnFocus) {
+      timeout = window.setTimeout(returnFocus, 10);
+    }
+    return () => {
+      window.clearTimeout(timeout);
+      document.removeEventListener("keydown", clearFocusTimeout);
+    };
+  }, [opened, shouldReturnFocus]);
+  return returnFocus;
+}
+
+
+//# sourceMappingURL=use-focus-return.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-focus-trap/scope-tab.mjs":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-focus-trap/scope-tab.mjs ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   scopeTab: () => (/* binding */ scopeTab)
+/* harmony export */ });
+/* harmony import */ var _tabbable_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tabbable.mjs */ "./node_modules/@mantine/hooks/esm/use-focus-trap/tabbable.mjs");
+'use client';
+
+
+function scopeTab(node, event) {
+  const tabbable = (0,_tabbable_mjs__WEBPACK_IMPORTED_MODULE_0__.findTabbableDescendants)(node);
+  if (!tabbable.length) {
+    event.preventDefault();
+    return;
+  }
+  const finalTabbable = tabbable[event.shiftKey ? 0 : tabbable.length - 1];
+  const root = node.getRootNode();
+  let leavingFinalTabbable = finalTabbable === root.activeElement || node === root.activeElement;
+  const activeElement = root.activeElement;
+  const activeElementIsRadio = activeElement.tagName === "INPUT" && activeElement.getAttribute("type") === "radio";
+  if (activeElementIsRadio) {
+    const activeRadioGroup = tabbable.filter(
+      (element) => element.getAttribute("type") === "radio" && element.getAttribute("name") === activeElement.getAttribute("name")
+    );
+    leavingFinalTabbable = activeRadioGroup.includes(finalTabbable);
+  }
+  if (!leavingFinalTabbable) {
+    return;
+  }
+  event.preventDefault();
+  const target = tabbable[event.shiftKey ? tabbable.length - 1 : 0];
+  if (target) {
+    target.focus();
+  }
+}
+
+
+//# sourceMappingURL=scope-tab.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-focus-trap/tabbable.mjs":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-focus-trap/tabbable.mjs ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FOCUS_SELECTOR: () => (/* binding */ FOCUS_SELECTOR),
+/* harmony export */   findTabbableDescendants: () => (/* binding */ findTabbableDescendants),
+/* harmony export */   focusable: () => (/* binding */ focusable),
+/* harmony export */   tabbable: () => (/* binding */ tabbable)
+/* harmony export */ });
+'use client';
+const TABBABLE_NODES = /input|select|textarea|button|object/;
+const FOCUS_SELECTOR = "a, input, select, textarea, button, object, [tabindex]";
+function hidden(element) {
+  if (false) // removed by dead control flow
+{}
+  return element.style.display === "none";
+}
+function visible(element) {
+  const isHidden = element.getAttribute("aria-hidden") || element.getAttribute("hidden") || element.getAttribute("type") === "hidden";
+  if (isHidden) {
+    return false;
+  }
+  let parentElement = element;
+  while (parentElement) {
+    if (parentElement === document.body || parentElement.nodeType === 11) {
+      break;
+    }
+    if (hidden(parentElement)) {
+      return false;
+    }
+    parentElement = parentElement.parentNode;
+  }
+  return true;
+}
+function getElementTabIndex(element) {
+  let tabIndex = element.getAttribute("tabindex");
+  if (tabIndex === null) {
+    tabIndex = void 0;
+  }
+  return parseInt(tabIndex, 10);
+}
+function focusable(element) {
+  const nodeName = element.nodeName.toLowerCase();
+  const isTabIndexNotNaN = !Number.isNaN(getElementTabIndex(element));
+  const res = (
+    // @ts-expect-error function accepts any html element but if it is a button, it should not be disabled to trigger the condition
+    TABBABLE_NODES.test(nodeName) && !element.disabled || (element instanceof HTMLAnchorElement ? element.href || isTabIndexNotNaN : isTabIndexNotNaN)
+  );
+  return res && visible(element);
+}
+function tabbable(element) {
+  const tabIndex = getElementTabIndex(element);
+  const isTabIndexNaN = Number.isNaN(tabIndex);
+  return (isTabIndexNaN || tabIndex >= 0) && focusable(element);
+}
+function findTabbableDescendants(element) {
+  return Array.from(element.querySelectorAll(FOCUS_SELECTOR)).filter(tabbable);
+}
+
+
+//# sourceMappingURL=tabbable.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-focus-trap/use-focus-trap.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-focus-trap/use-focus-trap.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useFocusTrap: () => (/* binding */ useFocusTrap)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _scope_tab_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scope-tab.mjs */ "./node_modules/@mantine/hooks/esm/use-focus-trap/scope-tab.mjs");
+/* harmony import */ var _tabbable_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabbable.mjs */ "./node_modules/@mantine/hooks/esm/use-focus-trap/tabbable.mjs");
+'use client';
+
+
+
+
+function useFocusTrap(active = true) {
+  const ref = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const focusNode = (node) => {
+    let focusElement = node.querySelector("[data-autofocus]");
+    if (!focusElement) {
+      const children = Array.from(node.querySelectorAll(_tabbable_mjs__WEBPACK_IMPORTED_MODULE_1__.FOCUS_SELECTOR));
+      focusElement = children.find(_tabbable_mjs__WEBPACK_IMPORTED_MODULE_1__.tabbable) || children.find(_tabbable_mjs__WEBPACK_IMPORTED_MODULE_1__.focusable) || null;
+      if (!focusElement && (0,_tabbable_mjs__WEBPACK_IMPORTED_MODULE_1__.focusable)(node)) {
+        focusElement = node;
+      }
+    }
+    if (focusElement) {
+      focusElement.focus({ preventScroll: true });
+    } else if (true) {
+      console.warn(
+        "[@mantine/hooks/use-focus-trap] Failed to find focusable element within provided node",
+        node
+      );
+    }
+  };
+  const setRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(
+    (node) => {
+      if (!active) {
+        return;
+      }
+      if (node === null) {
+        return;
+      }
+      if (ref.current === node) {
+        return;
+      }
+      if (node) {
+        setTimeout(() => {
+          if (node.getRootNode()) {
+            focusNode(node);
+          } else if (true) {
+            console.warn("[@mantine/hooks/use-focus-trap] Ref node is not part of the dom", node);
+          }
+        });
+        ref.current = node;
+      } else {
+        ref.current = null;
+      }
+    },
+    [active]
+  );
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!active) {
+      return void 0;
+    }
+    ref.current && setTimeout(() => focusNode(ref.current));
+    const handleKeyDown = (event) => {
+      if (event.key === "Tab" && ref.current) {
+        (0,_scope_tab_mjs__WEBPACK_IMPORTED_MODULE_2__.scopeTab)(ref.current, event);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [active]);
+  return setRef;
+}
+
+
+//# sourceMappingURL=use-focus-trap.mjs.map
 
 
 /***/ }),
@@ -10054,6 +23175,64 @@ function useMediaQuery(query, initialValue, { getInitialValueInEffect } = {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-merged-ref/use-merged-ref.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   assignRef: () => (/* binding */ assignRef),
+/* harmony export */   mergeRefs: () => (/* binding */ mergeRefs),
+/* harmony export */   useMergedRef: () => (/* binding */ useMergedRef)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function assignRef(ref, value) {
+  if (typeof ref === "function") {
+    return ref(value);
+  } else if (typeof ref === "object" && ref !== null && "current" in ref) {
+    ref.current = value;
+  }
+}
+function mergeRefs(...refs) {
+  const cleanupMap = /* @__PURE__ */ new Map();
+  return (node) => {
+    refs.forEach((ref) => {
+      const cleanup = assignRef(ref, node);
+      if (cleanup) {
+        cleanupMap.set(ref, cleanup);
+      }
+    });
+    if (cleanupMap.size > 0) {
+      return () => {
+        refs.forEach((ref) => {
+          const cleanup = cleanupMap.get(ref);
+          if (cleanup) {
+            cleanup();
+          } else {
+            assignRef(ref, null);
+          }
+        });
+        cleanupMap.clear();
+      };
+    }
+  };
+}
+function useMergedRef(...refs) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(mergeRefs(...refs), refs);
+}
+
+
+//# sourceMappingURL=use-merged-ref.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs":
 /*!***********************************************************************************!*\
   !*** ./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs ***!
@@ -10125,6 +23304,35 @@ function randomId(prefix = "mantine-") {
 
 
 //# sourceMappingURL=random-id.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/utils/use-callback-ref/use-callback-ref.mjs":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/utils/use-callback-ref/use-callback-ref.mjs ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useCallbackRef: () => (/* binding */ useCallbackRef)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function useCallbackRef(callback) {
+  const callbackRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(callback);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    callbackRef.current = callback;
+  });
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => (...args) => callbackRef.current?.(...args), []);
+}
+
+
+//# sourceMappingURL=use-callback-ref.mjs.map
 
 
 /***/ }),
@@ -10233,6 +23441,35 @@ var defaultAttributes = {
 
 /***/ }),
 
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconEdit)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconEdit = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "edit", "IconEdit", [["path", { "d": "M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1", "key": "svg-0" }], ["path", { "d": "M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z", "key": "svg-1" }], ["path", { "d": "M16 5l3 3", "key": "svg-2" }]]);
+
+
+//# sourceMappingURL=IconEdit.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconSearch.mjs":
 /*!************************************************************************!*\
   !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconSearch.mjs ***!
@@ -10287,6 +23524,35 @@ var IconTag = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default
 
 
 //# sourceMappingURL=IconTag.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTrash.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconTrash.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconTrash)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconTrash = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "trash", "IconTrash", [["path", { "d": "M4 7l16 0", "key": "svg-0" }], ["path", { "d": "M10 11l0 6", "key": "svg-1" }], ["path", { "d": "M14 11l0 6", "key": "svg-2" }], ["path", { "d": "M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12", "key": "svg-3" }], ["path", { "d": "M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3", "key": "svg-4" }]]);
+
+
+//# sourceMappingURL=IconTrash.mjs.map
 
 
 /***/ }),
@@ -85345,6 +98611,253 @@ var stylesheetSingleton = function () {
 
 /***/ }),
 
+/***/ "./node_modules/react-textarea-autosize/dist/react-textarea-autosize.browser.development.esm.js":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/react-textarea-autosize/dist/react-textarea-autosize.browser.development.esm.js ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ index)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var use_latest__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! use-latest */ "./node_modules/use-latest/dist/use-latest.esm.js");
+/* harmony import */ var use_composed_ref__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! use-composed-ref */ "./node_modules/use-composed-ref/dist/use-composed-ref.esm.js");
+
+
+
+
+
+
+var HIDDEN_TEXTAREA_STYLE = {
+  'min-height': '0',
+  'max-height': 'none',
+  height: '0',
+  visibility: 'hidden',
+  overflow: 'hidden',
+  position: 'absolute',
+  'z-index': '-1000',
+  top: '0',
+  right: '0',
+  display: 'block'
+};
+var forceHiddenStyles = function forceHiddenStyles(node) {
+  Object.keys(HIDDEN_TEXTAREA_STYLE).forEach(function (key) {
+    node.style.setProperty(key, HIDDEN_TEXTAREA_STYLE[key], 'important');
+  });
+};
+var forceHiddenStyles$1 = forceHiddenStyles;
+
+var hiddenTextarea = null;
+var getHeight = function getHeight(node, sizingData) {
+  var height = node.scrollHeight;
+  if (sizingData.sizingStyle.boxSizing === 'border-box') {
+    // border-box: add border, since height = content + padding + border
+    return height + sizingData.borderSize;
+  }
+
+  // remove padding, since height = content
+  return height - sizingData.paddingSize;
+};
+function calculateNodeHeight(sizingData, value, minRows, maxRows) {
+  if (minRows === void 0) {
+    minRows = 1;
+  }
+  if (maxRows === void 0) {
+    maxRows = Infinity;
+  }
+  if (!hiddenTextarea) {
+    hiddenTextarea = document.createElement('textarea');
+    hiddenTextarea.setAttribute('tabindex', '-1');
+    hiddenTextarea.setAttribute('aria-hidden', 'true');
+    forceHiddenStyles$1(hiddenTextarea);
+  }
+  if (hiddenTextarea.parentNode === null) {
+    document.body.appendChild(hiddenTextarea);
+  }
+  var paddingSize = sizingData.paddingSize,
+    borderSize = sizingData.borderSize,
+    sizingStyle = sizingData.sizingStyle;
+  var boxSizing = sizingStyle.boxSizing;
+  Object.keys(sizingStyle).forEach(function (_key) {
+    var key = _key;
+    hiddenTextarea.style[key] = sizingStyle[key];
+  });
+  forceHiddenStyles$1(hiddenTextarea);
+  hiddenTextarea.value = value;
+  var height = getHeight(hiddenTextarea, sizingData);
+  // Double set and calc due to Firefox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1795904
+  hiddenTextarea.value = value;
+  height = getHeight(hiddenTextarea, sizingData);
+
+  // measure height of a textarea with a single row
+  hiddenTextarea.value = 'x';
+  var rowHeight = hiddenTextarea.scrollHeight - paddingSize;
+  var minHeight = rowHeight * minRows;
+  if (boxSizing === 'border-box') {
+    minHeight = minHeight + paddingSize + borderSize;
+  }
+  height = Math.max(minHeight, height);
+  var maxHeight = rowHeight * maxRows;
+  if (boxSizing === 'border-box') {
+    maxHeight = maxHeight + paddingSize + borderSize;
+  }
+  height = Math.min(maxHeight, height);
+  return [height, rowHeight];
+}
+
+var noop = function noop() {};
+var pick = function pick(props, obj) {
+  return props.reduce(function (acc, prop) {
+    acc[prop] = obj[prop];
+    return acc;
+  }, {});
+};
+
+var SIZING_STYLE = ['borderBottomWidth', 'borderLeftWidth', 'borderRightWidth', 'borderTopWidth', 'boxSizing', 'fontFamily', 'fontSize', 'fontStyle', 'fontWeight', 'letterSpacing', 'lineHeight', 'paddingBottom', 'paddingLeft', 'paddingRight', 'paddingTop',
+// non-standard
+'tabSize', 'textIndent',
+// non-standard
+'textRendering', 'textTransform', 'width', 'wordBreak', 'wordSpacing', 'scrollbarGutter'];
+var isIE = !!document.documentElement.currentStyle ;
+var getSizingData = function getSizingData(node) {
+  var style = window.getComputedStyle(node);
+  if (style === null) {
+    return null;
+  }
+  var sizingStyle = pick(SIZING_STYLE, style);
+  var boxSizing = sizingStyle.boxSizing;
+
+  // probably node is detached from DOM, can't read computed dimensions
+  if (boxSizing === '') {
+    return null;
+  }
+
+  // IE (Edge has already correct behaviour) returns content width as computed width
+  // so we need to add manually padding and border widths
+  if (isIE && boxSizing === 'border-box') {
+    sizingStyle.width = parseFloat(sizingStyle.width) + parseFloat(sizingStyle.borderRightWidth) + parseFloat(sizingStyle.borderLeftWidth) + parseFloat(sizingStyle.paddingRight) + parseFloat(sizingStyle.paddingLeft) + 'px';
+  }
+  var paddingSize = parseFloat(sizingStyle.paddingBottom) + parseFloat(sizingStyle.paddingTop);
+  var borderSize = parseFloat(sizingStyle.borderBottomWidth) + parseFloat(sizingStyle.borderTopWidth);
+  return {
+    sizingStyle: sizingStyle,
+    paddingSize: paddingSize,
+    borderSize: borderSize
+  };
+};
+var getSizingData$1 = getSizingData;
+
+function useListener(target, type, listener) {
+  var latestListener = (0,use_latest__WEBPACK_IMPORTED_MODULE_3__["default"])(listener);
+  react__WEBPACK_IMPORTED_MODULE_2__.useLayoutEffect(function () {
+    var handler = function handler(ev) {
+      return latestListener.current(ev);
+    };
+    // might happen if document.fonts is not defined, for instance
+    if (!target) {
+      return;
+    }
+    target.addEventListener(type, handler);
+    return function () {
+      return target.removeEventListener(type, handler);
+    };
+  }, []);
+}
+var useFormResetListener = function useFormResetListener(libRef, listener) {
+  useListener(document.body, 'reset', function (ev) {
+    if (libRef.current.form === ev.target) {
+      listener(ev);
+    }
+  });
+};
+var useWindowResizeListener = function useWindowResizeListener(listener) {
+  useListener(window, 'resize', listener);
+};
+var useFontsLoadedListener = function useFontsLoadedListener(listener) {
+  useListener(document.fonts, 'loadingdone', listener);
+};
+
+var _excluded = ["cacheMeasurements", "maxRows", "minRows", "onChange", "onHeightChange"];
+var TextareaAutosize = function TextareaAutosize(_ref, userRef) {
+  var cacheMeasurements = _ref.cacheMeasurements,
+    maxRows = _ref.maxRows,
+    minRows = _ref.minRows,
+    _ref$onChange = _ref.onChange,
+    onChange = _ref$onChange === void 0 ? noop : _ref$onChange,
+    _ref$onHeightChange = _ref.onHeightChange,
+    onHeightChange = _ref$onHeightChange === void 0 ? noop : _ref$onHeightChange,
+    props = (0,_babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__["default"])(_ref, _excluded);
+  if (props.style) {
+    if ('maxHeight' in props.style) {
+      throw new Error('Using `style.maxHeight` for <TextareaAutosize/> is not supported. Please use `maxRows`.');
+    }
+    if ('minHeight' in props.style) {
+      throw new Error('Using `style.minHeight` for <TextareaAutosize/> is not supported. Please use `minRows`.');
+    }
+  }
+  var isControlled = props.value !== undefined;
+  var libRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(null);
+  var ref = (0,use_composed_ref__WEBPACK_IMPORTED_MODULE_4__["default"])(libRef, userRef);
+  var heightRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef(0);
+  var measurementsCacheRef = react__WEBPACK_IMPORTED_MODULE_2__.useRef();
+  var resizeTextarea = function resizeTextarea() {
+    var node = libRef.current;
+    var nodeSizingData = cacheMeasurements && measurementsCacheRef.current ? measurementsCacheRef.current : getSizingData$1(node);
+    if (!nodeSizingData) {
+      return;
+    }
+    measurementsCacheRef.current = nodeSizingData;
+    var _calculateNodeHeight = calculateNodeHeight(nodeSizingData, node.value || node.placeholder || 'x', minRows, maxRows),
+      height = _calculateNodeHeight[0],
+      rowHeight = _calculateNodeHeight[1];
+    if (heightRef.current !== height) {
+      heightRef.current = height;
+      node.style.setProperty('height', height + "px", 'important');
+      onHeightChange(height, {
+        rowHeight: rowHeight
+      });
+    }
+  };
+  var handleChange = function handleChange(event) {
+    if (!isControlled) {
+      resizeTextarea();
+    }
+    onChange(event);
+  };
+  {
+    react__WEBPACK_IMPORTED_MODULE_2__.useLayoutEffect(resizeTextarea);
+    useFormResetListener(libRef, function () {
+      if (!isControlled) {
+        var currentValue = libRef.current.value;
+        requestAnimationFrame(function () {
+          var node = libRef.current;
+          if (node && currentValue !== node.value) {
+            resizeTextarea();
+          }
+        });
+      }
+    });
+    useWindowResizeListener(resizeTextarea);
+    useFontsLoadedListener(resizeTextarea);
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.createElement("textarea", (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+      onChange: handleChange,
+      ref: ref
+    }));
+  }
+};
+var index = /* #__PURE__ */react__WEBPACK_IMPORTED_MODULE_2__.forwardRef(TextareaAutosize);
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/react/cjs/react-jsx-runtime.development.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/react/cjs/react-jsx-runtime.development.js ***!
@@ -90410,6 +103923,596 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ "./node_modules/tabbable/dist/index.esm.js":
+/*!*************************************************!*\
+  !*** ./node_modules/tabbable/dist/index.esm.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   focusable: () => (/* binding */ focusable),
+/* harmony export */   getTabIndex: () => (/* binding */ getTabIndex),
+/* harmony export */   isFocusable: () => (/* binding */ isFocusable),
+/* harmony export */   isTabbable: () => (/* binding */ isTabbable),
+/* harmony export */   tabbable: () => (/* binding */ tabbable)
+/* harmony export */ });
+/*!
+* tabbable 6.2.0
+* @license MIT, https://github.com/focus-trap/tabbable/blob/master/LICENSE
+*/
+// NOTE: separate `:not()` selectors has broader browser support than the newer
+//  `:not([inert], [inert] *)` (Feb 2023)
+// CAREFUL: JSDom does not support `:not([inert] *)` as a selector; using it causes
+//  the entire query to fail, resulting in no nodes found, which will break a lot
+//  of things... so we have to rely on JS to identify nodes inside an inert container
+var candidateSelectors = ['input:not([inert])', 'select:not([inert])', 'textarea:not([inert])', 'a[href]:not([inert])', 'button:not([inert])', '[tabindex]:not(slot):not([inert])', 'audio[controls]:not([inert])', 'video[controls]:not([inert])', '[contenteditable]:not([contenteditable="false"]):not([inert])', 'details>summary:first-of-type:not([inert])', 'details:not([inert])'];
+var candidateSelector = /* #__PURE__ */candidateSelectors.join(',');
+var NoElement = typeof Element === 'undefined';
+var matches = NoElement ? function () {} : Element.prototype.matches || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+var getRootNode = !NoElement && Element.prototype.getRootNode ? function (element) {
+  var _element$getRootNode;
+  return element === null || element === void 0 ? void 0 : (_element$getRootNode = element.getRootNode) === null || _element$getRootNode === void 0 ? void 0 : _element$getRootNode.call(element);
+} : function (element) {
+  return element === null || element === void 0 ? void 0 : element.ownerDocument;
+};
+
+/**
+ * Determines if a node is inert or in an inert ancestor.
+ * @param {Element} [node]
+ * @param {boolean} [lookUp] If true and `node` is not inert, looks up at ancestors to
+ *  see if any of them are inert. If false, only `node` itself is considered.
+ * @returns {boolean} True if inert itself or by way of being in an inert ancestor.
+ *  False if `node` is falsy.
+ */
+var isInert = function isInert(node, lookUp) {
+  var _node$getAttribute;
+  if (lookUp === void 0) {
+    lookUp = true;
+  }
+  // CAREFUL: JSDom does not support inert at all, so we can't use the `HTMLElement.inert`
+  //  JS API property; we have to check the attribute, which can either be empty or 'true';
+  //  if it's `null` (not specified) or 'false', it's an active element
+  var inertAtt = node === null || node === void 0 ? void 0 : (_node$getAttribute = node.getAttribute) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.call(node, 'inert');
+  var inert = inertAtt === '' || inertAtt === 'true';
+
+  // NOTE: this could also be handled with `node.matches('[inert], :is([inert] *)')`
+  //  if it weren't for `matches()` not being a function on shadow roots; the following
+  //  code works for any kind of node
+  // CAREFUL: JSDom does not appear to support certain selectors like `:not([inert] *)`
+  //  so it likely would not support `:is([inert] *)` either...
+  var result = inert || lookUp && node && isInert(node.parentNode); // recursive
+
+  return result;
+};
+
+/**
+ * Determines if a node's content is editable.
+ * @param {Element} [node]
+ * @returns True if it's content-editable; false if it's not or `node` is falsy.
+ */
+var isContentEditable = function isContentEditable(node) {
+  var _node$getAttribute2;
+  // CAREFUL: JSDom does not support the `HTMLElement.isContentEditable` API so we have
+  //  to use the attribute directly to check for this, which can either be empty or 'true';
+  //  if it's `null` (not specified) or 'false', it's a non-editable element
+  var attValue = node === null || node === void 0 ? void 0 : (_node$getAttribute2 = node.getAttribute) === null || _node$getAttribute2 === void 0 ? void 0 : _node$getAttribute2.call(node, 'contenteditable');
+  return attValue === '' || attValue === 'true';
+};
+
+/**
+ * @param {Element} el container to check in
+ * @param {boolean} includeContainer add container to check
+ * @param {(node: Element) => boolean} filter filter candidates
+ * @returns {Element[]}
+ */
+var getCandidates = function getCandidates(el, includeContainer, filter) {
+  // even if `includeContainer=false`, we still have to check it for inertness because
+  //  if it's inert, all its children are inert
+  if (isInert(el)) {
+    return [];
+  }
+  var candidates = Array.prototype.slice.apply(el.querySelectorAll(candidateSelector));
+  if (includeContainer && matches.call(el, candidateSelector)) {
+    candidates.unshift(el);
+  }
+  candidates = candidates.filter(filter);
+  return candidates;
+};
+
+/**
+ * @callback GetShadowRoot
+ * @param {Element} element to check for shadow root
+ * @returns {ShadowRoot|boolean} ShadowRoot if available or boolean indicating if a shadowRoot is attached but not available.
+ */
+
+/**
+ * @callback ShadowRootFilter
+ * @param {Element} shadowHostNode the element which contains shadow content
+ * @returns {boolean} true if a shadow root could potentially contain valid candidates.
+ */
+
+/**
+ * @typedef {Object} CandidateScope
+ * @property {Element} scopeParent contains inner candidates
+ * @property {Element[]} candidates list of candidates found in the scope parent
+ */
+
+/**
+ * @typedef {Object} IterativeOptions
+ * @property {GetShadowRoot|boolean} getShadowRoot true if shadow support is enabled; falsy if not;
+ *  if a function, implies shadow support is enabled and either returns the shadow root of an element
+ *  or a boolean stating if it has an undisclosed shadow root
+ * @property {(node: Element) => boolean} filter filter candidates
+ * @property {boolean} flatten if true then result will flatten any CandidateScope into the returned list
+ * @property {ShadowRootFilter} shadowRootFilter filter shadow roots;
+ */
+
+/**
+ * @param {Element[]} elements list of element containers to match candidates from
+ * @param {boolean} includeContainer add container list to check
+ * @param {IterativeOptions} options
+ * @returns {Array.<Element|CandidateScope>}
+ */
+var getCandidatesIteratively = function getCandidatesIteratively(elements, includeContainer, options) {
+  var candidates = [];
+  var elementsToCheck = Array.from(elements);
+  while (elementsToCheck.length) {
+    var element = elementsToCheck.shift();
+    if (isInert(element, false)) {
+      // no need to look up since we're drilling down
+      // anything inside this container will also be inert
+      continue;
+    }
+    if (element.tagName === 'SLOT') {
+      // add shadow dom slot scope (slot itself cannot be focusable)
+      var assigned = element.assignedElements();
+      var content = assigned.length ? assigned : element.children;
+      var nestedCandidates = getCandidatesIteratively(content, true, options);
+      if (options.flatten) {
+        candidates.push.apply(candidates, nestedCandidates);
+      } else {
+        candidates.push({
+          scopeParent: element,
+          candidates: nestedCandidates
+        });
+      }
+    } else {
+      // check candidate element
+      var validCandidate = matches.call(element, candidateSelector);
+      if (validCandidate && options.filter(element) && (includeContainer || !elements.includes(element))) {
+        candidates.push(element);
+      }
+
+      // iterate over shadow content if possible
+      var shadowRoot = element.shadowRoot ||
+      // check for an undisclosed shadow
+      typeof options.getShadowRoot === 'function' && options.getShadowRoot(element);
+
+      // no inert look up because we're already drilling down and checking for inertness
+      //  on the way down, so all containers to this root node should have already been
+      //  vetted as non-inert
+      var validShadowRoot = !isInert(shadowRoot, false) && (!options.shadowRootFilter || options.shadowRootFilter(element));
+      if (shadowRoot && validShadowRoot) {
+        // add shadow dom scope IIF a shadow root node was given; otherwise, an undisclosed
+        //  shadow exists, so look at light dom children as fallback BUT create a scope for any
+        //  child candidates found because they're likely slotted elements (elements that are
+        //  children of the web component element (which has the shadow), in the light dom, but
+        //  slotted somewhere _inside_ the undisclosed shadow) -- the scope is created below,
+        //  _after_ we return from this recursive call
+        var _nestedCandidates = getCandidatesIteratively(shadowRoot === true ? element.children : shadowRoot.children, true, options);
+        if (options.flatten) {
+          candidates.push.apply(candidates, _nestedCandidates);
+        } else {
+          candidates.push({
+            scopeParent: element,
+            candidates: _nestedCandidates
+          });
+        }
+      } else {
+        // there's not shadow so just dig into the element's (light dom) children
+        //  __without__ giving the element special scope treatment
+        elementsToCheck.unshift.apply(elementsToCheck, element.children);
+      }
+    }
+  }
+  return candidates;
+};
+
+/**
+ * @private
+ * Determines if the node has an explicitly specified `tabindex` attribute.
+ * @param {HTMLElement} node
+ * @returns {boolean} True if so; false if not.
+ */
+var hasTabIndex = function hasTabIndex(node) {
+  return !isNaN(parseInt(node.getAttribute('tabindex'), 10));
+};
+
+/**
+ * Determine the tab index of a given node.
+ * @param {HTMLElement} node
+ * @returns {number} Tab order (negative, 0, or positive number).
+ * @throws {Error} If `node` is falsy.
+ */
+var getTabIndex = function getTabIndex(node) {
+  if (!node) {
+    throw new Error('No node provided');
+  }
+  if (node.tabIndex < 0) {
+    // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
+    // `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,
+    // yet they are still part of the regular tab order; in FF, they get a default
+    // `tabIndex` of 0; since Chrome still puts those elements in the regular tab
+    // order, consider their tab index to be 0.
+    // Also browsers do not return `tabIndex` correctly for contentEditable nodes;
+    // so if they don't have a tabindex attribute specifically set, assume it's 0.
+    if ((/^(AUDIO|VIDEO|DETAILS)$/.test(node.tagName) || isContentEditable(node)) && !hasTabIndex(node)) {
+      return 0;
+    }
+  }
+  return node.tabIndex;
+};
+
+/**
+ * Determine the tab index of a given node __for sort order purposes__.
+ * @param {HTMLElement} node
+ * @param {boolean} [isScope] True for a custom element with shadow root or slot that, by default,
+ *  has tabIndex -1, but needs to be sorted by document order in order for its content to be
+ *  inserted into the correct sort position.
+ * @returns {number} Tab order (negative, 0, or positive number).
+ */
+var getSortOrderTabIndex = function getSortOrderTabIndex(node, isScope) {
+  var tabIndex = getTabIndex(node);
+  if (tabIndex < 0 && isScope && !hasTabIndex(node)) {
+    return 0;
+  }
+  return tabIndex;
+};
+var sortOrderedTabbables = function sortOrderedTabbables(a, b) {
+  return a.tabIndex === b.tabIndex ? a.documentOrder - b.documentOrder : a.tabIndex - b.tabIndex;
+};
+var isInput = function isInput(node) {
+  return node.tagName === 'INPUT';
+};
+var isHiddenInput = function isHiddenInput(node) {
+  return isInput(node) && node.type === 'hidden';
+};
+var isDetailsWithSummary = function isDetailsWithSummary(node) {
+  var r = node.tagName === 'DETAILS' && Array.prototype.slice.apply(node.children).some(function (child) {
+    return child.tagName === 'SUMMARY';
+  });
+  return r;
+};
+var getCheckedRadio = function getCheckedRadio(nodes, form) {
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i].checked && nodes[i].form === form) {
+      return nodes[i];
+    }
+  }
+};
+var isTabbableRadio = function isTabbableRadio(node) {
+  if (!node.name) {
+    return true;
+  }
+  var radioScope = node.form || getRootNode(node);
+  var queryRadios = function queryRadios(name) {
+    return radioScope.querySelectorAll('input[type="radio"][name="' + name + '"]');
+  };
+  var radioSet;
+  if (typeof window !== 'undefined' && typeof window.CSS !== 'undefined' && typeof window.CSS.escape === 'function') {
+    radioSet = queryRadios(window.CSS.escape(node.name));
+  } else {
+    try {
+      radioSet = queryRadios(node.name);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s', err.message);
+      return false;
+    }
+  }
+  var checked = getCheckedRadio(radioSet, node.form);
+  return !checked || checked === node;
+};
+var isRadio = function isRadio(node) {
+  return isInput(node) && node.type === 'radio';
+};
+var isNonTabbableRadio = function isNonTabbableRadio(node) {
+  return isRadio(node) && !isTabbableRadio(node);
+};
+
+// determines if a node is ultimately attached to the window's document
+var isNodeAttached = function isNodeAttached(node) {
+  var _nodeRoot;
+  // The root node is the shadow root if the node is in a shadow DOM; some document otherwise
+  //  (but NOT _the_ document; see second 'If' comment below for more).
+  // If rootNode is shadow root, it'll have a host, which is the element to which the shadow
+  //  is attached, and the one we need to check if it's in the document or not (because the
+  //  shadow, and all nodes it contains, is never considered in the document since shadows
+  //  behave like self-contained DOMs; but if the shadow's HOST, which is part of the document,
+  //  is hidden, or is not in the document itself but is detached, it will affect the shadow's
+  //  visibility, including all the nodes it contains). The host could be any normal node,
+  //  or a custom element (i.e. web component). Either way, that's the one that is considered
+  //  part of the document, not the shadow root, nor any of its children (i.e. the node being
+  //  tested).
+  // To further complicate things, we have to look all the way up until we find a shadow HOST
+  //  that is attached (or find none) because the node might be in nested shadows...
+  // If rootNode is not a shadow root, it won't have a host, and so rootNode should be the
+  //  document (per the docs) and while it's a Document-type object, that document does not
+  //  appear to be the same as the node's `ownerDocument` for some reason, so it's safer
+  //  to ignore the rootNode at this point, and use `node.ownerDocument`. Otherwise,
+  //  using `rootNode.contains(node)` will _always_ be true we'll get false-positives when
+  //  node is actually detached.
+  // NOTE: If `nodeRootHost` or `node` happens to be the `document` itself (which is possible
+  //  if a tabbable/focusable node was quickly added to the DOM, focused, and then removed
+  //  from the DOM as in https://github.com/focus-trap/focus-trap-react/issues/905), then
+  //  `ownerDocument` will be `null`, hence the optional chaining on it.
+  var nodeRoot = node && getRootNode(node);
+  var nodeRootHost = (_nodeRoot = nodeRoot) === null || _nodeRoot === void 0 ? void 0 : _nodeRoot.host;
+
+  // in some cases, a detached node will return itself as the root instead of a document or
+  //  shadow root object, in which case, we shouldn't try to look further up the host chain
+  var attached = false;
+  if (nodeRoot && nodeRoot !== node) {
+    var _nodeRootHost, _nodeRootHost$ownerDo, _node$ownerDocument;
+    attached = !!((_nodeRootHost = nodeRootHost) !== null && _nodeRootHost !== void 0 && (_nodeRootHost$ownerDo = _nodeRootHost.ownerDocument) !== null && _nodeRootHost$ownerDo !== void 0 && _nodeRootHost$ownerDo.contains(nodeRootHost) || node !== null && node !== void 0 && (_node$ownerDocument = node.ownerDocument) !== null && _node$ownerDocument !== void 0 && _node$ownerDocument.contains(node));
+    while (!attached && nodeRootHost) {
+      var _nodeRoot2, _nodeRootHost2, _nodeRootHost2$ownerD;
+      // since it's not attached and we have a root host, the node MUST be in a nested shadow DOM,
+      //  which means we need to get the host's host and check if that parent host is contained
+      //  in (i.e. attached to) the document
+      nodeRoot = getRootNode(nodeRootHost);
+      nodeRootHost = (_nodeRoot2 = nodeRoot) === null || _nodeRoot2 === void 0 ? void 0 : _nodeRoot2.host;
+      attached = !!((_nodeRootHost2 = nodeRootHost) !== null && _nodeRootHost2 !== void 0 && (_nodeRootHost2$ownerD = _nodeRootHost2.ownerDocument) !== null && _nodeRootHost2$ownerD !== void 0 && _nodeRootHost2$ownerD.contains(nodeRootHost));
+    }
+  }
+  return attached;
+};
+var isZeroArea = function isZeroArea(node) {
+  var _node$getBoundingClie = node.getBoundingClientRect(),
+    width = _node$getBoundingClie.width,
+    height = _node$getBoundingClie.height;
+  return width === 0 && height === 0;
+};
+var isHidden = function isHidden(node, _ref) {
+  var displayCheck = _ref.displayCheck,
+    getShadowRoot = _ref.getShadowRoot;
+  // NOTE: visibility will be `undefined` if node is detached from the document
+  //  (see notes about this further down), which means we will consider it visible
+  //  (this is legacy behavior from a very long way back)
+  // NOTE: we check this regardless of `displayCheck="none"` because this is a
+  //  _visibility_ check, not a _display_ check
+  if (getComputedStyle(node).visibility === 'hidden') {
+    return true;
+  }
+  var isDirectSummary = matches.call(node, 'details>summary:first-of-type');
+  var nodeUnderDetails = isDirectSummary ? node.parentElement : node;
+  if (matches.call(nodeUnderDetails, 'details:not([open]) *')) {
+    return true;
+  }
+  if (!displayCheck || displayCheck === 'full' || displayCheck === 'legacy-full') {
+    if (typeof getShadowRoot === 'function') {
+      // figure out if we should consider the node to be in an undisclosed shadow and use the
+      //  'non-zero-area' fallback
+      var originalNode = node;
+      while (node) {
+        var parentElement = node.parentElement;
+        var rootNode = getRootNode(node);
+        if (parentElement && !parentElement.shadowRoot && getShadowRoot(parentElement) === true // check if there's an undisclosed shadow
+        ) {
+          // node has an undisclosed shadow which means we can only treat it as a black box, so we
+          //  fall back to a non-zero-area test
+          return isZeroArea(node);
+        } else if (node.assignedSlot) {
+          // iterate up slot
+          node = node.assignedSlot;
+        } else if (!parentElement && rootNode !== node.ownerDocument) {
+          // cross shadow boundary
+          node = rootNode.host;
+        } else {
+          // iterate up normal dom
+          node = parentElement;
+        }
+      }
+      node = originalNode;
+    }
+    // else, `getShadowRoot` might be true, but all that does is enable shadow DOM support
+    //  (i.e. it does not also presume that all nodes might have undisclosed shadows); or
+    //  it might be a falsy value, which means shadow DOM support is disabled
+
+    // Since we didn't find it sitting in an undisclosed shadow (or shadows are disabled)
+    //  now we can just test to see if it would normally be visible or not, provided it's
+    //  attached to the main document.
+    // NOTE: We must consider case where node is inside a shadow DOM and given directly to
+    //  `isTabbable()` or `isFocusable()` -- regardless of `getShadowRoot` option setting.
+
+    if (isNodeAttached(node)) {
+      // this works wherever the node is: if there's at least one client rect, it's
+      //  somehow displayed; it also covers the CSS 'display: contents' case where the
+      //  node itself is hidden in place of its contents; and there's no need to search
+      //  up the hierarchy either
+      return !node.getClientRects().length;
+    }
+
+    // Else, the node isn't attached to the document, which means the `getClientRects()`
+    //  API will __always__ return zero rects (this can happen, for example, if React
+    //  is used to render nodes onto a detached tree, as confirmed in this thread:
+    //  https://github.com/facebook/react/issues/9117#issuecomment-284228870)
+    //
+    // It also means that even window.getComputedStyle(node).display will return `undefined`
+    //  because styles are only computed for nodes that are in the document.
+    //
+    // NOTE: THIS HAS BEEN THE CASE FOR YEARS. It is not new, nor is it caused by tabbable
+    //  somehow. Though it was never stated officially, anyone who has ever used tabbable
+    //  APIs on nodes in detached containers has actually implicitly used tabbable in what
+    //  was later (as of v5.2.0 on Apr 9, 2021) called `displayCheck="none"` mode -- essentially
+    //  considering __everything__ to be visible because of the innability to determine styles.
+    //
+    // v6.0.0: As of this major release, the default 'full' option __no longer treats detached
+    //  nodes as visible with the 'none' fallback.__
+    if (displayCheck !== 'legacy-full') {
+      return true; // hidden
+    }
+    // else, fallback to 'none' mode and consider the node visible
+  } else if (displayCheck === 'non-zero-area') {
+    // NOTE: Even though this tests that the node's client rect is non-zero to determine
+    //  whether it's displayed, and that a detached node will __always__ have a zero-area
+    //  client rect, we don't special-case for whether the node is attached or not. In
+    //  this mode, we do want to consider nodes that have a zero area to be hidden at all
+    //  times, and that includes attached or not.
+    return isZeroArea(node);
+  }
+
+  // visible, as far as we can tell, or per current `displayCheck=none` mode, we assume
+  //  it's visible
+  return false;
+};
+
+// form fields (nested) inside a disabled fieldset are not focusable/tabbable
+//  unless they are in the _first_ <legend> element of the top-most disabled
+//  fieldset
+var isDisabledFromFieldset = function isDisabledFromFieldset(node) {
+  if (/^(INPUT|BUTTON|SELECT|TEXTAREA)$/.test(node.tagName)) {
+    var parentNode = node.parentElement;
+    // check if `node` is contained in a disabled <fieldset>
+    while (parentNode) {
+      if (parentNode.tagName === 'FIELDSET' && parentNode.disabled) {
+        // look for the first <legend> among the children of the disabled <fieldset>
+        for (var i = 0; i < parentNode.children.length; i++) {
+          var child = parentNode.children.item(i);
+          // when the first <legend> (in document order) is found
+          if (child.tagName === 'LEGEND') {
+            // if its parent <fieldset> is not nested in another disabled <fieldset>,
+            // return whether `node` is a descendant of its first <legend>
+            return matches.call(parentNode, 'fieldset[disabled] *') ? true : !child.contains(node);
+          }
+        }
+        // the disabled <fieldset> containing `node` has no <legend>
+        return true;
+      }
+      parentNode = parentNode.parentElement;
+    }
+  }
+
+  // else, node's tabbable/focusable state should not be affected by a fieldset's
+  //  enabled/disabled state
+  return false;
+};
+var isNodeMatchingSelectorFocusable = function isNodeMatchingSelectorFocusable(options, node) {
+  if (node.disabled ||
+  // we must do an inert look up to filter out any elements inside an inert ancestor
+  //  because we're limited in the type of selectors we can use in JSDom (see related
+  //  note related to `candidateSelectors`)
+  isInert(node) || isHiddenInput(node) || isHidden(node, options) ||
+  // For a details element with a summary, the summary element gets the focus
+  isDetailsWithSummary(node) || isDisabledFromFieldset(node)) {
+    return false;
+  }
+  return true;
+};
+var isNodeMatchingSelectorTabbable = function isNodeMatchingSelectorTabbable(options, node) {
+  if (isNonTabbableRadio(node) || getTabIndex(node) < 0 || !isNodeMatchingSelectorFocusable(options, node)) {
+    return false;
+  }
+  return true;
+};
+var isValidShadowRootTabbable = function isValidShadowRootTabbable(shadowHostNode) {
+  var tabIndex = parseInt(shadowHostNode.getAttribute('tabindex'), 10);
+  if (isNaN(tabIndex) || tabIndex >= 0) {
+    return true;
+  }
+  // If a custom element has an explicit negative tabindex,
+  // browsers will not allow tab targeting said element's children.
+  return false;
+};
+
+/**
+ * @param {Array.<Element|CandidateScope>} candidates
+ * @returns Element[]
+ */
+var sortByOrder = function sortByOrder(candidates) {
+  var regularTabbables = [];
+  var orderedTabbables = [];
+  candidates.forEach(function (item, i) {
+    var isScope = !!item.scopeParent;
+    var element = isScope ? item.scopeParent : item;
+    var candidateTabindex = getSortOrderTabIndex(element, isScope);
+    var elements = isScope ? sortByOrder(item.candidates) : element;
+    if (candidateTabindex === 0) {
+      isScope ? regularTabbables.push.apply(regularTabbables, elements) : regularTabbables.push(element);
+    } else {
+      orderedTabbables.push({
+        documentOrder: i,
+        tabIndex: candidateTabindex,
+        item: item,
+        isScope: isScope,
+        content: elements
+      });
+    }
+  });
+  return orderedTabbables.sort(sortOrderedTabbables).reduce(function (acc, sortable) {
+    sortable.isScope ? acc.push.apply(acc, sortable.content) : acc.push(sortable.content);
+    return acc;
+  }, []).concat(regularTabbables);
+};
+var tabbable = function tabbable(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorTabbable.bind(null, options),
+      flatten: false,
+      getShadowRoot: options.getShadowRoot,
+      shadowRootFilter: isValidShadowRootTabbable
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorTabbable.bind(null, options));
+  }
+  return sortByOrder(candidates);
+};
+var focusable = function focusable(container, options) {
+  options = options || {};
+  var candidates;
+  if (options.getShadowRoot) {
+    candidates = getCandidatesIteratively([container], options.includeContainer, {
+      filter: isNodeMatchingSelectorFocusable.bind(null, options),
+      flatten: true,
+      getShadowRoot: options.getShadowRoot
+    });
+  } else {
+    candidates = getCandidates(container, options.includeContainer, isNodeMatchingSelectorFocusable.bind(null, options));
+  }
+  return candidates;
+};
+var isTabbable = function isTabbable(node, options) {
+  options = options || {};
+  if (!node) {
+    throw new Error('No node provided');
+  }
+  if (matches.call(node, candidateSelector) === false) {
+    return false;
+  }
+  return isNodeMatchingSelectorTabbable(options, node);
+};
+var focusableCandidateSelector = /* #__PURE__ */candidateSelectors.concat('iframe').join(',');
+var isFocusable = function isFocusable(node, options) {
+  options = options || {};
+  if (!node) {
+    throw new Error('No node provided');
+  }
+  if (matches.call(node, focusableCandidateSelector) === false) {
+    return false;
+  }
+  return isNodeMatchingSelectorFocusable(options, node);
+};
+
+
+//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/tslib/tslib.es6.mjs":
 /*!******************************************!*\
   !*** ./node_modules/tslib/tslib.es6.mjs ***!
@@ -91015,6 +105118,102 @@ function useCallbackRef(initialValue, callback) {
 
 /***/ }),
 
+/***/ "./node_modules/use-composed-ref/dist/use-composed-ref.esm.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/use-composed-ref/dist/use-composed-ref.esm.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useComposedRef)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+// basically Exclude<React.ClassAttributes<T>["ref"], string>
+
+var updateRef = function updateRef(ref, value) {
+  if (typeof ref === 'function') {
+    ref(value);
+    return;
+  }
+  ref.current = value;
+};
+var useComposedRef = function useComposedRef(libRef, userRef) {
+  var prevUserRef = react__WEBPACK_IMPORTED_MODULE_0___default().useRef();
+  return react__WEBPACK_IMPORTED_MODULE_0___default().useCallback(function (instance) {
+    libRef.current = instance;
+    if (prevUserRef.current) {
+      updateRef(prevUserRef.current, null);
+    }
+    prevUserRef.current = userRef;
+    if (!userRef) {
+      return;
+    }
+    updateRef(userRef, instance);
+  }, [userRef]);
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ index)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var index = react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect ;
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/use-latest/dist/use-latest.esm.js":
+/*!********************************************************!*\
+  !*** ./node_modules/use-latest/dist/use-latest.esm.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useLatest)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var use_isomorphic_layout_effect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! use-isomorphic-layout-effect */ "./node_modules/use-isomorphic-layout-effect/dist/use-isomorphic-layout-effect.browser.esm.js");
+
+
+
+var useLatest = function useLatest(value) {
+  var ref = react__WEBPACK_IMPORTED_MODULE_0___default().useRef(value);
+  (0,use_isomorphic_layout_effect__WEBPACK_IMPORTED_MODULE_1__["default"])(function () {
+    ref.current = value;
+  });
+  return ref;
+};
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/use-sidecar/dist/es2015/exports.js":
 /*!*********************************************************!*\
   !*** ./node_modules/use-sidecar/dist/es2015/exports.js ***!
@@ -91159,8 +105358,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-disclosure/use-disclosure.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-disclosure/use-disclosure.mjs");
 /* harmony import */ var _GraphComponent_SidebarComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GraphComponent/SidebarComponent */ "./src/components/GraphComponent/SidebarComponent.js");
+/* harmony import */ var _GraphComponent_NodeModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GraphComponent/NodeModal */ "./src/components/GraphComponent/NodeModal.js");
 function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
@@ -91171,6 +105371,7 @@ function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) 
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
 
 
 
@@ -91191,10 +105392,16 @@ function GraphComponent() {
     _useState8 = _slicedToArray(_useState7, 2),
     selectedNode = _useState8[0],
     setSelectedNode = _useState8[1];
-  var _useDisclosure = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_2__.useDisclosure)(),
+  var _useDisclosure = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDisclosure)(),
     _useDisclosure2 = _slicedToArray(_useDisclosure, 2),
     opened = _useDisclosure2[0],
     toggle = _useDisclosure2[1].toggle;
+  var _useDisclosure3 = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDisclosure)(),
+    _useDisclosure4 = _slicedToArray(_useDisclosure3, 2),
+    modalOpened = _useDisclosure4[0],
+    _useDisclosure4$ = _useDisclosure4[1],
+    openModal = _useDisclosure4$.open,
+    closeModal = _useDisclosure4$.close;
   var cyRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     chrome.storage.local.get(["notes"], function (result) {
@@ -91217,8 +105424,10 @@ function GraphComponent() {
         data: {
           id: note.id,
           label: note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
+          fullText: note.text,
           url: note.url || "#",
-          timestamp: note.timestamp
+          timestamp: note.timestamp,
+          tags: note.tags || []
         }
       };
     });
@@ -91260,11 +105469,7 @@ function GraphComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (cyRef.current) {
       cyRef.current.on("tap", "node", function (event) {
-        var nodeData = event.target.data();
-        setSelectedNode(nodeData);
-        if (nodeData.url && nodeData.url !== "#") {
-          window.open(nodeData.url, "_blank");
-        }
+        handleNodeClick(event.target.data());
       });
       return function () {
         if (cyRef.current) {
@@ -91272,7 +105477,11 @@ function GraphComponent() {
         }
       };
     }
-  }, [cyRef.current, elements]);
+  }, [cyRef.current, elements, openModal]);
+  var handleNodeClick = function handleNodeClick(nodeData) {
+    setSelectedNode(nodeData);
+    openModal();
+  };
   var layout = {
     name: "cose",
     idealEdgeLength: 100,
@@ -91311,7 +105520,7 @@ function GraphComponent() {
       "curve-style": "bezier"
     }
   }];
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GraphComponent_SidebarComponent__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GraphComponent_SidebarComponent__WEBPACK_IMPORTED_MODULE_1__["default"], {
     opened: opened,
     toggle: toggle,
     selectedNode: selectedNode,
@@ -91320,10 +105529,235 @@ function GraphComponent() {
     layout: layout,
     stylesheet: stylesheet,
     cyRef: cyRef,
-    notes: notes
-  });
+    notes: notes,
+    onOpenModal: openModal
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GraphComponent_NodeModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    opened: modalOpened && !!selectedNode,
+    onClose: closeModal,
+    selectedNode: selectedNode,
+    notes: notes,
+    onUpdateNotes: setNotes
+  }));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GraphComponent);
+
+/***/ }),
+
+/***/ "./src/components/GraphComponent/NodeModal.js":
+/*!****************************************************!*\
+  !*** ./src/components/GraphComponent/NodeModal.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Textarea/Textarea.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTrash.mjs");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
+
+
+var NodeModal = function NodeModal(_ref) {
+  var opened = _ref.opened,
+    onClose = _ref.onClose,
+    selectedNode = _ref.selectedNode,
+    notes = _ref.notes,
+    onUpdateNotes = _ref.onUpdateNotes;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    isEditing = _useState2[0],
+    setIsEditing = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState4 = _slicedToArray(_useState3, 2),
+    editText = _useState4[0],
+    setEditText = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState6 = _slicedToArray(_useState5, 2),
+    editTags = _useState6[0],
+    setEditTags = _useState6[1];
+
+  // Find the full note data when modal opens
+  var fullNote = notes.find(function (note) {
+    return String(note.id) === String(selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.id);
+  });
+  var handleEdit = function handleEdit() {
+    if (fullNote) {
+      setEditText(fullNote.text);
+      setEditTags(fullNote.tags ? fullNote.tags.join(", ") : "");
+      setIsEditing(true);
+    }
+  };
+  var handleSave = function handleSave() {
+    if (!fullNote || editText.trim() === "") return;
+    var updatedNote = _objectSpread(_objectSpread({}, fullNote), {}, {
+      text: editText.trim(),
+      tags: editTags.split(",").map(function (tag) {
+        return tag.trim();
+      }).filter(Boolean)
+    });
+    var updatedNotes = notes.map(function (note) {
+      return note.id === fullNote.id ? updatedNote : note;
+    });
+    chrome.storage.local.set({
+      notes: updatedNotes
+    }, function () {
+      onUpdateNotes(updatedNotes);
+      setIsEditing(false);
+      onClose();
+    });
+  };
+  var handleDelete = function handleDelete() {
+    if (!fullNote) return;
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      var updatedNotes = notes.filter(function (note) {
+        return note.id !== fullNote.id;
+      });
+      chrome.storage.local.set({
+        notes: updatedNotes
+      }, function () {
+        onUpdateNotes(updatedNotes);
+        onClose();
+      });
+    }
+  };
+  var handleCancel = function handleCancel() {
+    setIsEditing(false);
+    setEditText("");
+    setEditTags("");
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Drawer, {
+    opened: opened,
+    onClose: onClose,
+    zIndex: 9999,
+    title: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
+      justify: "space-between",
+      w: "100%"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Title, {
+      order: 3
+    }, "Note Details"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
+      variant: "subtle",
+      onClick: onClose
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      size: 16
+    }))),
+    size: "md",
+    position: "right"
+  }, !fullNote ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    c: "dimmed"
+  }, "Note not found.") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Stack, {
+    spacing: "md"
+  }, isEditing ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Textarea, {
+    value: editText,
+    onChange: function onChange(e) {
+      return setEditText(e.target.value);
+    },
+    placeholder: "Edit your note...",
+    label: "Note Content",
+    autosize: true,
+    minRows: 4
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.TextInput, {
+    value: editTags,
+    onChange: function onChange(e) {
+      return setEditTags(e.target.value);
+    },
+    placeholder: "Tags (comma-separated)",
+    label: "Tags"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
+    justify: "flex-end"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Button, {
+    variant: "outline",
+    onClick: handleCancel
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Button, {
+    onClick: handleSave
+  }, "Save Changes"))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm",
+    c: "dimmed",
+    mb: 4
+  }, "Content"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, null, fullNote.text)), fullNote.tags && fullNote.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm",
+    c: "dimmed",
+    mb: 4
+  }, "Tags"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
+    gap: "xs"
+  }, fullNote.tags.map(function (tag, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+      key: index,
+      size: "xs",
+      bg: "blue.1",
+      c: "blue.7",
+      px: 8,
+      py: 2,
+      style: {
+        borderRadius: 4
+      }
+    }, tag);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm",
+    c: "dimmed",
+    mb: 4
+  }, "Created"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm"
+  }, new Date(fullNote.timestamp).toLocaleString())), fullNote.url && fullNote.url !== "#" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm",
+    c: "dimmed",
+    mb: 4
+  }, "Source URL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    size: "sm",
+    style: {
+      wordBreak: "break-all"
+    }
+  }, fullNote.url)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
+    justify: "flex-end",
+    mt: "md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Tooltip, {
+    label: "Edit Note"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
+    variant: "light",
+    color: "blue",
+    onClick: handleEdit,
+    size: "lg"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    size: 16
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Tooltip, {
+    label: "Delete Note"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
+    variant: "light",
+    color: "red",
+    onClick: handleDelete,
+    size: "lg"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_14__["default"], {
+    size: 16
+  })))))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NodeModal);
 
 /***/ }),
 
@@ -91347,8 +105781,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
 /* harmony import */ var react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-cytoscapejs */ "./node_modules/react-cytoscapejs/dist/react-cytoscape.modern.js");
 /* harmony import */ var _SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SidebarComponent/RecentNotesComponent */ "./src/components/GraphComponent/SidebarComponent/RecentNotesComponent.js");
 /* harmony import */ var _SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SidebarComponent/SearchBarComponent */ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js");
@@ -91366,7 +105801,8 @@ var SidebarComponent = function SidebarComponent(_ref) {
     layout = _ref.layout,
     stylesheet = _ref.stylesheet,
     cyRef = _ref.cyRef,
-    notes = _ref.notes;
+    notes = _ref.notes,
+    onOpenModal = _ref.onOpenModal;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.AppShell, {
     header: {
       height: 60
@@ -91406,7 +105842,13 @@ var SidebarComponent = function SidebarComponent(_ref) {
     size: "sm"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "Text:"), " ", selectedNode.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "URL:"), " ", selectedNode.url)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "URL:"), " ", selectedNode.url), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
+    size: "xs",
+    variant: "light",
+    onClick: onOpenModal,
+    mt: "sm",
+    fullWidth: true
+  }, "View Full Details")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     mt: "md",
     size: "sm",
     c: "dimmed"
@@ -91446,15 +105888,15 @@ var SidebarComponent = function SidebarComponent(_ref) {
       right: "0",
       bottom: "0"
     }
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Loader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Loader, {
     size: "lg"
   })) : elements.filter(function (el) {
     return el.group === "nodes";
-  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
+  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
@@ -91845,6 +106287,36 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
 /******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/create fake namespace object */
+/******/ 	(() => {
+/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
+/******/ 		var leafPrototypes;
+/******/ 		// create a fake namespace object
+/******/ 		// mode & 1: value is a module id, require it
+/******/ 		// mode & 2: merge all properties of value into the ns
+/******/ 		// mode & 4: return value when already ns object
+/******/ 		// mode & 16: return value when it's Promise-like
+/******/ 		// mode & 8|1: behave like require
+/******/ 		__webpack_require__.t = function(value, mode) {
+/******/ 			if(mode & 1) value = this(value);
+/******/ 			if(mode & 8) return value;
+/******/ 			if(typeof value === 'object' && value) {
+/******/ 				if((mode & 4) && value.__esModule) return value;
+/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
+/******/ 			}
+/******/ 			var ns = Object.create(null);
+/******/ 			__webpack_require__.r(ns);
+/******/ 			var def = {};
+/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
+/******/ 			for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
+/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
+/******/ 			}
+/******/ 			def['default'] = () => (value);
+/******/ 			__webpack_require__.d(ns, def);
+/******/ 			return ns;
 /******/ 		};
 /******/ 	})();
 /******/ 	

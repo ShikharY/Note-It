@@ -9,6 +9,7 @@ import {
   Loader,
   Burger,
   Stack,
+  Button,
 } from "@mantine/core";
 import CytoscapeComponent from "react-cytoscapejs";
 import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
@@ -23,6 +24,7 @@ const SidebarComponent = ({
   stylesheet,
   cyRef,
   notes,
+  onOpenModal,
 }) => {
   return (
     <AppShell
@@ -56,6 +58,15 @@ const SidebarComponent = ({
                 <Text size="sm">
                   <b>URL:</b> {selectedNode.url}
                 </Text>
+                <Button
+                  size="xs"
+                  variant="light"
+                  onClick={onOpenModal}
+                  mt="sm"
+                  fullWidth
+                >
+                  View Full Details
+                </Button>
               </Box>
             ) : (
               <Text mt="md" size="sm" c="dimmed">
