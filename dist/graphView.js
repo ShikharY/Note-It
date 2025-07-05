@@ -91601,8 +91601,10 @@ var SearchBarComponent = function SearchBarComponent(_ref) {
       });
 
       // Search in URL
-      var urlMatch = note.url && note.url.toLowerCase().includes(query);
-      return textMatch || tagsMatch || urlMatch;
+      // const urlMatch = note.url && note.url.toLowerCase().includes(query);
+
+      return textMatch || tagsMatch;
+      // || urlMatch;
     }).sort(function (a, b) {
       var _a$timestamp, _b$timestamp;
       // Sort by relevance (exact matches first, then by timestamp)
@@ -91638,12 +91640,12 @@ var SearchBarComponent = function SearchBarComponent(_ref) {
   }, "Search Notes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
     spacing: "xs"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.TextInput, {
-    placeholder: "Search in notes, tags, or URLs...",
+    placeholder: "Search in notes or tags",
     value: searchQuery,
     onChange: function onChange(e) {
       return setSearchQuery(e.target.value);
     },
-    onKeyPress: function onKeyPress(e) {
+    onKeyDown: function onKeyDown(e) {
       if (e.key === "Enter") {
         handleSearch();
       }
@@ -91729,7 +91731,7 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
   // Function to highlight search terms in text
   var highlightText = function highlightText(text, query) {
     if (!text || !query) return text;
-    var regex = new RegExp("(".concat(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), ")"), "gi");
+    var regex = new RegExp("(".concat(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), ")"), "i");
     var parts = text.split(regex);
     return parts.map(function (part, index) {
       return regex.test(part) ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("mark", {
@@ -91768,7 +91770,7 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
     },
     onMouseEnter: function onMouseEnter(e) {
       e.currentTarget.style.borderColor = "#007bff";
-      e.currentTarget.style.backgroundColor = "#f8f9fa";
+      e.currentTarget.style.backgroundColor = "darkgrey";
     },
     onMouseLeave: function onMouseLeave(e) {
       e.currentTarget.style.borderColor = "#ddd";

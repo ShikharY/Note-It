@@ -27,9 +27,10 @@ const SearchBarComponent = ({ notes, onSelectNote }) => {
           note.tags.some((tag) => tag.toLowerCase().includes(query));
 
         // Search in URL
-        const urlMatch = note.url && note.url.toLowerCase().includes(query);
+        // const urlMatch = note.url && note.url.toLowerCase().includes(query);
 
-        return textMatch || tagsMatch || urlMatch;
+        return textMatch || tagsMatch;
+        // || urlMatch;
       })
       .sort((a, b) => {
         // Sort by relevance (exact matches first, then by timestamp)
@@ -72,10 +73,10 @@ const SearchBarComponent = ({ notes, onSelectNote }) => {
 
       <Group spacing="xs">
         <TextInput
-          placeholder="Search in notes, tags, or URLs..."
+          placeholder="Search in notes or tags"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => {
+          onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearch();
             }

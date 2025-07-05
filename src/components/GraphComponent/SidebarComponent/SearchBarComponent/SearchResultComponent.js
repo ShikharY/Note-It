@@ -9,7 +9,7 @@ const SearchResultComponent = ({ note, searchQuery, onSelect }) => {
 
     const regex = new RegExp(
       `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
-      "gi"
+      "i"
     );
     const parts = text.split(regex);
 
@@ -57,7 +57,7 @@ const SearchResultComponent = ({ note, searchQuery, onSelect }) => {
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = "#007bff";
-        e.currentTarget.style.backgroundColor = "#f8f9fa";
+        e.currentTarget.style.backgroundColor = "darkgrey";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = "#ddd";
