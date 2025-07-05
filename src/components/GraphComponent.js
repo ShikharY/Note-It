@@ -1,28 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import CytoscapeComponent from "react-cytoscapejs";
-import {
-  AppShell,
-  Box,
-  Title,
-  Text,
-  Center,
-  Loader,
-  useMantineTheme,
-  Burger,
-  Group,
-  ScrollArea,
-  Stack,
-  Badge,
-  Anchor,
-  Paper,
-  MantineProvider,
-  createTheme,
-} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-
-const theme = createTheme({
-  /** Mantine theme override here */
-});
+import SidebarComponent from "./GraphComponent/SidebarComponent";
 
 function GraphComponent() {
   const [notes, setNotes] = useState([]);
@@ -43,6 +21,11 @@ function GraphComponent() {
 
     const processedNodes = notes
       .filter((note) => note && note.id && typeof note.text === "string") // Filter out invalid notes
+      .sort((a, b) => {
+        const tA = Number(a.timestamp ?? 0);
+        const tB = Number(b.timestamp ?? 0);
+        return tB - tA; // Most recent first
+      })
       .map((note) => ({
         group: "nodes",
         data: {
@@ -50,6 +33,7 @@ function GraphComponent() {
           label:
             note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
           url: note.url || "#",
+          timestamp: note.timestamp,
         },
       }));
 
@@ -157,79 +141,16 @@ function GraphComponent() {
   ];
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <AppShell
-        header={{ height: 60 }}
-        navbar={{
-          width: 300,
-          breakpoint: "sm",
-          collapsed: { mobile: !opened, desktop: !opened },
-        }}
-        padding="md"
-      >
-        <AppShell.Header>
-          <Group h="100%" px="md">
-            <Burger opened={opened} onClick={toggle} size="sm" />
-            <Title order={3}>Note It - Knowledge Graph</Title>
-          </Group>
-        </AppShell.Header>
-
-        <AppShell.Navbar p="md">
-          <Title order={4}>Node Details</Title>
-          {selectedNode ? (
-            <Box mt="md">
-              <Text size="sm">
-                <b>ID:</b> {selectedNode.id}
-              </Text>
-              <Text size="sm">
-                <b>Text:</b> {selectedNode.label}
-              </Text>
-              <Text size="sm">
-                <b>URL:</b> {selectedNode.url}
-              </Text>
-            </Box>
-          ) : (
-            <Text mt="md" size="sm" c="dimmed">
-              Click a node to see its details.
-            </Text>
-          )}
-        </AppShell.Navbar>
-
-        <AppShell.Main>
-          <Box
-            style={{
-              position: "absolute",
-              top: "60px",
-              left: "0",
-              right: "0",
-              bottom: "0",
-            }}
-          >
-            {loading ? (
-              <Center style={{ height: "100%" }}>
-                <Loader size="lg" />
-              </Center>
-            ) : elements.filter((el) => el.group === "nodes").length === 0 ? (
-              <Center style={{ height: "100%" }}>
-                <Text size="lg" c="dimmed">
-                  No notes yet
-                </Text>
-              </Center>
-            ) : (
-              <CytoscapeComponent
-                elements={elements}
-                style={{ width: "100%", height: "100%" }}
-                layout={layout}
-                stylesheet={stylesheet}
-                cy={(cy) => {
-                  cyRef.current = cy;
-                }}
-              />
-            )}
-          </Box>
-        </AppShell.Main>
-      </AppShell>
-    </MantineProvider>
+    <SidebarComponent
+      opened={opened}
+      toggle={toggle}
+      selectedNode={selectedNode}
+      elements={elements}
+      loading={loading}
+      layout={layout}
+      stylesheet={stylesheet}
+      cyRef={cyRef}
+    />
   );
 }
 
