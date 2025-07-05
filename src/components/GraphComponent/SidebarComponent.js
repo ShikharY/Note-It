@@ -8,9 +8,11 @@ import {
   Title,
   Loader,
   Burger,
+  Stack,
 } from "@mantine/core";
 import CytoscapeComponent from "react-cytoscapejs";
 import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
+import SearchBarComponent from "./SidebarComponent/SearchBarComponent";
 const SidebarComponent = ({
   opened,
   toggle,
@@ -20,6 +22,7 @@ const SidebarComponent = ({
   layout,
   stylesheet,
   cyRef,
+  notes,
 }) => {
   return (
     <AppShell
@@ -38,39 +41,63 @@ const SidebarComponent = ({
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
-        <Title order={4}>Node Details</Title>
-        {selectedNode ? (
-          <Box mt="md">
-            <Text size="sm">
-              <b>ID:</b> {selectedNode.id}
-            </Text>
-            <Text size="sm">
-              <b>Text:</b> {selectedNode.label}
-            </Text>
-            <Text size="sm">
-              <b>URL:</b> {selectedNode.url}
-            </Text>
+      <AppShell.Navbar p="md" style={{ overflowY: "auto" }}>
+        <Stack spacing="md">
+          <Box>
+            <Title order={4}>Node Details</Title>
+            {selectedNode ? (
+              <Box mt="md">
+                <Text size="sm">
+                  <b>ID:</b> {selectedNode.id}
+                </Text>
+                <Text size="sm">
+                  <b>Text:</b> {selectedNode.label}
+                </Text>
+                <Text size="sm">
+                  <b>URL:</b> {selectedNode.url}
+                </Text>
+              </Box>
+            ) : (
+              <Text mt="md" size="sm" c="dimmed">
+                Click a node to see its details.
+              </Text>
+            )}
           </Box>
-        ) : (
-          <Text mt="md" size="sm" c="dimmed">
-            Click a node to see its details.
-          </Text>
-        )}
-        <RecentNotesComponent
-          nodes={elements.filter((el) => el.group === "nodes")}
-          onSelect={(id) => {
-            const cy = cyRef.current;
-            if (cy) {
-              const node = cy.getElementById(id);
-              if (node) {
-                cy.center(node);
-                cy.zoom(2);
-                node.select();
-              }
-            }
-          }}
-        />
+
+          <Box>
+            <SearchBarComponent
+              notes={notes}
+              onSelectNote={(note) => {
+                const cy = cyRef.current;
+                if (cy) {
+                  const node = cy.getElementById(note.id);
+                  if (node) {
+                    cy.center(node);
+                    cy.zoom(2);
+                    node.select();
+                  }
+                }
+              }}
+            />
+          </Box>
+
+          <Box>
+            <RecentNotesComponent
+              nodes={elements.filter((el) => el.group === "nodes")}
+              onSelect={(id) => {
+                const cy = cyRef.current;
+                if (cy) {
+                  const node = cy.getElementById(id);
+                  if (node) {
+                    cy.center(node);
+                    cy.zoom(2);
+                    node.select();
+                  }
+                }
+              }}
+            />
+          </Box>
+        </Stack>
       </AppShell.Navbar>
 
       <AppShell.Main>

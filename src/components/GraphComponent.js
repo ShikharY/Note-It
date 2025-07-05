@@ -150,6 +150,7 @@ function GraphComponent() {
       layout={layout}
       stylesheet={stylesheet}
       cyRef={cyRef}
+      notes={notes}
     />
   );
 }

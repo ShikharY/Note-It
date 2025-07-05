@@ -18,6 +18,7 @@
   "dependencies": {
     "@mantine/core": "^8.1.1",
     "@mantine/hooks": "^8.1.1",
+    "@tabler/icons-react": "^3.34.0",
     "cytoscape": "^3.32.0",
     "cytoscape-cose-bilkent": "^4.1.0",
     "postcss": "^8.5.6",
