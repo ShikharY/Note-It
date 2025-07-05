@@ -1456,6 +1456,159 @@ function useResizing({ transitionDuration, disabled }) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Badge/Badge.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Badge/Badge.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Badge: () => (/* binding */ Badge)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Badge_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Badge.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Badge/Badge.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)(
+  (theme, { radius, color, gradient, variant, size, autoContrast }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      root: {
+        "--badge-height": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "badge-height"),
+        "--badge-padding-x": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "badge-padding-x"),
+        "--badge-fz": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "badge-fz"),
+        "--badge-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+        "--badge-bg": color || variant ? colors.background : void 0,
+        "--badge-color": color || variant ? colors.color : void 0,
+        "--badge-bd": color || variant ? colors.border : void 0,
+        "--badge-dot-color": variant === "dot" ? (0,_core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_5__.getThemeColor)(color, theme) : void 0
+      }
+    };
+  }
+);
+const Badge = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Badge", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    radius,
+    color,
+    gradient,
+    leftSection,
+    rightSection,
+    children,
+    variant,
+    fullWidth,
+    autoContrast,
+    circle,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: "Badge",
+    props,
+    classes: _Badge_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__.Box,
+    {
+      variant,
+      mod: [
+        {
+          block: fullWidth,
+          circle,
+          "with-right-section": !!rightSection,
+          "with-left-section": !!leftSection
+        },
+        mod
+      ],
+      ...getStyles("root", { variant }),
+      ref,
+      ...others,
+      children: [
+        leftSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { ...getStyles("section"), "data-position": "left", children: leftSection }),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { ...getStyles("label"), children }),
+        rightSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { ...getStyles("section"), "data-position": "right", children: rightSection })
+      ]
+    }
+  );
+});
+Badge.classes = _Badge_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+Badge.displayName = "@mantine/core/Badge";
+
+
+//# sourceMappingURL=Badge.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Badge/Badge.module.css.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Badge/Badge.module.css.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_347db0ec","root--dot":"m_fbd81e3d","label":"m_5add502a","section":"m_91fdda9b"};
+
+
+//# sourceMappingURL=Badge.module.css.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Burger/Burger.mjs":
 /*!*********************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Burger/Burger.mjs ***!
@@ -1576,6 +1729,394 @@ var classes = {"root":"m_fea6bf1a","burger":"m_d4fb9cad"};
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Button/Button.mjs":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Button/Button.mjs ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Button: () => (/* binding */ Button)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Loader_Loader_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../Loader/Loader.mjs */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../Transition/Transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs");
+/* harmony import */ var _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../UnstyledButton/UnstyledButton.mjs */ "./node_modules/@mantine/core/esm/components/UnstyledButton/UnstyledButton.mjs");
+/* harmony import */ var _ButtonGroup_ButtonGroup_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./ButtonGroup/ButtonGroup.mjs */ "./node_modules/@mantine/core/esm/components/Button/ButtonGroup/ButtonGroup.mjs");
+/* harmony import */ var _ButtonGroupSection_ButtonGroupSection_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./ButtonGroupSection/ButtonGroupSection.mjs */ "./node_modules/@mantine/core/esm/components/Button/ButtonGroupSection/ButtonGroupSection.mjs");
+/* harmony import */ var _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Button.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Button/Button.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const loaderTransition = {
+  in: { opacity: 1, transform: `translate(-50%, calc(-50% + ${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_3__.rem)(1)}))` },
+  out: { opacity: 0, transform: "translate(-50%, -200%)" },
+  common: { transformOrigin: "center" },
+  transitionProperty: "transform, opacity"
+};
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)(
+  (theme, { radius, color, gradient, variant, size, justify, autoContrast }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      root: {
+        "--button-justify": justify,
+        "--button-height": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "button-height"),
+        "--button-padding-x": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "button-padding-x"),
+        "--button-fz": size?.includes("compact") ? (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getFontSize)(size.replace("compact-", "")) : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getFontSize)(size),
+        "--button-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getRadius)(radius),
+        "--button-bg": color || variant ? colors.background : void 0,
+        "--button-hover": color || variant ? colors.hover : void 0,
+        "--button-color": colors.color,
+        "--button-bd": color || variant ? colors.border : void 0,
+        "--button-hover-color": color || variant ? colors.hoverColor : void 0
+      }
+    };
+  }
+);
+const Button = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Button", defaultProps, _props);
+  const {
+    style,
+    vars,
+    className,
+    color,
+    disabled,
+    children,
+    leftSection,
+    rightSection,
+    fullWidth,
+    variant,
+    radius,
+    loading,
+    loaderProps,
+    gradient,
+    classNames,
+    styles,
+    unstyled,
+    "data-disabled": dataDisabled,
+    autoContrast,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: "Button",
+    props,
+    classes: _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  const hasLeftSection = !!leftSection;
+  const hasRightSection = !!rightSection;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_10__.UnstyledButton,
+    {
+      ref,
+      ...getStyles("root", { active: !disabled && !loading && !dataDisabled }),
+      unstyled,
+      variant,
+      disabled: disabled || loading,
+      mod: [
+        {
+          disabled: disabled || dataDisabled,
+          loading,
+          block: fullWidth,
+          "with-left-section": hasLeftSection,
+          "with-right-section": hasRightSection
+        },
+        mod
+      ],
+      ...others,
+      children: [
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Transition_Transition_mjs__WEBPACK_IMPORTED_MODULE_11__.Transition, { mounted: !!loading, transition: loaderTransition, duration: 150, children: (transitionStyles) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__.Box, { component: "span", ...getStyles("loader", { style: transitionStyles }), "aria-hidden": true, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _Loader_Loader_mjs__WEBPACK_IMPORTED_MODULE_13__.Loader,
+          {
+            color: "var(--button-color)",
+            size: "calc(var(--button-height) / 1.8)",
+            ...loaderProps
+          }
+        ) }) }),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", { ...getStyles("inner"), children: [
+          leftSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__.Box, { component: "span", ...getStyles("section"), mod: { position: "left" }, children: leftSection }),
+          /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__.Box, { component: "span", mod: { loading }, ...getStyles("label"), children }),
+          rightSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_12__.Box, { component: "span", ...getStyles("section"), mod: { position: "right" }, children: rightSection })
+        ] })
+      ]
+    }
+  );
+});
+Button.classes = _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+Button.displayName = "@mantine/core/Button";
+Button.Group = _ButtonGroup_ButtonGroup_mjs__WEBPACK_IMPORTED_MODULE_14__.ButtonGroup;
+Button.GroupSection = _ButtonGroupSection_ButtonGroupSection_mjs__WEBPACK_IMPORTED_MODULE_15__.ButtonGroupSection;
+
+
+//# sourceMappingURL=Button.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Button/Button.module.css.mjs":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Button/Button.module.css.mjs ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_77c9d27d","inner":"m_80f1301b","label":"m_811560b9","section":"m_a74036a","loader":"m_a25b86ee","group":"m_80d6d844","groupSection":"m_70be2a01"};
+
+
+//# sourceMappingURL=Button.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Button/ButtonGroup/ButtonGroup.mjs":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Button/ButtonGroup/ButtonGroup.mjs ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ButtonGroup: () => (/* binding */ ButtonGroup)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Button.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Button/Button.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  orientation: "horizontal"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { borderWidth }) => ({
+  group: { "--button-border-width": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_4__.rem)(borderWidth) }
+}));
+const ButtonGroup = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ButtonGroup", defaultProps, _props);
+  const {
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    orientation,
+    vars,
+    borderWidth,
+    variant,
+    mod,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ButtonGroup", defaultProps, _props);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "ButtonGroup",
+    props,
+    classes: _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver,
+    rootSelector: "group"
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__.Box,
+    {
+      ...getStyles("group"),
+      ref,
+      variant,
+      mod: [{ "data-orientation": orientation }, mod],
+      role: "group",
+      ...others
+    }
+  );
+});
+ButtonGroup.classes = _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ButtonGroup.displayName = "@mantine/core/ButtonGroup";
+
+
+//# sourceMappingURL=ButtonGroup.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Button/ButtonGroupSection/ButtonGroupSection.mjs":
+/*!****************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Button/ButtonGroupSection/ButtonGroupSection.mjs ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ButtonGroupSection: () => (/* binding */ ButtonGroupSection)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Button.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Button/Button.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)(
+  (theme, { radius, color, gradient, variant, autoContrast, size }) => {
+    const colors = theme.variantColorResolver({
+      color: color || theme.primaryColor,
+      theme,
+      gradient,
+      variant: variant || "filled",
+      autoContrast
+    });
+    return {
+      groupSection: {
+        "--section-height": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "section-height"),
+        "--section-padding-x": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "section-padding-x"),
+        "--section-fz": size?.includes("compact") ? (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size.replace("compact-", "")) : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size),
+        "--section-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+        "--section-bg": color || variant ? colors.background : void 0,
+        "--section-color": colors.color,
+        "--section-bd": color || variant ? colors.border : void 0
+      }
+    };
+  }
+);
+const ButtonGroupSection = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ButtonGroupSection", defaultProps, _props);
+  const {
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    variant,
+    gradient,
+    radius,
+    autoContrast,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("ButtonGroupSection", defaultProps, _props);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "ButtonGroupSection",
+    props,
+    classes: _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver,
+    rootSelector: "groupSection"
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__.Box, { ...getStyles("groupSection"), ref, variant, ...others });
+});
+ButtonGroupSection.classes = _Button_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+ButtonGroupSection.displayName = "@mantine/core/ButtonGroupSection";
+
+
+//# sourceMappingURL=ButtonGroupSection.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Center/Center.mjs":
 /*!*********************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Center/Center.mjs ***!
@@ -1654,6 +2195,186 @@ var classes = {"root":"m_4451eb3a"};
 
 
 //# sourceMappingURL=Center.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.mjs":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.mjs ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CloseButton: () => (/* binding */ CloseButton)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../UnstyledButton/UnstyledButton.mjs */ "./node_modules/@mantine/core/esm/components/UnstyledButton/UnstyledButton.mjs");
+/* harmony import */ var _CloseIcon_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./CloseIcon.mjs */ "./node_modules/@mantine/core/esm/components/CloseButton/CloseIcon.mjs");
+/* harmony import */ var _CloseButton_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./CloseButton.module.css.mjs */ "./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  variant: "subtle"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { size, radius, iconSize }) => ({
+  root: {
+    "--cb-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(size, "cb-size"),
+    "--cb-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+    "--cb-icon-size": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(iconSize)
+  }
+}));
+const CloseButton = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("CloseButton", defaultProps, _props);
+  const {
+    iconSize,
+    children,
+    vars,
+    radius,
+    className,
+    classNames,
+    style,
+    styles,
+    unstyled,
+    "data-disabled": dataDisabled,
+    disabled,
+    variant,
+    icon,
+    mod,
+    __staticSelector,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: __staticSelector || "CloseButton",
+    props,
+    className,
+    style,
+    classes: _CloseButton_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _UnstyledButton_UnstyledButton_mjs__WEBPACK_IMPORTED_MODULE_10__.UnstyledButton,
+    {
+      ref,
+      ...others,
+      unstyled,
+      variant,
+      disabled,
+      mod: [{ disabled: disabled || dataDisabled }, mod],
+      ...getStyles("root", { variant, active: !disabled && !dataDisabled }),
+      children: [
+        icon || /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_CloseIcon_mjs__WEBPACK_IMPORTED_MODULE_11__.CloseIcon, {}),
+        children
+      ]
+    }
+  );
+});
+CloseButton.classes = _CloseButton_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+CloseButton.displayName = "@mantine/core/CloseButton";
+
+
+//# sourceMappingURL=CloseButton.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.module.css.mjs":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.module.css.mjs ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_86a44da5","root--subtle":"m_220c80f2"};
+
+
+//# sourceMappingURL=CloseButton.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/CloseButton/CloseIcon.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/CloseButton/CloseIcon.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CloseIcon: () => (/* binding */ CloseIcon)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+
+const CloseIcon = (0,react__WEBPACK_IMPORTED_MODULE_1__.forwardRef)(
+  ({ size = "var(--cb-icon-size, 70%)", style, ...others }, ref) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    "svg",
+    {
+      viewBox: "0 0 15 15",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg",
+      style: { ...style, width: size, height: size },
+      ref,
+      ...others,
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        "path",
+        {
+          d: "M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z",
+          fill: "currentColor",
+          fillRule: "evenodd",
+          clipRule: "evenodd"
+        }
+      )
+    }
+  )
+);
+CloseIcon.displayName = "@mantine/core/CloseIcon";
+
+
+//# sourceMappingURL=CloseIcon.mjs.map
 
 
 /***/ }),
@@ -1820,6 +2541,1211 @@ function filterFalsyChildren(children) {
 
 
 //# sourceMappingURL=filter-falsy-children.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/Input.context.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/Input.context.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputContext: () => (/* binding */ InputContext),
+/* harmony export */   useInputContext: () => (/* binding */ useInputContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-optional-context/create-optional-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [InputContext, useInputContext] = (0,_core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createOptionalContext)({
+  size: "sm"
+});
+
+
+//# sourceMappingURL=Input.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/Input.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/Input.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Input: () => (/* binding */ Input)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_style_props_extract_style_props_extract_style_props_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/Box/style-props/extract-style-props/extract-style-props.mjs */ "./node_modules/@mantine/core/esm/core/Box/style-props/extract-style-props/extract-style-props.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Input_context_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Input.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.context.mjs");
+/* harmony import */ var _InputClearButton_InputClearButton_mjs__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./InputClearButton/InputClearButton.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputClearButton/InputClearButton.mjs");
+/* harmony import */ var _InputDescription_InputDescription_mjs__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./InputDescription/InputDescription.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputDescription/InputDescription.mjs");
+/* harmony import */ var _InputError_InputError_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./InputError/InputError.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputError/InputError.mjs");
+/* harmony import */ var _InputLabel_InputLabel_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./InputLabel/InputLabel.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputLabel/InputLabel.mjs");
+/* harmony import */ var _InputPlaceholder_InputPlaceholder_mjs__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./InputPlaceholder/InputPlaceholder.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputPlaceholder/InputPlaceholder.mjs");
+/* harmony import */ var _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./InputWrapper.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs");
+/* harmony import */ var _InputWrapper_InputWrapper_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./InputWrapper/InputWrapper.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper/InputWrapper.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  variant: "default",
+  leftSectionPointerEvents: "none",
+  rightSectionPointerEvents: "none",
+  withAria: true,
+  withErrorStyles: true
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, props, ctx) => ({
+  wrapper: {
+    "--input-margin-top": ctx.offsetTop ? "calc(var(--mantine-spacing-xs) / 2)" : void 0,
+    "--input-margin-bottom": ctx.offsetBottom ? "calc(var(--mantine-spacing-xs) / 2)" : void 0,
+    "--input-height": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(props.size, "input-height"),
+    "--input-fz": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(props.size),
+    "--input-radius": props.radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(props.radius),
+    "--input-left-section-width": props.leftSectionWidth !== void 0 ? (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(props.leftSectionWidth) : void 0,
+    "--input-right-section-width": props.rightSectionWidth !== void 0 ? (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(props.rightSectionWidth) : void 0,
+    "--input-padding-y": props.multiline ? (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getSize)(props.size, "input-padding-y") : void 0,
+    "--input-left-section-pointer-events": props.leftSectionPointerEvents,
+    "--input-right-section-pointer-events": props.rightSectionPointerEvents
+  }
+}));
+const Input = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Input", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    required,
+    __staticSelector,
+    __stylesApiProps,
+    size,
+    wrapperProps,
+    error,
+    disabled,
+    leftSection,
+    leftSectionProps,
+    leftSectionWidth,
+    rightSection,
+    rightSectionProps,
+    rightSectionWidth,
+    rightSectionPointerEvents,
+    leftSectionPointerEvents,
+    variant,
+    vars,
+    pointer,
+    multiline,
+    radius,
+    id,
+    withAria,
+    withErrorStyles,
+    mod,
+    inputSize,
+    __clearSection,
+    __clearable,
+    __defaultRightSection,
+    ...others
+  } = props;
+  const { styleProps, rest } = (0,_core_Box_style_props_extract_style_props_extract_style_props_mjs__WEBPACK_IMPORTED_MODULE_8__.extractStyleProps)(others);
+  const ctx = (0,_InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_9__.useInputWrapperContext)();
+  const stylesCtx = { offsetBottom: ctx?.offsetBottom, offsetTop: ctx?.offsetTop };
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__.useStyles)({
+    name: ["Input", __staticSelector],
+    props: __stylesApiProps || props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    stylesCtx,
+    rootSelector: "wrapper",
+    vars,
+    varsResolver
+  });
+  const ariaAttributes = withAria ? {
+    required,
+    disabled,
+    "aria-invalid": !!error,
+    "aria-describedby": ctx?.describedBy,
+    id: ctx?.inputId || id
+  } : {};
+  const _rightSection = rightSection || __clearable && __clearSection || __defaultRightSection;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Input_context_mjs__WEBPACK_IMPORTED_MODULE_12__.InputContext, { value: { size: size || "sm" }, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_13__.Box,
+    {
+      ...getStyles("wrapper"),
+      ...styleProps,
+      ...wrapperProps,
+      mod: [
+        {
+          error: !!error && withErrorStyles,
+          pointer,
+          disabled,
+          multiline,
+          "data-with-right-section": !!_rightSection,
+          "data-with-left-section": !!leftSection
+        },
+        mod
+      ],
+      variant,
+      size,
+      children: [
+        leftSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          "div",
+          {
+            ...leftSectionProps,
+            "data-position": "left",
+            ...getStyles("section", {
+              className: leftSectionProps?.className,
+              style: leftSectionProps?.style
+            }),
+            children: leftSection
+          }
+        ),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_13__.Box,
+          {
+            component: "input",
+            ...rest,
+            ...ariaAttributes,
+            ref,
+            required,
+            mod: { disabled, error: !!error && withErrorStyles },
+            variant,
+            __size: inputSize,
+            ...getStyles("input")
+          }
+        ),
+        _rightSection && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          "div",
+          {
+            ...rightSectionProps,
+            "data-position": "right",
+            ...getStyles("section", {
+              className: rightSectionProps?.className,
+              style: rightSectionProps?.style
+            }),
+            children: _rightSection
+          }
+        )
+      ]
+    }
+  ) });
+});
+Input.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"];
+Input.Wrapper = _InputWrapper_InputWrapper_mjs__WEBPACK_IMPORTED_MODULE_14__.InputWrapper;
+Input.Label = _InputLabel_InputLabel_mjs__WEBPACK_IMPORTED_MODULE_15__.InputLabel;
+Input.Error = _InputError_InputError_mjs__WEBPACK_IMPORTED_MODULE_16__.InputError;
+Input.Description = _InputDescription_InputDescription_mjs__WEBPACK_IMPORTED_MODULE_17__.InputDescription;
+Input.Placeholder = _InputPlaceholder_InputPlaceholder_mjs__WEBPACK_IMPORTED_MODULE_18__.InputPlaceholder;
+Input.ClearButton = _InputClearButton_InputClearButton_mjs__WEBPACK_IMPORTED_MODULE_19__.InputClearButton;
+Input.displayName = "@mantine/core/Input";
+
+
+//# sourceMappingURL=Input.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"wrapper":"m_6c018570","input":"m_8fb7ebe7","section":"m_82577fc2","placeholder":"m_88bacfd0","root":"m_46b77525","label":"m_8fdc1311","required":"m_78a94662","error":"m_8f816625","description":"m_fe47ce59"};
+
+
+//# sourceMappingURL=Input.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputClearButton/InputClearButton.mjs":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputClearButton/InputClearButton.mjs ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputClearButton: () => (/* binding */ InputClearButton)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_styles_api_use_resolved_styles_api_use_resolved_styles_api_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/styles-api/use-resolved-styles-api/use-resolved-styles-api.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-resolved-styles-api/use-resolved-styles-api.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _CloseButton_CloseButton_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../CloseButton/CloseButton.mjs */ "./node_modules/@mantine/core/esm/components/CloseButton/CloseButton.mjs");
+/* harmony import */ var _Input_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Input.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.context.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const InputClearButton = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("InputClearButton", defaultProps, _props);
+  const { size, variant, vars, classNames, styles, ...others } = props;
+  const ctx = (0,_Input_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useInputContext)();
+  const { resolvedClassNames, resolvedStyles } = (0,_core_styles_api_use_resolved_styles_api_use_resolved_styles_api_mjs__WEBPACK_IMPORTED_MODULE_6__.useResolvedStylesApi)({
+    classNames,
+    styles,
+    props
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _CloseButton_CloseButton_mjs__WEBPACK_IMPORTED_MODULE_7__.CloseButton,
+    {
+      variant: variant || "transparent",
+      ref,
+      size: size || ctx?.size || "sm",
+      classNames: resolvedClassNames,
+      styles: resolvedStyles,
+      __staticSelector: "InputClearButton",
+      ...others
+    }
+  );
+});
+InputClearButton.displayName = "@mantine/core/InputClearButton";
+
+
+//# sourceMappingURL=InputClearButton.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputDescription/InputDescription.mjs":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputDescription/InputDescription.mjs ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputDescription: () => (/* binding */ InputDescription)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../InputWrapper.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { size }) => ({
+  description: {
+    "--input-description-size": size === void 0 ? void 0 : `calc(${(0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size)} - ${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(2)})`
+  }
+}));
+const InputDescription = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("InputDescription", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    size,
+    __staticSelector,
+    __inheritStyles = true,
+    variant,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("InputDescription", defaultProps, props);
+  const ctx = (0,_InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_8__.useInputWrapperContext)();
+  const _getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_9__.useStyles)({
+    name: ["InputWrapper", __staticSelector],
+    props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "description",
+    vars,
+    varsResolver
+  });
+  const getStyles = __inheritStyles && ctx?.getStyles || _getStyles;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__.Box,
+    {
+      component: "p",
+      ref,
+      variant,
+      size,
+      ...getStyles("description", ctx?.getStyles ? { className, style } : void 0),
+      ...others
+    }
+  );
+});
+InputDescription.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__["default"];
+InputDescription.displayName = "@mantine/core/InputDescription";
+
+
+//# sourceMappingURL=InputDescription.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputError/InputError.mjs":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputError/InputError.mjs ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputError: () => (/* binding */ InputError)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../InputWrapper.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { size }) => ({
+  error: {
+    "--input-error-size": size === void 0 ? void 0 : `calc(${(0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size)} - ${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(2)})`
+  }
+}));
+const InputError = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("InputError", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    size,
+    __staticSelector,
+    __inheritStyles = true,
+    variant,
+    ...others
+  } = props;
+  const _getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: ["InputWrapper", __staticSelector],
+    props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "error",
+    vars,
+    varsResolver
+  });
+  const ctx = (0,_InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_10__.useInputWrapperContext)();
+  const getStyles = __inheritStyles && ctx?.getStyles || _getStyles;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_11__.Box,
+    {
+      component: "p",
+      ref,
+      variant,
+      size,
+      ...getStyles("error", ctx?.getStyles ? { className, style } : void 0),
+      ...others
+    }
+  );
+});
+InputError.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+InputError.displayName = "@mantine/core/InputError";
+
+
+//# sourceMappingURL=InputError.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputLabel/InputLabel.mjs":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputLabel/InputLabel.mjs ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputLabel: () => (/* binding */ InputLabel)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../InputWrapper.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  labelElement: "label"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { size }) => ({
+  label: {
+    "--input-label-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size),
+    "--input-asterisk-color": void 0
+  }
+}));
+const InputLabel = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("InputLabel", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    labelElement,
+    size,
+    required,
+    htmlFor,
+    onMouseDown,
+    children,
+    __staticSelector,
+    variant,
+    mod,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("InputLabel", defaultProps, props);
+  const _getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: ["InputWrapper", __staticSelector],
+    props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "label",
+    vars,
+    varsResolver
+  });
+  const ctx = (0,_InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_9__.useInputWrapperContext)();
+  const getStyles = ctx?.getStyles || _getStyles;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__.Box,
+    {
+      ...getStyles("label", ctx?.getStyles ? { className, style } : void 0),
+      component: labelElement,
+      variant,
+      size,
+      ref,
+      htmlFor: labelElement === "label" ? htmlFor : void 0,
+      mod: [{ required }, mod],
+      onMouseDown: (event) => {
+        onMouseDown?.(event);
+        if (!event.defaultPrevented && event.detail > 1) {
+          event.preventDefault();
+        }
+      },
+      ...others,
+      children: [
+        children,
+        required && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { ...getStyles("required"), "aria-hidden": true, children: " *" })
+      ]
+    }
+  );
+});
+InputLabel.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+InputLabel.displayName = "@mantine/core/InputLabel";
+
+
+//# sourceMappingURL=InputLabel.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputPlaceholder/InputPlaceholder.mjs":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputPlaceholder/InputPlaceholder.mjs ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputPlaceholder: () => (/* binding */ InputPlaceholder)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const InputPlaceholder = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("InputPlaceholder", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    __staticSelector,
+    variant,
+    error,
+    mod,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("InputPlaceholder", defaultProps, props);
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_5__.useStyles)({
+    name: ["InputPlaceholder", __staticSelector],
+    props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    rootSelector: "placeholder"
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_7__.Box,
+    {
+      ...getStyles("placeholder"),
+      mod: [{ error: !!error }, mod],
+      component: "span",
+      variant,
+      ref,
+      ...others
+    }
+  );
+});
+InputPlaceholder.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_6__["default"];
+InputPlaceholder.displayName = "@mantine/core/InputPlaceholder";
+
+
+//# sourceMappingURL=InputPlaceholder.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputWrapperProvider: () => (/* binding */ InputWrapperProvider),
+/* harmony export */   useInputWrapperContext: () => (/* binding */ useInputWrapperContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-optional-context/create-optional-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [InputWrapperProvider, useInputWrapperContext] = (0,_core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createOptionalContext)({
+  offsetBottom: false,
+  offsetTop: false,
+  describedBy: void 0,
+  getStyles: null,
+  inputId: void 0,
+  labelId: void 0
+});
+
+
+//# sourceMappingURL=InputWrapper.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputWrapper/InputWrapper.mjs":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputWrapper/InputWrapper.mjs ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputWrapper: () => (/* binding */ InputWrapper)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-id/use-id.mjs");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputDescription_InputDescription_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../InputDescription/InputDescription.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputDescription/InputDescription.mjs");
+/* harmony import */ var _InputError_InputError_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../InputError/InputError.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputError/InputError.mjs");
+/* harmony import */ var _InputLabel_InputLabel_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../InputLabel/InputLabel.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputLabel/InputLabel.mjs");
+/* harmony import */ var _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../InputWrapper.context.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper.context.mjs");
+/* harmony import */ var _get_input_offsets_get_input_offsets_mjs__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./get-input-offsets/get-input-offsets.mjs */ "./node_modules/@mantine/core/esm/components/Input/InputWrapper/get-input-offsets/get-input-offsets.mjs");
+/* harmony import */ var _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../Input.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  labelElement: "label",
+  inputContainer: (children) => children,
+  inputWrapperOrder: ["label", "description", "input", "error"]
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { size }) => ({
+  label: {
+    "--input-label-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size),
+    "--input-asterisk-color": void 0
+  },
+  error: {
+    "--input-error-size": size === void 0 ? void 0 : `calc(${(0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size)} - ${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(2)})`
+  },
+  description: {
+    "--input-description-size": size === void 0 ? void 0 : `calc(${(0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getFontSize)(size)} - ${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_5__.rem)(2)})`
+  }
+}));
+const InputWrapper = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("InputWrapper", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    size,
+    variant,
+    __staticSelector,
+    inputContainer,
+    inputWrapperOrder,
+    label,
+    error,
+    description,
+    labelProps,
+    descriptionProps,
+    errorProps,
+    labelElement,
+    children,
+    withAsterisk,
+    id,
+    required,
+    __stylesApiProps,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: ["InputWrapper", __staticSelector],
+    props: __stylesApiProps || props,
+    classes: _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  const sharedProps = {
+    size,
+    variant,
+    __staticSelector
+  };
+  const idBase = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_10__.useId)(id);
+  const isRequired = typeof withAsterisk === "boolean" ? withAsterisk : required;
+  const errorId = errorProps?.id || `${idBase}-error`;
+  const descriptionId = descriptionProps?.id || `${idBase}-description`;
+  const inputId = idBase;
+  const hasError = !!error && typeof error !== "boolean";
+  const hasDescription = !!description;
+  const _describedBy = `${hasError ? errorId : ""} ${hasDescription ? descriptionId : ""}`;
+  const describedBy = _describedBy.trim().length > 0 ? _describedBy.trim() : void 0;
+  const labelId = labelProps?.id || `${idBase}-label`;
+  const _label = label && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _InputLabel_InputLabel_mjs__WEBPACK_IMPORTED_MODULE_11__.InputLabel,
+    {
+      labelElement,
+      id: labelId,
+      htmlFor: inputId,
+      required: isRequired,
+      ...sharedProps,
+      ...labelProps,
+      children: label
+    },
+    "label"
+  );
+  const _description = hasDescription && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _InputDescription_InputDescription_mjs__WEBPACK_IMPORTED_MODULE_12__.InputDescription,
+    {
+      ...descriptionProps,
+      ...sharedProps,
+      size: descriptionProps?.size || sharedProps.size,
+      id: descriptionProps?.id || descriptionId,
+      children: description
+    },
+    "description"
+  );
+  const _input = /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, { children: inputContainer(children) }, "input");
+  const _error = hasError && /* @__PURE__ */ (0,react__WEBPACK_IMPORTED_MODULE_1__.createElement)(
+    _InputError_InputError_mjs__WEBPACK_IMPORTED_MODULE_13__.InputError,
+    {
+      ...errorProps,
+      ...sharedProps,
+      size: errorProps?.size || sharedProps.size,
+      key: "error",
+      id: errorProps?.id || errorId
+    },
+    error
+  );
+  const content = inputWrapperOrder.map((part) => {
+    switch (part) {
+      case "label":
+        return _label;
+      case "input":
+        return _input;
+      case "description":
+        return _description;
+      case "error":
+        return _error;
+      default:
+        return null;
+    }
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _InputWrapper_context_mjs__WEBPACK_IMPORTED_MODULE_14__.InputWrapperProvider,
+    {
+      value: {
+        getStyles,
+        describedBy,
+        inputId,
+        labelId,
+        ...(0,_get_input_offsets_get_input_offsets_mjs__WEBPACK_IMPORTED_MODULE_15__.getInputOffsets)(inputWrapperOrder, { hasDescription, hasError })
+      },
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_16__.Box,
+        {
+          ref,
+          variant,
+          size,
+          mod: [{ error: !!error }, mod],
+          ...getStyles("root"),
+          ...others,
+          children: content
+        }
+      )
+    }
+  );
+});
+InputWrapper.classes = _Input_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+InputWrapper.displayName = "@mantine/core/InputWrapper";
+
+
+//# sourceMappingURL=InputWrapper.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/InputWrapper/get-input-offsets/get-input-offsets.mjs":
+/*!**************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/InputWrapper/get-input-offsets/get-input-offsets.mjs ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getInputOffsets: () => (/* binding */ getInputOffsets)
+/* harmony export */ });
+'use client';
+function getInputOffsets(inputWrapperOrder, { hasDescription, hasError }) {
+  const inputIndex = inputWrapperOrder.findIndex((part) => part === "input");
+  const aboveInput = inputWrapperOrder.slice(0, inputIndex);
+  const belowInput = inputWrapperOrder.slice(inputIndex + 1);
+  const offsetTop = hasDescription && aboveInput.includes("description") || hasError && aboveInput.includes("error");
+  const offsetBottom = hasDescription && belowInput.includes("description") || hasError && belowInput.includes("error");
+  return { offsetBottom, offsetTop };
+}
+
+
+//# sourceMappingURL=get-input-offsets.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Input/use-input-props.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Input/use-input-props.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useInputProps: () => (/* binding */ useInputProps)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_Box_style_props_extract_style_props_extract_style_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/Box/style-props/extract-style-props/extract-style-props.mjs */ "./node_modules/@mantine/core/esm/core/Box/style-props/extract-style-props/extract-style-props.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function useInputProps(component, defaultProps, _props) {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_3__.useProps)(component, defaultProps, _props);
+  const {
+    label,
+    description,
+    error,
+    required,
+    classNames,
+    styles,
+    className,
+    unstyled,
+    __staticSelector,
+    __stylesApiProps,
+    errorProps,
+    labelProps,
+    descriptionProps,
+    wrapperProps: _wrapperProps,
+    id,
+    size,
+    style,
+    inputContainer,
+    inputWrapperOrder,
+    withAsterisk,
+    variant,
+    vars,
+    mod,
+    ...others
+  } = props;
+  const { styleProps, rest } = (0,_core_Box_style_props_extract_style_props_extract_style_props_mjs__WEBPACK_IMPORTED_MODULE_4__.extractStyleProps)(others);
+  const wrapperProps = {
+    label,
+    description,
+    error,
+    required,
+    classNames,
+    className,
+    __staticSelector,
+    __stylesApiProps: __stylesApiProps || props,
+    errorProps,
+    labelProps,
+    descriptionProps,
+    unstyled,
+    styles,
+    size,
+    style,
+    inputContainer,
+    inputWrapperOrder,
+    withAsterisk,
+    variant,
+    id,
+    mod,
+    ..._wrapperProps
+  };
+  return {
+    ...rest,
+    classNames,
+    styles,
+    unstyled,
+    wrapperProps: { ...wrapperProps, ...styleProps },
+    inputProps: {
+      required,
+      classNames,
+      styles,
+      unstyled,
+      size,
+      __staticSelector,
+      __stylesApiProps: __stylesApiProps || props,
+      error,
+      variant,
+      id
+    }
+  };
+}
+
+
+//# sourceMappingURL=use-input-props.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/InputBase/InputBase.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/InputBase/InputBase.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputBase: () => (/* binding */ InputBase)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Input_Input_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Input/Input.mjs */ "./node_modules/@mantine/core/esm/components/Input/Input.mjs");
+/* harmony import */ var _Input_use_input_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Input/use-input-props.mjs */ "./node_modules/@mantine/core/esm/components/Input/use-input-props.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  __staticSelector: "InputBase",
+  withAria: true
+};
+const InputBase = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.polymorphicFactory)((props, ref) => {
+  const { inputProps, wrapperProps, ...others } = (0,_Input_use_input_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useInputProps)("InputBase", defaultProps, props);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Input_Input_mjs__WEBPACK_IMPORTED_MODULE_5__.Input.Wrapper, { ...wrapperProps, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Input_Input_mjs__WEBPACK_IMPORTED_MODULE_5__.Input, { ...inputProps, ...others, ref }) });
+});
+InputBase.classes = { ..._Input_Input_mjs__WEBPACK_IMPORTED_MODULE_5__.Input.classes, ..._Input_Input_mjs__WEBPACK_IMPORTED_MODULE_5__.Input.Wrapper.classes };
+InputBase.displayName = "@mantine/core/InputBase";
+
+
+//# sourceMappingURL=InputBase.mjs.map
 
 
 /***/ }),
@@ -2087,6 +4013,121 @@ Oval.displayName = "@mantine/core/Oval";
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/Paper/Paper.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Paper/Paper.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Paper: () => (/* binding */ Paper)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/factory/polymorphic-factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/polymorphic-factory.mjs");
+/* harmony import */ var _Paper_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Paper.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Paper/Paper.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((_, { radius, shadow }) => ({
+  root: {
+    "--paper-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getRadius)(radius),
+    "--paper-shadow": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_4__.getShadow)(shadow)
+  }
+}));
+const Paper = (0,_core_factory_polymorphic_factory_mjs__WEBPACK_IMPORTED_MODULE_5__.polymorphicFactory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_6__.useProps)("Paper", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    withBorder,
+    vars,
+    radius,
+    shadow,
+    variant,
+    mod,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_7__.useStyles)({
+    name: "Paper",
+    props,
+    classes: _Paper_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"],
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_9__.Box,
+    {
+      ref,
+      mod: [{ "data-with-border": withBorder }, mod],
+      ...getStyles("root"),
+      variant,
+      ...others
+    }
+  );
+});
+Paper.classes = _Paper_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
+Paper.displayName = "@mantine/core/Paper";
+
+
+//# sourceMappingURL=Paper.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Paper/Paper.module.css.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Paper/Paper.module.css.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_1b7284a3"};
+
+
+//# sourceMappingURL=Paper.module.css.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs":
 /*!*******************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Stack/Stack.mjs ***!
@@ -2349,6 +4390,53 @@ var classes = {"root":"m_b6d8b162"};
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   TextInput: () => (/* binding */ TextInput)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../InputBase/InputBase.mjs */ "./node_modules/@mantine/core/esm/components/InputBase/InputBase.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const TextInput = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((props, ref) => {
+  const _props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("TextInput", defaultProps, props);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_5__.InputBase, { component: "input", ref, ..._props, __staticSelector: "TextInput" });
+});
+TextInput.classes = _InputBase_InputBase_mjs__WEBPACK_IMPORTED_MODULE_5__.InputBase.classes;
+TextInput.displayName = "@mantine/core/TextInput";
+
+
+//# sourceMappingURL=TextInput.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/components/Title/Title.mjs":
 /*!*******************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/components/Title/Title.mjs ***!
@@ -2533,6 +4621,402 @@ function getTitleSize(order, size) {
 
 
 //# sourceMappingURL=get-title-size.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Transition/Transition.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Transition/Transition.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Transition: () => (/* binding */ Transition)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_Mantine_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/MantineProvider/Mantine.context.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/Mantine.context.mjs");
+/* harmony import */ var _get_transition_styles_get_transition_styles_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./get-transition-styles/get-transition-styles.mjs */ "./node_modules/@mantine/core/esm/components/Transition/get-transition-styles/get-transition-styles.mjs");
+/* harmony import */ var _use_transition_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./use-transition.mjs */ "./node_modules/@mantine/core/esm/components/Transition/use-transition.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Transition({
+  keepMounted,
+  transition = "fade",
+  duration = 250,
+  exitDuration = duration,
+  mounted,
+  children,
+  timingFunction = "ease",
+  onExit,
+  onEntered,
+  onEnter,
+  onExited,
+  enterDelay,
+  exitDelay
+}) {
+  const env = (0,_core_MantineProvider_Mantine_context_mjs__WEBPACK_IMPORTED_MODULE_3__.useMantineEnv)();
+  const { transitionDuration, transitionStatus, transitionTimingFunction } = (0,_use_transition_mjs__WEBPACK_IMPORTED_MODULE_4__.useTransition)({
+    mounted,
+    exitDuration,
+    duration,
+    timingFunction,
+    onExit,
+    onEntered,
+    onEnter,
+    onExited,
+    enterDelay,
+    exitDelay
+  });
+  if (transitionDuration === 0 || env === "test") {
+    return mounted ? /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: children({}) }) : keepMounted ? children({ display: "none" }) : null;
+  }
+  return transitionStatus === "exited" ? keepMounted ? children({ display: "none" }) : null : /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: children(
+    (0,_get_transition_styles_get_transition_styles_mjs__WEBPACK_IMPORTED_MODULE_5__.getTransitionStyles)({
+      transition,
+      duration: transitionDuration,
+      state: transitionStatus,
+      timingFunction: transitionTimingFunction
+    })
+  ) });
+}
+Transition.displayName = "@mantine/core/Transition";
+
+
+//# sourceMappingURL=Transition.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Transition/get-transition-styles/get-transition-styles.mjs":
+/*!**************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Transition/get-transition-styles/get-transition-styles.mjs ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getTransitionStyles: () => (/* binding */ getTransitionStyles)
+/* harmony export */ });
+/* harmony import */ var _transitions_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../transitions.mjs */ "./node_modules/@mantine/core/esm/components/Transition/transitions.mjs");
+'use client';
+
+
+const transitionStatuses = {
+  entering: "in",
+  entered: "in",
+  exiting: "out",
+  exited: "out",
+  "pre-exiting": "out",
+  "pre-entering": "out"
+};
+function getTransitionStyles({
+  transition,
+  state,
+  duration,
+  timingFunction
+}) {
+  const shared = {
+    WebkitBackfaceVisibility: "hidden",
+    willChange: "transform, opacity",
+    transitionDuration: `${duration}ms`,
+    transitionTimingFunction: timingFunction
+  };
+  if (typeof transition === "string") {
+    if (!(transition in _transitions_mjs__WEBPACK_IMPORTED_MODULE_0__.transitions)) {
+      return {};
+    }
+    return {
+      transitionProperty: _transitions_mjs__WEBPACK_IMPORTED_MODULE_0__.transitions[transition].transitionProperty,
+      ...shared,
+      ..._transitions_mjs__WEBPACK_IMPORTED_MODULE_0__.transitions[transition].common,
+      ..._transitions_mjs__WEBPACK_IMPORTED_MODULE_0__.transitions[transition][transitionStatuses[state]]
+    };
+  }
+  return {
+    transitionProperty: transition.transitionProperty,
+    ...shared,
+    ...transition.common,
+    ...transition[transitionStatuses[state]]
+  };
+}
+
+
+//# sourceMappingURL=get-transition-styles.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Transition/transitions.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Transition/transitions.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   transitions: () => (/* binding */ transitions)
+/* harmony export */ });
+'use client';
+const popIn = (from) => ({
+  in: { opacity: 1, transform: "scale(1)" },
+  out: { opacity: 0, transform: `scale(.9) translateY(${from === "bottom" ? 10 : -10}px)` },
+  transitionProperty: "transform, opacity"
+});
+const transitions = {
+  fade: {
+    in: { opacity: 1 },
+    out: { opacity: 0 },
+    transitionProperty: "opacity"
+  },
+  "fade-up": {
+    in: { opacity: 1, transform: "translateY(0)" },
+    out: { opacity: 0, transform: "translateY(30px)" },
+    transitionProperty: "opacity, transform"
+  },
+  "fade-down": {
+    in: { opacity: 1, transform: "translateY(0)" },
+    out: { opacity: 0, transform: "translateY(-30px)" },
+    transitionProperty: "opacity, transform"
+  },
+  "fade-left": {
+    in: { opacity: 1, transform: "translateX(0)" },
+    out: { opacity: 0, transform: "translateX(30px)" },
+    transitionProperty: "opacity, transform"
+  },
+  "fade-right": {
+    in: { opacity: 1, transform: "translateX(0)" },
+    out: { opacity: 0, transform: "translateX(-30px)" },
+    transitionProperty: "opacity, transform"
+  },
+  scale: {
+    in: { opacity: 1, transform: "scale(1)" },
+    out: { opacity: 0, transform: "scale(0)" },
+    common: { transformOrigin: "top" },
+    transitionProperty: "transform, opacity"
+  },
+  "scale-y": {
+    in: { opacity: 1, transform: "scaleY(1)" },
+    out: { opacity: 0, transform: "scaleY(0)" },
+    common: { transformOrigin: "top" },
+    transitionProperty: "transform, opacity"
+  },
+  "scale-x": {
+    in: { opacity: 1, transform: "scaleX(1)" },
+    out: { opacity: 0, transform: "scaleX(0)" },
+    common: { transformOrigin: "left" },
+    transitionProperty: "transform, opacity"
+  },
+  "skew-up": {
+    in: { opacity: 1, transform: "translateY(0) skew(0deg, 0deg)" },
+    out: { opacity: 0, transform: "translateY(-20px) skew(-10deg, -5deg)" },
+    common: { transformOrigin: "top" },
+    transitionProperty: "transform, opacity"
+  },
+  "skew-down": {
+    in: { opacity: 1, transform: "translateY(0) skew(0deg, 0deg)" },
+    out: { opacity: 0, transform: "translateY(20px) skew(-10deg, -5deg)" },
+    common: { transformOrigin: "bottom" },
+    transitionProperty: "transform, opacity"
+  },
+  "rotate-left": {
+    in: { opacity: 1, transform: "translateY(0) rotate(0deg)" },
+    out: { opacity: 0, transform: "translateY(20px) rotate(-5deg)" },
+    common: { transformOrigin: "bottom" },
+    transitionProperty: "transform, opacity"
+  },
+  "rotate-right": {
+    in: { opacity: 1, transform: "translateY(0) rotate(0deg)" },
+    out: { opacity: 0, transform: "translateY(20px) rotate(5deg)" },
+    common: { transformOrigin: "top" },
+    transitionProperty: "transform, opacity"
+  },
+  "slide-down": {
+    in: { opacity: 1, transform: "translateY(0)" },
+    out: { opacity: 0, transform: "translateY(-100%)" },
+    common: { transformOrigin: "top" },
+    transitionProperty: "transform, opacity"
+  },
+  "slide-up": {
+    in: { opacity: 1, transform: "translateY(0)" },
+    out: { opacity: 0, transform: "translateY(100%)" },
+    common: { transformOrigin: "bottom" },
+    transitionProperty: "transform, opacity"
+  },
+  "slide-left": {
+    in: { opacity: 1, transform: "translateX(0)" },
+    out: { opacity: 0, transform: "translateX(100%)" },
+    common: { transformOrigin: "left" },
+    transitionProperty: "transform, opacity"
+  },
+  "slide-right": {
+    in: { opacity: 1, transform: "translateX(0)" },
+    out: { opacity: 0, transform: "translateX(-100%)" },
+    common: { transformOrigin: "right" },
+    transitionProperty: "transform, opacity"
+  },
+  pop: {
+    ...popIn("bottom"),
+    common: { transformOrigin: "center center" }
+  },
+  "pop-bottom-left": {
+    ...popIn("bottom"),
+    common: { transformOrigin: "bottom left" }
+  },
+  "pop-bottom-right": {
+    ...popIn("bottom"),
+    common: { transformOrigin: "bottom right" }
+  },
+  "pop-top-left": {
+    ...popIn("top"),
+    common: { transformOrigin: "top left" }
+  },
+  "pop-top-right": {
+    ...popIn("top"),
+    common: { transformOrigin: "top right" }
+  }
+};
+
+
+//# sourceMappingURL=transitions.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Transition/use-transition.mjs":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Transition/use-transition.mjs ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useTransition: () => (/* binding */ useTransition)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs");
+/* harmony import */ var _mantine_hooks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/hooks */ "./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+function useTransition({
+  duration,
+  exitDuration,
+  timingFunction,
+  mounted,
+  onEnter,
+  onExit,
+  onEntered,
+  onExited,
+  enterDelay,
+  exitDelay
+}) {
+  const theme = (0,_core_MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_4__.useMantineTheme)();
+  const shouldReduceMotion = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_5__.useReducedMotion)();
+  const reduceMotion = theme.respectReducedMotion ? shouldReduceMotion : false;
+  const [transitionDuration, setTransitionDuration] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(reduceMotion ? 0 : duration);
+  const [transitionStatus, setStatus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(mounted ? "entered" : "exited");
+  const transitionTimeoutRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(-1);
+  const delayTimeoutRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(-1);
+  const rafRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(-1);
+  function clearAllTimeouts() {
+    window.clearTimeout(transitionTimeoutRef.current);
+    window.clearTimeout(delayTimeoutRef.current);
+    cancelAnimationFrame(rafRef.current);
+  }
+  const handleStateChange = (shouldMount) => {
+    clearAllTimeouts();
+    const preHandler = shouldMount ? onEnter : onExit;
+    const handler = shouldMount ? onEntered : onExited;
+    const newTransitionDuration = reduceMotion ? 0 : shouldMount ? duration : exitDuration;
+    setTransitionDuration(newTransitionDuration);
+    if (newTransitionDuration === 0) {
+      typeof preHandler === "function" && preHandler();
+      typeof handler === "function" && handler();
+      setStatus(shouldMount ? "entered" : "exited");
+    } else {
+      rafRef.current = requestAnimationFrame(() => {
+        react_dom__WEBPACK_IMPORTED_MODULE_1__.flushSync(() => {
+          setStatus(shouldMount ? "pre-entering" : "pre-exiting");
+        });
+        rafRef.current = requestAnimationFrame(() => {
+          typeof preHandler === "function" && preHandler();
+          setStatus(shouldMount ? "entering" : "exiting");
+          transitionTimeoutRef.current = window.setTimeout(() => {
+            typeof handler === "function" && handler();
+            setStatus(shouldMount ? "entered" : "exited");
+          }, newTransitionDuration);
+        });
+      });
+    }
+  };
+  const handleTransitionWithDelay = (shouldMount) => {
+    clearAllTimeouts();
+    const delay = shouldMount ? enterDelay : exitDelay;
+    if (typeof delay !== "number") {
+      handleStateChange(shouldMount);
+      return;
+    }
+    delayTimeoutRef.current = window.setTimeout(
+      () => {
+        handleStateChange(shouldMount);
+      },
+      shouldMount ? enterDelay : exitDelay
+    );
+  };
+  (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_6__.useDidUpdate)(() => {
+    handleTransitionWithDelay(mounted);
+  }, [mounted]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(
+    () => () => {
+      clearAllTimeouts();
+    },
+    []
+  );
+  return {
+    transitionDuration,
+    transitionStatus,
+    transitionTimingFunction: timingFunction || "ease"
+  };
+}
+
+
+//# sourceMappingURL=use-transition.mjs.map
 
 
 /***/ }),
@@ -6036,6 +8520,63 @@ function createVarsResolver(resolver) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/core/styles-api/use-resolved-styles-api/use-resolved-styles-api.mjs":
+/*!************************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/styles-api/use-resolved-styles-api/use-resolved-styles-api.mjs ***!
+  \************************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useResolvedStylesApi: () => (/* binding */ useResolvedStylesApi)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/MantineThemeProvider/MantineThemeProvider.mjs");
+/* harmony import */ var _use_styles_get_class_name_resolve_class_names_resolve_class_names_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../use-styles/get-class-name/resolve-class-names/resolve-class-names.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/get-class-name/resolve-class-names/resolve-class-names.mjs");
+/* harmony import */ var _use_styles_get_style_resolve_styles_resolve_styles_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../use-styles/get-style/resolve-styles/resolve-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/get-style/resolve-styles/resolve-styles.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+function useResolvedStylesApi({
+  classNames,
+  styles,
+  props,
+  stylesCtx
+}) {
+  const theme = (0,_MantineProvider_MantineThemeProvider_MantineThemeProvider_mjs__WEBPACK_IMPORTED_MODULE_2__.useMantineTheme)();
+  return {
+    resolvedClassNames: (0,_use_styles_get_class_name_resolve_class_names_resolve_class_names_mjs__WEBPACK_IMPORTED_MODULE_3__.resolveClassNames)({
+      theme,
+      classNames,
+      props,
+      stylesCtx: stylesCtx || void 0
+    }),
+    resolvedStyles: (0,_use_styles_get_style_resolve_styles_resolve_styles_mjs__WEBPACK_IMPORTED_MODULE_4__.resolveStyles)({
+      theme,
+      styles,
+      props,
+      stylesCtx: stylesCtx || void 0
+    })
+  };
+}
+
+
+//# sourceMappingURL=use-resolved-styles-api.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/get-class-name/get-class-name.mjs":
 /*!*****************************************************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/core/styles-api/use-styles/get-class-name/get-class-name.mjs ***!
@@ -6792,6 +9333,36 @@ function camelToKebabCase(value) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createOptionalContext: () => (/* binding */ createOptionalContext)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+
+function createOptionalContext(initialValue = null) {
+  const Context = (0,react__WEBPACK_IMPORTED_MODULE_1__.createContext)(initialValue);
+  const useOptionalContext = () => (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(Context);
+  const Provider = ({ children, value }) => /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Context.Provider, { value, children });
+  return [Provider, useOptionalContext];
+}
+
+
+//# sourceMappingURL=create-optional-context.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs":
 /*!***********************************************************************************************!*\
   !*** ./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs ***!
@@ -7252,6 +9823,44 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-did-update/use-did-update.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useDidUpdate: () => (/* binding */ useDidUpdate)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function useDidUpdate(fn, dependencies) {
+  const mounted = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(
+    () => () => {
+      mounted.current = false;
+    },
+    []
+  );
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (mounted.current) {
+      return fn();
+    }
+    mounted.current = true;
+    return void 0;
+  }, dependencies);
+}
+
+
+//# sourceMappingURL=use-did-update.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/hooks/esm/use-disclosure/use-disclosure.mjs":
 /*!***************************************************************************!*\
   !*** ./node_modules/@mantine/hooks/esm/use-disclosure/use-disclosure.mjs ***!
@@ -7299,6 +9908,75 @@ function useDisclosure(initialState = false, options = {}) {
 
 /***/ }),
 
+/***/ "./node_modules/@mantine/hooks/esm/use-id/use-id.mjs":
+/*!***********************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-id/use-id.mjs ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useId: () => (/* binding */ useId)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _use_isomorphic_effect_use_isomorphic_effect_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../use-isomorphic-effect/use-isomorphic-effect.mjs */ "./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs");
+/* harmony import */ var _utils_random_id_random_id_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/random-id/random-id.mjs */ "./node_modules/@mantine/hooks/esm/utils/random-id/random-id.mjs");
+/* harmony import */ var _use_react_id_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./use-react-id.mjs */ "./node_modules/@mantine/hooks/esm/use-id/use-react-id.mjs");
+'use client';
+
+
+
+
+
+function useId(staticId) {
+  const reactId = (0,_use_react_id_mjs__WEBPACK_IMPORTED_MODULE_1__.useReactId)();
+  const [uuid, setUuid] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(reactId);
+  (0,_use_isomorphic_effect_use_isomorphic_effect_mjs__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicEffect)(() => {
+    setUuid((0,_utils_random_id_random_id_mjs__WEBPACK_IMPORTED_MODULE_3__.randomId)());
+  }, []);
+  if (typeof staticId === "string") {
+    return staticId;
+  }
+  if (typeof window === "undefined") {
+    return reactId;
+  }
+  return uuid;
+}
+
+
+//# sourceMappingURL=use-id.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-id/use-react-id.mjs":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-id/use-react-id.mjs ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useReactId: () => (/* binding */ useReactId)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+const __useId = react__WEBPACK_IMPORTED_MODULE_0__["useId".toString()] || (() => void 0);
+function useReactId() {
+  const id = __useId();
+  return id ? `mantine-${id.replace(/:/g, "")}` : "";
+}
+
+
+//# sourceMappingURL=use-react-id.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs":
 /*!*****************************************************************************************!*\
   !*** ./node_modules/@mantine/hooks/esm/use-isomorphic-effect/use-isomorphic-effect.mjs ***!
@@ -7318,6 +9996,85 @@ const useIsomorphicEffect = typeof document !== "undefined" ? react__WEBPACK_IMP
 
 
 //# sourceMappingURL=use-isomorphic-effect.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-media-query/use-media-query.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-media-query/use-media-query.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useMediaQuery: () => (/* binding */ useMediaQuery)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+'use client';
+
+
+function attachMediaListener(query, callback) {
+  try {
+    query.addEventListener("change", callback);
+    return () => query.removeEventListener("change", callback);
+  } catch (e) {
+    query.addListener(callback);
+    return () => query.removeListener(callback);
+  }
+}
+function getInitialValue(query, initialValue) {
+  if (typeof window !== "undefined" && "matchMedia" in window) {
+    return window.matchMedia(query).matches;
+  }
+  return false;
+}
+function useMediaQuery(query, initialValue, { getInitialValueInEffect } = {
+  getInitialValueInEffect: true
+}) {
+  const [matches, setMatches] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(
+    getInitialValueInEffect ? initialValue : getInitialValue(query)
+  );
+  const queryRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if ("matchMedia" in window) {
+      queryRef.current = window.matchMedia(query);
+      setMatches(queryRef.current.matches);
+      return attachMediaListener(queryRef.current, (event) => setMatches(event.matches));
+    }
+    return void 0;
+  }, [query]);
+  return matches || false;
+}
+
+
+//# sourceMappingURL=use-media-query.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/use-reduced-motion/use-reduced-motion.mjs ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   useReducedMotion: () => (/* binding */ useReducedMotion)
+/* harmony export */ });
+/* harmony import */ var _use_media_query_use_media_query_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../use-media-query/use-media-query.mjs */ "./node_modules/@mantine/hooks/esm/use-media-query/use-media-query.mjs");
+'use client';
+
+
+function useReducedMotion(initialValue, options) {
+  return (0,_use_media_query_use_media_query_mjs__WEBPACK_IMPORTED_MODULE_0__.useMediaQuery)("(prefers-reduced-motion: reduce)", initialValue, options);
+}
+
+
+//# sourceMappingURL=use-reduced-motion.mjs.map
 
 
 /***/ }),
@@ -7346,6 +10103,219 @@ function useWindowEvent(type, listener, options) {
 
 
 //# sourceMappingURL=use-window-event.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/hooks/esm/utils/random-id/random-id.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/hooks/esm/utils/random-id/random-id.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   randomId: () => (/* binding */ randomId)
+/* harmony export */ });
+'use client';
+function randomId(prefix = "mantine-") {
+  return `${prefix}${Math.random().toString(36).slice(2, 11)}`;
+}
+
+
+//# sourceMappingURL=random-id.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ createReactComponent)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _defaultAttributes_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./defaultAttributes.mjs */ "./node_modules/@tabler/icons-react/dist/esm/defaultAttributes.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+const createReactComponent = (type, iconName, iconNamePascal, iconNode) => {
+  const Component = (0,react__WEBPACK_IMPORTED_MODULE_0__.forwardRef)(
+    ({ color = "currentColor", size = 24, stroke = 2, title, className, children, ...rest }, ref) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(
+      "svg",
+      {
+        ref,
+        ..._defaultAttributes_mjs__WEBPACK_IMPORTED_MODULE_1__["default"][type],
+        width: size,
+        height: size,
+        className: [`tabler-icon`, `tabler-icon-${iconName}`, className].join(" "),
+        ...type === "filled" ? {
+          fill: color
+        } : {
+          strokeWidth: stroke,
+          stroke: color
+        },
+        ...rest
+      },
+      [
+        title && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("title", { key: "svg-title" }, title),
+        ...iconNode.map(([tag, attrs]) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(tag, attrs)),
+        ...Array.isArray(children) ? children : [children]
+      ]
+    )
+  );
+  Component.displayName = `${iconNamePascal}`;
+  return Component;
+};
+
+
+//# sourceMappingURL=createReactComponent.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/defaultAttributes.mjs":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/defaultAttributes.mjs ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ defaultAttributes)
+/* harmony export */ });
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+var defaultAttributes = {
+  outline: {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  },
+  filled: {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: 24,
+    height: 24,
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    stroke: "none"
+  }
+};
+
+
+//# sourceMappingURL=defaultAttributes.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconSearch.mjs":
+/*!************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconSearch.mjs ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconSearch)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconSearch = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "search", "IconSearch", [["path", { "d": "M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0", "key": "svg-0" }], ["path", { "d": "M21 21l-6 -6", "key": "svg-1" }]]);
+
+
+//# sourceMappingURL=IconSearch.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTag.mjs":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconTag.mjs ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconTag)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconTag = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "tag", "IconTag", [["path", { "d": "M7.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0", "key": "svg-0" }], ["path", { "d": "M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3z", "key": "svg-1" }]]);
+
+
+//# sourceMappingURL=IconTag.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconX)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconX = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "x", "IconX", [["path", { "d": "M18 6l-12 12", "key": "svg-0" }], ["path", { "d": "M6 6l12 12", "key": "svg-1" }]]);
+
+
+//# sourceMappingURL=IconX.mjs.map
 
 
 /***/ }),
@@ -88349,7 +91319,8 @@ function GraphComponent() {
     loading: loading,
     layout: layout,
     stylesheet: stylesheet,
-    cyRef: cyRef
+    cyRef: cyRef,
+    notes: notes
   });
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GraphComponent);
@@ -88369,16 +91340,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/AppShell/AppShell.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Burger/Burger.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/AppShell/AppShell.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Burger/Burger.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
 /* harmony import */ var react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-cytoscapejs */ "./node_modules/react-cytoscapejs/dist/react-cytoscape.modern.js");
 /* harmony import */ var _SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SidebarComponent/RecentNotesComponent */ "./src/components/GraphComponent/SidebarComponent/RecentNotesComponent.js");
+/* harmony import */ var _SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SidebarComponent/SearchBarComponent */ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js");
+
 
 
 
@@ -88391,8 +91365,9 @@ var SidebarComponent = function SidebarComponent(_ref) {
     loading = _ref.loading,
     layout = _ref.layout,
     stylesheet = _ref.stylesheet,
-    cyRef = _ref.cyRef;
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.AppShell, {
+    cyRef = _ref.cyRef,
+    notes = _ref.notes;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.AppShell, {
     header: {
       height: 60
     },
@@ -88405,32 +91380,50 @@ var SidebarComponent = function SidebarComponent(_ref) {
       }
     },
     padding: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.AppShell.Header, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.AppShell.Header, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
     h: "100%",
     px: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Burger, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Burger, {
     opened: opened,
     onClick: toggle,
     size: "sm"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Title, {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Title, {
     order: 3
-  }, "Note It - Knowledge Graph"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.AppShell.Navbar, {
-    p: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Title, {
+  }, "Note It - Knowledge Graph"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.AppShell.Navbar, {
+    p: "md",
+    style: {
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Stack, {
+    spacing: "md"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Title, {
     order: 4
-  }, "Node Details"), selectedNode ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Box, {
+  }, "Node Details"), selectedNode ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Box, {
     mt: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "ID:"), " ", selectedNode.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "ID:"), " ", selectedNode.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "Text:"), " ", selectedNode.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "Text:"), " ", selectedNode.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "URL:"), " ", selectedNode.url)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "URL:"), " ", selectedNode.url)) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     mt: "md",
     size: "sm",
     c: "dimmed"
-  }, "Click a node to see its details."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Click a node to see its details.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    notes: notes,
+    onSelectNote: function onSelectNote(note) {
+      var cy = cyRef.current;
+      if (cy) {
+        var node = cy.getElementById(note.id);
+        if (node) {
+          cy.center(node);
+          cy.zoom(2);
+          node.select();
+        }
+      }
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__["default"], {
     nodes: elements.filter(function (el) {
       return el.group === "nodes";
     }),
@@ -88445,7 +91438,7 @@ var SidebarComponent = function SidebarComponent(_ref) {
         }
       }
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Box, {
+  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Box, {
     style: {
       position: "absolute",
       top: "60px",
@@ -88453,19 +91446,19 @@ var SidebarComponent = function SidebarComponent(_ref) {
       right: "0",
       bottom: "0"
     }
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Center, {
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Loader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Loader, {
     size: "lg"
   })) : elements.filter(function (el) {
     return el.group === "nodes";
-  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Center, {
+  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Text, {
     size: "lg",
     c: "dimmed"
   }, "No notes yet")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -88544,6 +91537,270 @@ var RecentNotesComponent = function RecentNotesComponent(_ref) {
   }, "No notes available now."));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RecentNotesComponent);
+
+/***/ }),
+
+/***/ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js":
+/*!******************************************************************************!*\
+  !*** ./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconSearch.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs");
+/* harmony import */ var _SearchBarComponent_SearchResultComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchBarComponent/SearchResultComponent */ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent/SearchResultComponent.js");
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
+
+
+
+var SearchBarComponent = function SearchBarComponent(_ref) {
+  var notes = _ref.notes,
+    onSelectNote = _ref.onSelectNote;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState2 = _slicedToArray(_useState, 2),
+    searchQuery = _useState2[0],
+    setSearchQuery = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    isSearching = _useState4[0],
+    setIsSearching = _useState4[1];
+
+  // Filter notes based on search query
+  var searchResults = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
+    if (!searchQuery.trim() || !notes || notes.length === 0) {
+      return [];
+    }
+    var query = searchQuery.toLowerCase().trim();
+    return notes.filter(function (note) {
+      if (!note || !note.text) return false;
+
+      // Search in note text
+      var textMatch = note.text.toLowerCase().includes(query);
+
+      // Search in tags
+      var tagsMatch = note.tags && note.tags.some(function (tag) {
+        return tag.toLowerCase().includes(query);
+      });
+
+      // Search in URL
+      var urlMatch = note.url && note.url.toLowerCase().includes(query);
+      return textMatch || tagsMatch || urlMatch;
+    }).sort(function (a, b) {
+      var _a$timestamp, _b$timestamp;
+      // Sort by relevance (exact matches first, then by timestamp)
+      var aText = a.text.toLowerCase();
+      var bText = b.text.toLowerCase();
+      var aExactMatch = aText === query;
+      var bExactMatch = bText === query;
+      if (aExactMatch && !bExactMatch) return -1;
+      if (!aExactMatch && bExactMatch) return 1;
+
+      // If both are exact matches or neither, sort by timestamp (newest first)
+      var tA = Number((_a$timestamp = a.timestamp) !== null && _a$timestamp !== void 0 ? _a$timestamp : 0);
+      var tB = Number((_b$timestamp = b.timestamp) !== null && _b$timestamp !== void 0 ? _b$timestamp : 0);
+      return tB - tA;
+    }).slice(0, 10); // Limit to 10 results
+  }, [searchQuery, notes]);
+  var handleSearch = function handleSearch() {
+    setIsSearching(true);
+  };
+  var handleClear = function handleClear() {
+    setSearchQuery("");
+    setIsSearching(false);
+  };
+  var handleSelectNote = function handleSelectNote(note) {
+    onSelectNote(note);
+    // Keep search results visible after selection
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Stack, {
+    spacing: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    fw: 700,
+    size: "sm"
+  }, "Search Notes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    spacing: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.TextInput, {
+    placeholder: "Search in notes, tags, or URLs...",
+    value: searchQuery,
+    onChange: function onChange(e) {
+      return setSearchQuery(e.target.value);
+    },
+    onKeyPress: function onKeyPress(e) {
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    },
+    style: {
+      flex: 1
+    },
+    size: "sm",
+    icon: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      size: 16
+    })
+  }), searchQuery && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Button, {
+    variant: "subtle",
+    size: "sm",
+    onClick: handleClear,
+    p: 0,
+    style: {
+      minWidth: "auto"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    size: 16
+  }))), isSearching && searchQuery.trim() && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Stack, {
+    spacing: "xs",
+    mt: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    position: "apart",
+    align: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "xs",
+    c: "dimmed"
+  }, searchResults.length > 0 ? "Found ".concat(searchResults.length, " result").concat(searchResults.length !== 1 ? "s" : "") : "No results found"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Button, {
+    variant: "subtle",
+    size: "xs",
+    onClick: handleClear,
+    compact: true
+  }, "Clear Search")), searchResults.length > 0 ? searchResults.map(function (note) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SearchBarComponent_SearchResultComponent__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      key: note.id,
+      note: note,
+      searchQuery: searchQuery,
+      onSelect: function onSelect() {
+        return handleSelectNote(note);
+      }
+    });
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "sm",
+    c: "dimmed",
+    ta: "center",
+    py: "md"
+  }, "No notes found matching \"", searchQuery, "\"")));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchBarComponent);
+
+/***/ }),
+
+/***/ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent/SearchResultComponent.js":
+/*!****************************************************************************************************!*\
+  !*** ./src/components/GraphComponent/SidebarComponent/SearchBarComponent/SearchResultComponent.js ***!
+  \****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Paper/Paper.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Badge/Badge.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTag.mjs");
+
+
+
+var SearchResultComponent = function SearchResultComponent(_ref) {
+  var note = _ref.note,
+    searchQuery = _ref.searchQuery,
+    onSelect = _ref.onSelect;
+  // Function to highlight search terms in text
+  var highlightText = function highlightText(text, query) {
+    if (!text || !query) return text;
+    var regex = new RegExp("(".concat(query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), ")"), "gi");
+    var parts = text.split(regex);
+    return parts.map(function (part, index) {
+      return regex.test(part) ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("mark", {
+        key: index,
+        style: {
+          backgroundColor: "#ffeb3b",
+          padding: "0 2px"
+        }
+      }, part) : part;
+    });
+  };
+
+  // Truncate text for display
+  var truncateText = function truncateText(text) {
+    var maxLength = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 60;
+    if (!text) return "";
+    if (text.length <= maxLength) return text;
+
+    // Try to find a good breaking point
+    var truncated = text.substring(0, maxLength);
+    var lastSpace = truncated.lastIndexOf(" ");
+    if (lastSpace > maxLength * 0.7) {
+      return truncated.substring(0, lastSpace) + "...";
+    }
+    return truncated + "...";
+  };
+  var displayText = truncateText(note.text);
+  var highlightedText = highlightText(displayText, searchQuery);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Paper, {
+    p: 8,
+    withBorder: true,
+    style: {
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+      borderColor: "#ddd"
+    },
+    onMouseEnter: function onMouseEnter(e) {
+      e.currentTarget.style.borderColor = "#007bff";
+      e.currentTarget.style.backgroundColor = "#f8f9fa";
+    },
+    onMouseLeave: function onMouseLeave(e) {
+      e.currentTarget.style.borderColor = "#ddd";
+      e.currentTarget.style.backgroundColor = "transparent";
+    },
+    onClick: onSelect
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Stack, {
+    spacing: 4
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
+    size: "sm",
+    lineClamp: 2
+  }, highlightedText)), note.tags && note.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
+    spacing: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    size: 12,
+    color: "#666"
+  }), note.tags.slice(0, 3).map(function (tag, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Badge, {
+      key: index,
+      size: "xs",
+      variant: "light",
+      color: "blue",
+      style: {
+        fontSize: "10px"
+      }
+    }, tag);
+  }), note.tags.length > 3 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
+    size: "xs",
+    c: "dimmed"
+  }, "+", note.tags.length - 3, " more"))));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchResultComponent);
 
 /***/ })
 
