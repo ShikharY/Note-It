@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import GraphComponent from './components/GraphComponent';
-import { createTheme, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createTheme, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import GraphComponent from "./components/GraphComponent";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -14,5 +14,5 @@ ReactDOM.render(
       <GraphComponent />
     </MantineProvider>
   </React.StrictMode>,
-  document.getElementById('root')
-); 
+  document.getElementById("root")
+);
