@@ -10,7 +10,7 @@ import {
   Burger,
 } from "@mantine/core";
 import CytoscapeComponent from "react-cytoscapejs";
-import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent.js";
+import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
 const SidebarComponent = ({
   opened,
   toggle,
