@@ -39,7 +39,8 @@ const SidebarComponent = ({
       // Highlight nodes
       cy.nodes().forEach((node) => {
         const tags = node.data("tags") || [];
-        if (tags.includes(selectedTag)) {
+        const tagsLower = tags.map((tag) => tag.toLowerCase());
+        if (tagsLower.includes(selectedTag.toLowerCase())) {
           node.addClass("tag-highlight");
         }
       });
@@ -47,9 +48,15 @@ const SidebarComponent = ({
       cy.edges().forEach((edge) => {
         const source = cy.getElementById(edge.data("source"));
         const target = cy.getElementById(edge.data("target"));
+        const sourceTagsLower = (source.data("tags") || []).map((tag) =>
+          tag.toLowerCase()
+        );
+        const targetTagsLower = (target.data("tags") || []).map((tag) =>
+          tag.toLowerCase()
+        );
         if (
-          source.data("tags")?.includes(selectedTag) &&
-          target.data("tags")?.includes(selectedTag)
+          sourceTagsLower.includes(selectedTag.toLowerCase()) &&
+          targetTagsLower.includes(selectedTag.toLowerCase())
         ) {
           edge.addClass("tag-highlight");
         }

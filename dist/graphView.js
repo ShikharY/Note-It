@@ -105787,8 +105787,15 @@ function GraphComponent() {
           var note1 = sortedNotes[i];
           var note2 = sortedNotes[j];
           if (note1 && note2 && validNoteIds.has(note1.id) && validNoteIds.has(note2.id) && note1.tags && note2.tags) {
-            var commonTags = note1.tags.filter(function (tag) {
-              return note2.tags.includes(tag);
+            // Convert tags to lowercase for case-insensitive comparison
+            var note1TagsLower = note1.tags.map(function (tag) {
+              return tag.toLowerCase();
+            });
+            var note2TagsLower = note2.tags.map(function (tag) {
+              return tag.toLowerCase();
+            });
+            var commonTags = note1TagsLower.filter(function (tag) {
+              return note2TagsLower.includes(tag);
             });
             if (commonTags.length > 0) {
               processedEdges.push({
@@ -106486,16 +106493,24 @@ var SidebarComponent = function SidebarComponent(_ref) {
       // Highlight nodes
       cy.nodes().forEach(function (node) {
         var tags = node.data("tags") || [];
-        if (tags.includes(selectedTag)) {
+        var tagsLower = tags.map(function (tag) {
+          return tag.toLowerCase();
+        });
+        if (tagsLower.includes(selectedTag.toLowerCase())) {
           node.addClass("tag-highlight");
         }
       });
       // Highlight edges if both source and target have the tag
       cy.edges().forEach(function (edge) {
-        var _source$data, _target$data;
         var source = cy.getElementById(edge.data("source"));
         var target = cy.getElementById(edge.data("target"));
-        if ((_source$data = source.data("tags")) !== null && _source$data !== void 0 && _source$data.includes(selectedTag) && (_target$data = target.data("tags")) !== null && _target$data !== void 0 && _target$data.includes(selectedTag)) {
+        var sourceTagsLower = (source.data("tags") || []).map(function (tag) {
+          return tag.toLowerCase();
+        });
+        var targetTagsLower = (target.data("tags") || []).map(function (tag) {
+          return tag.toLowerCase();
+        });
+        if (sourceTagsLower.includes(selectedTag.toLowerCase()) && targetTagsLower.includes(selectedTag.toLowerCase())) {
           edge.addClass("tag-highlight");
         }
       });
@@ -106968,12 +106983,13 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var TopTagsComponent = function TopTagsComponent(_ref) {
   var notes = _ref.notes,
     onSelectTag = _ref.onSelectTag;
-  // Compute tag counts
+  // Compute tag counts (case-insensitive)
   var topTags = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var tagCount = {};
     (notes || []).forEach(function (note) {
       (note.tags || []).forEach(function (tag) {
-        tagCount[tag] = (tagCount[tag] || 0) + 1;
+        var tagLower = tag.toLowerCase();
+        tagCount[tagLower] = (tagCount[tagLower] || 0) + 1;
       });
     });
     // Convert to array and sort by count desc, then alphabetically

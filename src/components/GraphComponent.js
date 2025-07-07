@@ -65,8 +65,12 @@ function GraphComponent() {
             note1.tags &&
             note2.tags
           ) {
-            const commonTags = note1.tags.filter((tag) =>
-              note2.tags.includes(tag)
+            // Convert tags to lowercase for case-insensitive comparison
+            const note1TagsLower = note1.tags.map((tag) => tag.toLowerCase());
+            const note2TagsLower = note2.tags.map((tag) => tag.toLowerCase());
+
+            const commonTags = note1TagsLower.filter((tag) =>
+              note2TagsLower.includes(tag)
             );
             if (commonTags.length > 0) {
               processedEdges.push({

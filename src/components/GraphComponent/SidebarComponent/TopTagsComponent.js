@@ -3,12 +3,13 @@ import { Group, Badge, Text, Stack } from "@mantine/core";
 import { IconTag } from "@tabler/icons-react";
 
 const TopTagsComponent = ({ notes, onSelectTag }) => {
-  // Compute tag counts
+  // Compute tag counts (case-insensitive)
   const topTags = useMemo(() => {
     const tagCount = {};
     (notes || []).forEach((note) => {
       (note.tags || []).forEach((tag) => {
-        tagCount[tag] = (tagCount[tag] || 0) + 1;
+        const tagLower = tag.toLowerCase();
+        tagCount[tagLower] = (tagCount[tagLower] || 0) + 1;
       });
     });
     // Convert to array and sort by count desc, then alphabetically
