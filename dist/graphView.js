@@ -105753,15 +105753,16 @@ function GraphComponent() {
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (notes.length === 0 && !loading) return;
-    var processedNodes = notes.filter(function (note) {
+    var sortedNotes = notes.filter(function (note) {
       return note && note.id && typeof note.text === "string";
     }) // Filter out invalid notes
     .sort(function (a, b) {
       var _a$timestamp, _b$timestamp;
       var tA = Number((_a$timestamp = a.timestamp) !== null && _a$timestamp !== void 0 ? _a$timestamp : 0);
       var tB = Number((_b$timestamp = b.timestamp) !== null && _b$timestamp !== void 0 ? _b$timestamp : 0);
-      return tB - tA; // Most recent first
-    }).map(function (note, index) {
+      return tA - tB; // Earliest first (oldest to newest)
+    });
+    var processedNodes = sortedNotes.map(function (note, index) {
       return {
         group: "nodes",
         data: {
@@ -105780,11 +105781,11 @@ function GraphComponent() {
       return n.data.id;
     }));
     var processedEdges = [];
-    if (notes.length > 1) {
-      for (var i = 0; i < notes.length; i++) {
+    if (sortedNotes.length > 1) {
+      for (var i = 0; i < sortedNotes.length; i++) {
         var _loop = function _loop() {
-          var note1 = notes[i];
-          var note2 = notes[j];
+          var note1 = sortedNotes[i];
+          var note2 = sortedNotes[j];
           if (note1 && note2 && validNoteIds.has(note1.id) && validNoteIds.has(note2.id) && note1.tags && note2.tags) {
             var commonTags = note1.tags.filter(function (tag) {
               return note2.tags.includes(tag);
@@ -105802,7 +105803,7 @@ function GraphComponent() {
             }
           }
         };
-        for (var j = i + 1; j < notes.length; j++) {
+        for (var j = i + 1; j < sortedNotes.length; j++) {
           _loop();
         }
       }
@@ -106169,7 +106170,10 @@ var NodeModal = function NodeModal(_ref) {
       backgroundColor: "#25262b",
       borderBottom: "1px solid #373a40",
       borderTopLeftRadius: "8px",
-      borderTopRightRadius: "8px"
+      borderTopRightRadius: "8px",
+      position: "sticky",
+      top: 0,
+      zIndex: 10
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
     gap: "xs"

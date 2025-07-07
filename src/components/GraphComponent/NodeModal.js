@@ -151,6 +151,9 @@ const NodeModal = ({
               borderBottom: "1px solid #373a40",
               borderTopLeftRadius: "8px",
               borderTopRightRadius: "8px",
+              position: "sticky",
+              top: 0,
+              zIndex: 10,
             }}
           >
             <Group gap="xs">

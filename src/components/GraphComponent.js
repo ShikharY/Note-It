@@ -26,35 +26,36 @@ function GraphComponent() {
   useEffect(() => {
     if (notes.length === 0 && !loading) return;
 
-    const processedNodes = notes
+    const sortedNotes = notes
       .filter((note) => note && note.id && typeof note.text === "string") // Filter out invalid notes
       .sort((a, b) => {
         const tA = Number(a.timestamp ?? 0);
         const tB = Number(b.timestamp ?? 0);
-        return tB - tA; // Most recent first
-      })
-      .map((note, index) => ({
-        group: "nodes",
-        data: {
-          id: note.id,
-          label: `#${index + 1}`,
-          fullText: note.text,
-          title: note.title || "Untitled Note",
-          url: note.url || "#",
-          timestamp: note.timestamp,
-          tags: note.tags || [],
-          nodeNumber: index + 1,
-        },
-      }));
+        return tA - tB; // Earliest first (oldest to newest)
+      });
+
+    const processedNodes = sortedNotes.map((note, index) => ({
+      group: "nodes",
+      data: {
+        id: note.id,
+        label: `#${index + 1}`,
+        fullText: note.text,
+        title: note.title || "Untitled Note",
+        url: note.url || "#",
+        timestamp: note.timestamp,
+        tags: note.tags || [],
+        nodeNumber: index + 1,
+      },
+    }));
 
     const validNoteIds = new Set(processedNodes.map((n) => n.data.id));
 
     const processedEdges = [];
-    if (notes.length > 1) {
-      for (let i = 0; i < notes.length; i++) {
-        for (let j = i + 1; j < notes.length; j++) {
-          const note1 = notes[i];
-          const note2 = notes[j];
+    if (sortedNotes.length > 1) {
+      for (let i = 0; i < sortedNotes.length; i++) {
+        for (let j = i + 1; j < sortedNotes.length; j++) {
+          const note1 = sortedNotes[i];
+          const note2 = sortedNotes[j];
 
           if (
             note1 &&
