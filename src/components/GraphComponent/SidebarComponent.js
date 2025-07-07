@@ -14,6 +14,8 @@ import {
 import CytoscapeComponent from "react-cytoscapejs";
 import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
 import SearchBarComponent from "./SidebarComponent/SearchBarComponent";
+import TopTagsComponent from "./SidebarComponent/TopTagsComponent";
+
 const SidebarComponent = ({
   opened,
   toggle,
@@ -26,6 +28,39 @@ const SidebarComponent = ({
   notes,
   onOpenModal,
 }) => {
+  const [selectedTag, setSelectedTag] = React.useState(null);
+
+  // Highlight nodes and edges with the selected tag
+  React.useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.elements().removeClass("tag-highlight");
+    if (selectedTag) {
+      // Highlight nodes
+      cy.nodes().forEach((node) => {
+        const tags = node.data("tags") || [];
+        if (tags.includes(selectedTag)) {
+          node.addClass("tag-highlight");
+        }
+      });
+      // Highlight edges if both source and target have the tag
+      cy.edges().forEach((edge) => {
+        const source = cy.getElementById(edge.data("source"));
+        const target = cy.getElementById(edge.data("target"));
+        if (
+          source.data("tags")?.includes(selectedTag) &&
+          target.data("tags")?.includes(selectedTag)
+        ) {
+          edge.addClass("tag-highlight");
+        }
+      });
+    }
+  }, [selectedTag, cyRef]);
+
+  const handleSelectTag = (tag) => {
+    setSelectedTag((prev) => (prev === tag ? null : tag));
+  };
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -90,6 +125,10 @@ const SidebarComponent = ({
                 }
               }}
             />
+          </Box>
+
+          <Box>
+            <TopTagsComponent notes={notes} onSelectTag={handleSelectTag} />
           </Box>
 
           <Box>

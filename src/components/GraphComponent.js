@@ -143,6 +143,31 @@ function GraphComponent() {
         "curve-style": "bezier",
       },
     },
+    {
+      selector: "node.tag-highlight",
+      style: {
+        "background-color": "#ff4081",
+        "border-color": "#ff4081",
+        width: 50,
+        height: 50,
+        "z-index": 10,
+        "transition-property": "background-color, border-color",
+        "transition-duration": "0.4s",
+        "box-shadow": "0 0 16px 4px #ff408188",
+      },
+    },
+    {
+      selector: "edge.tag-highlight",
+      style: {
+        "line-color": "#00e676",
+        width: 4,
+        "z-index": 10,
+        "transition-property": "line-color, width",
+        "transition-duration": "0.4s",
+        "shadow-blur": 8,
+        "shadow-color": "#00e676",
+      },
+    },
   ];
 
   return (
