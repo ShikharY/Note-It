@@ -128,9 +128,9 @@ const NodeModal = ({
           top: nodePosition?.y ? `${nodePosition.y}px` : "50%",
           left: nodePosition?.x ? `${nodePosition.x}px` : "50%",
           transform: "translate(-50%, -50%)",
-          maxWidth: "320px",
+          width: "320px",
           maxHeight: "80vh",
-          overflow: "visible",
+          overflow: "auto",
         },
       }}
     >

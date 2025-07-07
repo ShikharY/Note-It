@@ -106151,9 +106151,9 @@ var NodeModal = function NodeModal(_ref) {
         top: nodePosition !== null && nodePosition !== void 0 && nodePosition.y ? "".concat(nodePosition.y, "px") : "50%",
         left: nodePosition !== null && nodePosition !== void 0 && nodePosition.x ? "".concat(nodePosition.x, "px") : "50%",
         transform: "translate(-50%, -50%)",
-        maxWidth: "320px",
+        width: "320px",
         maxHeight: "80vh",
-        overflow: "visible"
+        overflow: "auto"
       }
     }
   }, !fullNote ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
