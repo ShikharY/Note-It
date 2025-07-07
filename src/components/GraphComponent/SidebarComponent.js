@@ -81,36 +81,6 @@ const SidebarComponent = ({
       <AppShell.Navbar p="md" style={{ overflowY: "auto" }}>
         <Stack spacing="md">
           <Box>
-            <Title order={4}>Node Details</Title>
-            {selectedNode ? (
-              <Box mt="md">
-                <Text size="sm">
-                  <b>ID:</b> {selectedNode.id}
-                </Text>
-                <Text size="sm">
-                  <b>Text:</b> {selectedNode.label}
-                </Text>
-                <Text size="sm">
-                  <b>URL:</b> {selectedNode.url}
-                </Text>
-                <Button
-                  size="xs"
-                  variant="light"
-                  onClick={onOpenModal}
-                  mt="sm"
-                  fullWidth
-                >
-                  View Full Details
-                </Button>
-              </Box>
-            ) : (
-              <Text mt="md" size="sm" c="dimmed">
-                Click a node to see its details.
-              </Text>
-            )}
-          </Box>
-
-          <Box>
             <SearchBarComponent
               notes={notes}
               onSelectNote={(note) => {
