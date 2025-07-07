@@ -33,16 +33,17 @@ function GraphComponent() {
         const tB = Number(b.timestamp ?? 0);
         return tB - tA; // Most recent first
       })
-      .map((note) => ({
+      .map((note, index) => ({
         group: "nodes",
         data: {
           id: note.id,
-          label:
-            note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
+          label: `#${index + 1}`,
           fullText: note.text,
+          title: note.title || "Untitled Note",
           url: note.url || "#",
           timestamp: note.timestamp,
           tags: note.tags || [],
+          nodeNumber: index + 1,
         },
       }));
 
@@ -161,9 +162,10 @@ function GraphComponent() {
         color: "#fff",
         "text-valign": "center",
         "text-halign": "center",
-        "font-size": "10px",
+        "font-size": "12px",
+        "font-weight": "600",
         "text-wrap": "wrap",
-        "text-max-width": "80px",
+        "text-max-width": "60px",
       },
     },
     {
@@ -275,6 +277,7 @@ function GraphComponent() {
                 minHeight: "32px", // Ensures consistent height for 2 lines
                 maxHeight: "32px", // Force 2 lines max
                 wordBreak: "break-word",
+                fontSize: "12px",
               }}
             >
               {hoveredNode.text}

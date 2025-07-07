@@ -105761,16 +105761,18 @@ function GraphComponent() {
       var tA = Number((_a$timestamp = a.timestamp) !== null && _a$timestamp !== void 0 ? _a$timestamp : 0);
       var tB = Number((_b$timestamp = b.timestamp) !== null && _b$timestamp !== void 0 ? _b$timestamp : 0);
       return tB - tA; // Most recent first
-    }).map(function (note) {
+    }).map(function (note, index) {
       return {
         group: "nodes",
         data: {
           id: note.id,
-          label: note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
+          label: "#".concat(index + 1),
           fullText: note.text,
+          title: note.title || "Untitled Note",
           url: note.url || "#",
           timestamp: note.timestamp,
-          tags: note.tags || []
+          tags: note.tags || [],
+          nodeNumber: index + 1
         }
       };
     });
@@ -105877,9 +105879,10 @@ function GraphComponent() {
       color: "#fff",
       "text-valign": "center",
       "text-halign": "center",
-      "font-size": "10px",
+      "font-size": "12px",
+      "font-weight": "600",
       "text-wrap": "wrap",
-      "text-max-width": "80px"
+      "text-max-width": "60px"
     }
   }, {
     selector: "edge",
@@ -105984,7 +105987,8 @@ function GraphComponent() {
       // Ensures consistent height for 2 lines
       maxHeight: "32px",
       // Force 2 lines max
-      wordBreak: "break-word"
+      wordBreak: "break-word",
+      fontSize: "12px"
     }
   }, hoveredNode.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -106650,7 +106654,7 @@ var RecentNotesComponent = function RecentNotesComponent(_ref) {
         color: "#aaa"
       },
       href: "#"
-    }, truncate(node.data.label || ""));
+    }, node.data.label, " - ", truncate(node.data.fullText || ""));
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Text, {
     size: "sm",
     c: "dimmed"
@@ -106879,7 +106883,6 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
     return truncated + "...";
   };
   var displayText = truncateText(note.text);
-  var highlightedText = highlightText(displayText, searchQuery);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Paper, {
     p: 8,
     withBorder: true,
@@ -106889,8 +106892,8 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
       borderColor: "#ddd"
     },
     onMouseEnter: function onMouseEnter(e) {
-      e.currentTarget.style.borderColor = "#007bff";
-      e.currentTarget.style.backgroundColor = "darkgrey";
+      e.currentTarget.style.borderColor = "#373a40";
+      e.currentTarget.style.backgroundColor = "#2c2e33";
     },
     onMouseLeave: function onMouseLeave(e) {
       e.currentTarget.style.borderColor = "#ddd";
@@ -106901,8 +106904,13 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
     spacing: 4
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
     size: "sm",
-    lineClamp: 2
-  }, highlightedText)), note.tags && note.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
+    fw: 600,
+    lineClamp: 1
+  }, note.nodeNumber ? "#".concat(note.nodeNumber, " - ") : "", note.title || "Untitled Note")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
+    size: "xs",
+    lineClamp: 1,
+    c: "dimmed"
+  }, displayText)), note.tags && note.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
     spacing: "xs"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
     size: 12,
