@@ -135,6 +135,39 @@ function GraphComponent() {
     }
   }, [cyRef.current, elements, openModal, notes]);
 
+  // Handle zoom level for small graphs
+  useEffect(() => {
+    if (cyRef.current && elements.length > 0) {
+      const cy = cyRef.current;
+      const nodeCount = elements.filter((el) => el.group === "nodes").length;
+
+      // Apply zoom immediately and then after layout
+      if (nodeCount === 1) {
+        // For single node, set a reasonable zoom level immediately
+        cy.zoom(1.5);
+        cy.center();
+      } else if (nodeCount <= 3) {
+        // For small graphs, set a moderate zoom immediately
+        cy.zoom(1.2);
+        cy.center();
+      }
+
+      // Wait for layout to complete and apply final zoom
+      setTimeout(() => {
+        if (nodeCount === 1) {
+          cy.zoom(1.5);
+          cy.center();
+        } else if (nodeCount <= 3) {
+          cy.zoom(1.2);
+          cy.center();
+        } else {
+          // For larger graphs, use fit
+          cy.fit();
+        }
+      }, 300); // Reduced delay
+    }
+  }, [elements]);
+
   const handleModalClose = () => {
     closeModal();
   };
@@ -144,8 +177,8 @@ function GraphComponent() {
     idealEdgeLength: 100,
     nodeOverlap: 20,
     refresh: 20,
-    fit: true,
-    padding: 30,
+    fit: false, // Disable automatic fitting to prevent oversized initial view
+    padding: 50,
     randomize: false,
     componentSpacing: 100,
     nodeRepulsion: 400000,
@@ -223,6 +256,14 @@ function GraphComponent() {
         cyRef={cyRef}
         notes={notes}
         onOpenModal={openModal}
+        onClearAllNotes={() => {
+          chrome.storage.local.set({ notes: [] }, () => {
+            setNotes([]);
+            console.log("All notes have been cleared.");
+            // Reload the page to ensure proper cleanup
+            window.location.reload();
+          });
+        }}
       />
       <NodeModal
         opened={modalOpened && !!selectedNode}

@@ -105858,6 +105858,41 @@ function GraphComponent() {
       };
     }
   }, [cyRef.current, elements, openModal, notes]);
+
+  // Handle zoom level for small graphs
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (cyRef.current && elements.length > 0) {
+      var cy = cyRef.current;
+      var nodeCount = elements.filter(function (el) {
+        return el.group === "nodes";
+      }).length;
+
+      // Apply zoom immediately and then after layout
+      if (nodeCount === 1) {
+        // For single node, set a reasonable zoom level immediately
+        cy.zoom(1.5);
+        cy.center();
+      } else if (nodeCount <= 3) {
+        // For small graphs, set a moderate zoom immediately
+        cy.zoom(1.2);
+        cy.center();
+      }
+
+      // Wait for layout to complete and apply final zoom
+      setTimeout(function () {
+        if (nodeCount === 1) {
+          cy.zoom(1.5);
+          cy.center();
+        } else if (nodeCount <= 3) {
+          cy.zoom(1.2);
+          cy.center();
+        } else {
+          // For larger graphs, use fit
+          cy.fit();
+        }
+      }, 300); // Reduced delay
+    }
+  }, [elements]);
   var handleModalClose = function handleModalClose() {
     closeModal();
   };
@@ -105866,8 +105901,9 @@ function GraphComponent() {
     idealEdgeLength: 100,
     nodeOverlap: 20,
     refresh: 20,
-    fit: true,
-    padding: 30,
+    fit: false,
+    // Disable automatic fitting to prevent oversized initial view
+    padding: 50,
     randomize: false,
     componentSpacing: 100,
     nodeRepulsion: 400000,
@@ -105935,7 +105971,17 @@ function GraphComponent() {
     stylesheet: stylesheet,
     cyRef: cyRef,
     notes: notes,
-    onOpenModal: openModal
+    onOpenModal: openModal,
+    onClearAllNotes: function onClearAllNotes() {
+      chrome.storage.local.set({
+        notes: []
+      }, function () {
+        setNotes([]);
+        console.log("All notes have been cleared.");
+        // Reload the page to ensure proper cleanup
+        window.location.reload();
+      });
+    }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GraphComponent_NodeModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
     opened: modalOpened && !!selectedNode,
     onClose: handleModalClose,
@@ -106449,9 +106495,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
 /* harmony import */ var react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-cytoscapejs */ "./node_modules/react-cytoscapejs/dist/react-cytoscape.modern.js");
 /* harmony import */ var _SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SidebarComponent/RecentNotesComponent */ "./src/components/GraphComponent/SidebarComponent/RecentNotesComponent.js");
 /* harmony import */ var _SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SidebarComponent/SearchBarComponent */ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js");
@@ -106478,7 +106525,8 @@ var SidebarComponent = function SidebarComponent(_ref) {
     stylesheet = _ref.stylesheet,
     cyRef = _ref.cyRef,
     notes = _ref.notes,
-    onOpenModal = _ref.onOpenModal;
+    onOpenModal = _ref.onOpenModal,
+    onClearAllNotes = _ref.onClearAllNotes;
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(null),
     _React$useState2 = _slicedToArray(_React$useState, 2),
     selectedTag = _React$useState2[0],
@@ -106581,7 +106629,19 @@ var SidebarComponent = function SidebarComponent(_ref) {
         }
       }
     }
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, {
+  })), notes.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
+    color: "red",
+    variant: "light",
+    fullWidth: true,
+    onClick: function onClick() {
+      if (window.confirm("Are you sure you want to delete all notes? This action cannot be undone.")) {
+        onClearAllNotes();
+      }
+    },
+    style: {
+      marginTop: "16px"
+    }
+  }, "Clear All Notes")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, {
     style: {
       position: "absolute",
       top: "60px",
@@ -106589,19 +106649,19 @@ var SidebarComponent = function SidebarComponent(_ref) {
       right: "0",
       bottom: "0"
     }
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Loader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Loader, {
     size: "lg"
   })) : elements.filter(function (el) {
     return el.group === "nodes";
-  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Center, {
+  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_14__.Text, {
     size: "lg",
     c: "dimmed"
   }, "No notes yet")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__["default"], {

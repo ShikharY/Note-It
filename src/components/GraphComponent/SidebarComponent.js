@@ -27,6 +27,7 @@ const SidebarComponent = ({
   cyRef,
   notes,
   onOpenModal,
+  onClearAllNotes,
 }) => {
   const [selectedTag, setSelectedTag] = React.useState(null);
 
@@ -124,6 +125,29 @@ const SidebarComponent = ({
               }}
             />
           </Box>
+
+          {/* Clear All Notes Button */}
+          {notes.length > 0 && (
+            <Box>
+              <Button
+                color="red"
+                variant="light"
+                fullWidth
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Are you sure you want to delete all notes? This action cannot be undone."
+                    )
+                  ) {
+                    onClearAllNotes();
+                  }
+                }}
+                style={{ marginTop: "16px" }}
+              >
+                Clear All Notes
+              </Button>
+            </Box>
+          )}
         </Stack>
       </AppShell.Navbar>
 
