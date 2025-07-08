@@ -44,7 +44,6 @@ const SearchResultComponent = ({ note, searchQuery, onSelect }) => {
   };
 
   const displayText = truncateText(note.text);
-  const highlightedText = highlightText(displayText, searchQuery);
 
   return (
     <Paper
@@ -56,8 +55,8 @@ const SearchResultComponent = ({ note, searchQuery, onSelect }) => {
         borderColor: "#ddd",
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = "#007bff";
-        e.currentTarget.style.backgroundColor = "darkgrey";
+        e.currentTarget.style.borderColor = "#373a40";
+        e.currentTarget.style.backgroundColor = "#2c2e33";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.borderColor = "#ddd";
@@ -66,10 +65,18 @@ const SearchResultComponent = ({ note, searchQuery, onSelect }) => {
       onClick={onSelect}
     >
       <Stack spacing={4}>
+        {/* Note Title */}
+        <Box>
+          <Text size="sm" fw={600} lineClamp={1}>
+            {note.nodeNumber ? `#${note.nodeNumber} - ` : ""}
+            {note.title || "Untitled Note"}
+          </Text>
+        </Box>
+
         {/* Note Text */}
         <Box>
-          <Text size="sm" lineClamp={2}>
-            {highlightedText}
+          <Text size="xs" lineClamp={1} c="dimmed">
+            {displayText}
           </Text>
         </Box>
 

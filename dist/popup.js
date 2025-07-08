@@ -51159,16 +51159,6 @@ function App() {
       setNotes(updatedNotes);
     });
   };
-  var handleClearAllNotes = function handleClearAllNotes() {
-    if (window.confirm("Are you sure you want to delete all notes? This action cannot be undone.")) {
-      chrome.storage.local.set({
-        notes: []
-      }, function () {
-        setNotes([]);
-        console.log("All notes have been cleared.");
-      });
-    }
-  };
   var openGraphView = function openGraphView() {
     chrome.tabs.create({
       url: "graphView.html"
@@ -51207,13 +51197,7 @@ function App() {
   }, "Save Note"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Button, {
     onClick: openGraphView,
     variant: "outline"
-  }, "Graph View")), notes.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Button, {
-    onClick: handleClearAllNotes,
-    color: "red",
-    variant: "light",
-    fullWidth: true,
-    mt: "md"
-  }, "Clear All Notes"))));
+  }, "Graph View")))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 

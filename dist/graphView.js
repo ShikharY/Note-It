@@ -10287,563 +10287,28 @@ CloseIcon.displayName = "@mantine/core/CloseIcon";
 
 /***/ }),
 
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs ***!
-  \*****************************************************************************/
+/***/ "./node_modules/@mantine/core/esm/components/Divider/Divider.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Divider/Divider.mjs ***!
+  \***********************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerProvider: () => (/* binding */ DrawerProvider),
-/* harmony export */   useDrawerContext: () => (/* binding */ useDrawerContext)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-const [DrawerProvider, useDrawerContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
-  "Drawer component was not found in tree"
-);
-
-
-//# sourceMappingURL=Drawer.context.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs ***!
-  \*********************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Drawer: () => (/* binding */ Drawer)
+/* harmony export */   Divider: () => (/* binding */ Divider)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./DrawerBody.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs");
-/* harmony import */ var _DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./DrawerCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs");
-/* harmony import */ var _DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./DrawerContent.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs");
-/* harmony import */ var _DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./DrawerHeader.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs");
-/* harmony import */ var _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DrawerOverlay.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs");
-/* harmony import */ var _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DrawerRoot.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs");
-/* harmony import */ var _DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DrawerStack.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs");
-/* harmony import */ var _DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./DrawerTitle.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {
-  closeOnClickOutside: true,
-  withinPortal: true,
-  lockScroll: true,
-  trapFocus: true,
-  returnFocus: true,
-  closeOnEscape: true,
-  keepMounted: false,
-  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
-  withOverlay: true,
-  withCloseButton: true
-};
-const Drawer = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__.factory)((_props, ref) => {
-  const {
-    title,
-    withOverlay,
-    overlayProps,
-    withCloseButton,
-    closeButtonProps,
-    children,
-    opened,
-    stackId,
-    zIndex,
-    ...others
-  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__.useProps)("Drawer", defaultProps, _props);
-  const ctx = (0,_DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__.useDrawerStackContext)();
-  const hasHeader = !!title || withCloseButton;
-  const stackProps = ctx && stackId ? {
-    closeOnEscape: ctx.currentId === stackId,
-    trapFocus: ctx.currentId === stackId,
-    zIndex: ctx.getZIndex(stackId)
-  } : {};
-  const overlayVisible = withOverlay === false ? false : stackId && ctx ? ctx.currentId === stackId : opened;
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (ctx && stackId) {
-      opened ? ctx.addModal(stackId, zIndex || (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal")) : ctx.removeModal(stackId);
-    }
-  }, [opened, stackId, zIndex]);
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
-    _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.DrawerRoot,
-    {
-      ref,
-      opened,
-      zIndex: ctx && stackId ? ctx.getZIndex(stackId) : zIndex,
-      ...others,
-      ...stackProps,
-      children: [
-        withOverlay && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-          _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.DrawerOverlay,
-          {
-            visible: overlayVisible,
-            transitionProps: ctx && stackId ? { duration: 0 } : void 0,
-            ...overlayProps
-          }
-        ),
-        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__.DrawerContent, { __hidden: ctx && stackId && opened ? stackId !== ctx.currentId : false, children: [
-          hasHeader && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.DrawerHeader, { children: [
-            title && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.DrawerTitle, { children: title }),
-            withCloseButton && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerCloseButton, { ...closeButtonProps })
-          ] }),
-          /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__.DrawerBody, { children })
-        ] })
-      ]
-    }
-  );
-});
-Drawer.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__["default"];
-Drawer.displayName = "@mantine/core/Drawer";
-Drawer.Root = _DrawerRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.DrawerRoot;
-Drawer.Overlay = _DrawerOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.DrawerOverlay;
-Drawer.Content = _DrawerContent_mjs__WEBPACK_IMPORTED_MODULE_9__.DrawerContent;
-Drawer.Body = _DrawerBody_mjs__WEBPACK_IMPORTED_MODULE_13__.DrawerBody;
-Drawer.Header = _DrawerHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.DrawerHeader;
-Drawer.Title = _DrawerTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.DrawerTitle;
-Drawer.CloseButton = _DrawerCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerCloseButton;
-Drawer.Stack = _DrawerStack_mjs__WEBPACK_IMPORTED_MODULE_6__.DrawerStack;
-
-
-//# sourceMappingURL=Drawer.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs":
-/*!********************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs ***!
-  \********************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ classes)
-/* harmony export */ });
-'use client';
-var classes = {"root":"m_f11b401e","header":"m_5a7c2c9","content":"m_b8a05bbd","inner":"m_31cd769a"};
-
-
-//# sourceMappingURL=Drawer.module.css.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerBody.mjs ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerBody: () => (/* binding */ DrawerBody)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseBody.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseBody.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerBody = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerBody", defaultProps, _props);
-  const { classNames, className, style, styles, vars, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseBody,
-    {
-      ref,
-      ...ctx.getStyles("body", { classNames, style, styles, className }),
-      ...others
-    }
-  );
-});
-DrawerBody.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
-DrawerBody.displayName = "@mantine/core/DrawerBody";
-
-
-//# sourceMappingURL=DrawerBody.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs":
-/*!********************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerCloseButton.mjs ***!
-  \********************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerCloseButton: () => (/* binding */ DrawerCloseButton)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseCloseButton.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerCloseButton = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerCloseButton", defaultProps, _props);
-  const { classNames, className, style, styles, vars, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseCloseButton,
-    {
-      ref,
-      ...ctx.getStyles("close", { classNames, style, styles, className }),
-      ...others
-    }
-  );
-});
-DrawerCloseButton.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
-DrawerCloseButton.displayName = "@mantine/core/DrawerCloseButton";
-
-
-//# sourceMappingURL=DrawerCloseButton.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerContent.mjs ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerContent: () => (/* binding */ DrawerContent)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../ModalBase/ModalBaseContent.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseContent.mjs");
-/* harmony import */ var _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/NativeScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/NativeScrollArea.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerContent = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerContent", defaultProps, _props);
-  const { classNames, className, style, styles, vars, children, radius, __hidden, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  const Scroll = ctx.scrollAreaComponent || _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__.NativeScrollArea;
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__.ModalBaseContent,
-    {
-      ...ctx.getStyles("content", { className, style, styles, classNames }),
-      innerProps: ctx.getStyles("inner", { className, style, styles, classNames }),
-      ref,
-      ...others,
-      radius: radius || ctx.radius || 0,
-      "data-hidden": __hidden || void 0,
-      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Scroll, { style: { height: "calc(100vh - var(--drawer-offset) * 2)" }, children })
-    }
-  );
-});
-DrawerContent.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_8__["default"];
-DrawerContent.displayName = "@mantine/core/DrawerContent";
-
-
-//# sourceMappingURL=DrawerContent.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerHeader.mjs ***!
-  \***************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerHeader: () => (/* binding */ DrawerHeader)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseHeader.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseHeader.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerHeader = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerHeader", defaultProps, _props);
-  const { classNames, className, style, styles, vars, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseHeader,
-    {
-      ref,
-      ...ctx.getStyles("header", { classNames, style, styles, className }),
-      ...others
-    }
-  );
-});
-DrawerHeader.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
-DrawerHeader.displayName = "@mantine/core/DrawerHeader";
-
-
-//# sourceMappingURL=DrawerHeader.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs":
-/*!****************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerOverlay.mjs ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerOverlay: () => (/* binding */ DrawerOverlay)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseOverlay.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseOverlay.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerOverlay = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerOverlay", defaultProps, _props);
-  const { classNames, className, style, styles, vars, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseOverlay,
-    {
-      ref,
-      ...ctx.getStyles("overlay", { classNames, style, styles, className }),
-      ...others
-    }
-  );
-});
-DrawerOverlay.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
-DrawerOverlay.displayName = "@mantine/core/DrawerOverlay";
-
-
-//# sourceMappingURL=DrawerOverlay.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs":
-/*!*************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerRoot.mjs ***!
-  \*************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerRoot: () => (/* binding */ DrawerRoot)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
 /* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
-/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
 /* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/DirectionProvider/DirectionProvider.mjs */ "./node_modules/@mantine/core/esm/core/DirectionProvider/DirectionProvider.mjs");
-/* harmony import */ var _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../ModalBase/ModalBase.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.mjs");
-/* harmony import */ var _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../ScrollArea/ScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
+/* harmony import */ var _core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/color-functions/get-theme-color/get-theme-color.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../core/Box/Box.mjs */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _Divider_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Divider.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Divider/Divider.module.css.mjs");
 'use client';
 
 
@@ -10864,67 +10329,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-function getDrawerAlign(position) {
-  switch (position) {
-    case "top":
-      return "flex-start";
-    case "bottom":
-      return "flex-end";
-    default:
-      return void 0;
-  }
-}
-function getDrawerFlex(position) {
-  if (position === "top" || position === "bottom") {
-    return "0 0 calc(100% - var(--drawer-offset, 0rem) * 2)";
-  }
-  return void 0;
-}
-const transitions = {
-  top: "slide-down",
-  bottom: "slide-up",
-  left: "slide-right",
-  right: "slide-left"
-};
-const rtlTransitions = {
-  top: "slide-down",
-  bottom: "slide-up",
-  right: "slide-right",
-  left: "slide-left"
-};
 const defaultProps = {
-  closeOnClickOutside: true,
-  withinPortal: true,
-  lockScroll: true,
-  trapFocus: true,
-  returnFocus: true,
-  closeOnEscape: true,
-  keepMounted: false,
-  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
-  position: "left"
+  orientation: "horizontal"
 };
-const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)((_, { position, size, offset }) => ({
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_3__.createVarsResolver)((theme, { color, variant, size }) => ({
   root: {
-    "--drawer-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "drawer-size"),
-    "--drawer-flex": getDrawerFlex(position),
-    "--drawer-height": position === "left" || position === "right" ? void 0 : "var(--drawer-size)",
-    "--drawer-align": getDrawerAlign(position),
-    "--drawer-justify": position === "right" ? "flex-end" : void 0,
-    "--drawer-offset": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__.rem)(offset)
+    "--divider-color": color ? (0,_core_MantineProvider_color_functions_get_theme_color_get_theme_color_mjs__WEBPACK_IMPORTED_MODULE_4__.getThemeColor)(color, theme) : void 0,
+    "--divider-border-style": variant,
+    "--divider-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "divider-size")
   }
 }));
-const DrawerRoot = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__.useProps)("DrawerRoot", defaultProps, _props);
+const Divider = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_6__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_7__.useProps)("Divider", defaultProps, _props);
   const {
     classNames,
     className,
@@ -10932,16 +10348,16 @@ const DrawerRoot = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.fac
     styles,
     unstyled,
     vars,
-    scrollAreaComponent,
-    position,
-    transitionProps,
-    radius,
+    color,
+    orientation,
+    label,
+    labelPosition,
+    mod,
     ...others
   } = props;
-  const { dir } = (0,_core_DirectionProvider_DirectionProvider_mjs__WEBPACK_IMPORTED_MODULE_9__.useDirection)();
-  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_10__.useStyles)({
-    name: "Drawer",
-    classes: _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"],
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_8__.useStyles)({
+    name: "Divider",
+    classes: _Divider_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"],
     props,
     className,
     style,
@@ -10951,154 +10367,43 @@ const DrawerRoot = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.fac
     vars,
     varsResolver
   });
-  const drawerTransition = (dir === "rtl" ? rtlTransitions : transitions)[position];
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_12__.DrawerProvider, { value: { scrollAreaComponent, getStyles, radius }, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_13__.ModalBase,
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__.Box,
     {
       ref,
+      mod: [{ orientation, "with-label": !!label }, mod],
       ...getStyles("root"),
-      transitionProps: { transition: drawerTransition, ...transitionProps },
-      "data-offset-scrollbars": scrollAreaComponent === _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_14__.ScrollArea.Autosize || void 0,
-      unstyled,
-      ...others
+      ...others,
+      role: "separator",
+      children: label && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_core_Box_Box_mjs__WEBPACK_IMPORTED_MODULE_10__.Box, { component: "span", mod: { position: labelPosition }, ...getStyles("label"), children: label })
     }
-  ) });
+  );
 });
-DrawerRoot.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_11__["default"];
-DrawerRoot.displayName = "@mantine/core/DrawerRoot";
+Divider.classes = _Divider_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+Divider.displayName = "@mantine/core/Divider";
 
 
-//# sourceMappingURL=DrawerRoot.mjs.map
+//# sourceMappingURL=Divider.mjs.map
 
 
 /***/ }),
 
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerStack.mjs ***!
-  \**************************************************************************/
+/***/ "./node_modules/@mantine/core/esm/components/Divider/Divider.module.css.mjs":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Divider/Divider.module.css.mjs ***!
+  \**********************************************************************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerStack: () => (/* binding */ DrawerStack),
-/* harmony export */   useDrawerStackContext: () => (/* binding */ useDrawerStackContext)
+/* harmony export */   "default": () => (/* binding */ classes)
 /* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-optional-context/create-optional-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs");
-/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
 'use client';
+var classes = {"root":"m_3eebeb36","label":"m_9e365f20"};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-const [DrawerStackProvider, useDrawerStackContext] = (0,_core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createOptionalContext)();
-function DrawerStack({ children }) {
-  const [stack, setStack] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
-  const [maxZIndex, setMaxZIndex] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)((0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__.getDefaultZIndex)("modal"));
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    DrawerStackProvider,
-    {
-      value: {
-        stack,
-        addModal: (id, zIndex) => {
-          setStack((current) => [.../* @__PURE__ */ new Set([...current, id])]);
-          setMaxZIndex(
-            (current) => typeof zIndex === "number" && typeof current === "number" ? Math.max(current, zIndex) : current
-          );
-        },
-        removeModal: (id) => setStack((current) => current.filter((currentId) => currentId !== id)),
-        getZIndex: (id) => `calc(${maxZIndex} + ${stack.indexOf(id)} + 1)`,
-        currentId: stack[stack.length - 1],
-        maxZIndex
-      },
-      children
-    }
-  );
-}
-DrawerStack.displayName = "@mantine/core/DrawerStack";
-
-
-//# sourceMappingURL=DrawerStack.mjs.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs":
-/*!**************************************************************************!*\
-  !*** ./node_modules/@mantine/core/esm/components/Drawer/DrawerTitle.mjs ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   DrawerTitle: () => (/* binding */ DrawerTitle)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
-/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
-/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
-/* harmony import */ var _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseTitle.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseTitle.mjs");
-/* harmony import */ var _Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Drawer.context.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.context.mjs");
-/* harmony import */ var _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Drawer.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.module.css.mjs");
-'use client';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const defaultProps = {};
-const DrawerTitle = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
-  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("DrawerTitle", defaultProps, _props);
-  const { classNames, className, style, styles, vars, ...others } = props;
-  const ctx = (0,_Drawer_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useDrawerContext)();
-  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
-    _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseTitle,
-    {
-      ref,
-      ...ctx.getStyles("title", { classNames, style, styles, className }),
-      ...others
-    }
-  );
-});
-DrawerTitle.classes = _Drawer_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
-DrawerTitle.displayName = "@mantine/core/DrawerTitle";
-
-
-//# sourceMappingURL=DrawerTitle.mjs.map
+//# sourceMappingURL=Divider.module.css.mjs.map
 
 
 /***/ }),
@@ -13007,6 +12312,818 @@ Oval.displayName = "@mantine/core/Oval";
 
 
 //# sourceMappingURL=Oval.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalProvider: () => (/* binding */ ModalProvider),
+/* harmony export */   useModalContext: () => (/* binding */ useModalContext)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-safe-context/create-safe-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-safe-context/create-safe-context.mjs");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [ModalProvider, useModalContext] = (0,_core_utils_create_safe_context_create_safe_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createSafeContext)(
+  "Modal component was not found in tree"
+);
+
+
+//# sourceMappingURL=Modal.context.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/Modal.mjs":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/Modal.mjs ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Modal: () => (/* binding */ Modal)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBody_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./ModalBody.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalBody.mjs");
+/* harmony import */ var _ModalCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./ModalCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalCloseButton.mjs");
+/* harmony import */ var _ModalContent_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ModalContent.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalContent.mjs");
+/* harmony import */ var _ModalHeader_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./ModalHeader.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalHeader.mjs");
+/* harmony import */ var _ModalOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ModalOverlay.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalOverlay.mjs");
+/* harmony import */ var _ModalRoot_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./ModalRoot.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalRoot.mjs");
+/* harmony import */ var _ModalStack_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ModalStack.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalStack.mjs");
+/* harmony import */ var _ModalTitle_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ModalTitle.mjs */ "./node_modules/@mantine/core/esm/components/Modal/ModalTitle.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  closeOnClickOutside: true,
+  withinPortal: true,
+  lockScroll: true,
+  trapFocus: true,
+  returnFocus: true,
+  closeOnEscape: true,
+  keepMounted: false,
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
+  transitionProps: { duration: 200, transition: "fade-down" },
+  withOverlay: true,
+  withCloseButton: true
+};
+const Modal = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_4__.factory)((_props, ref) => {
+  const {
+    title,
+    withOverlay,
+    overlayProps,
+    withCloseButton,
+    closeButtonProps,
+    children,
+    radius,
+    opened,
+    stackId,
+    zIndex,
+    ...others
+  } = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_5__.useProps)("Modal", defaultProps, _props);
+  const ctx = (0,_ModalStack_mjs__WEBPACK_IMPORTED_MODULE_6__.useModalStackContext)();
+  const hasHeader = !!title || withCloseButton;
+  const stackProps = ctx && stackId ? {
+    closeOnEscape: ctx.currentId === stackId,
+    trapFocus: ctx.currentId === stackId,
+    zIndex: ctx.getZIndex(stackId)
+  } : {};
+  const overlayVisible = withOverlay === false ? false : stackId && ctx ? ctx.currentId === stackId : opened;
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (ctx && stackId) {
+      opened ? ctx.addModal(stackId, zIndex || (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal")) : ctx.removeModal(stackId);
+    }
+  }, [opened, stackId, zIndex]);
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+    _ModalRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.ModalRoot,
+    {
+      ref,
+      radius,
+      opened,
+      zIndex: ctx && stackId ? ctx.getZIndex(stackId) : zIndex,
+      ...others,
+      ...stackProps,
+      children: [
+        withOverlay && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+          _ModalOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.ModalOverlay,
+          {
+            visible: overlayVisible,
+            transitionProps: ctx && stackId ? { duration: 0 } : void 0,
+            ...overlayProps
+          }
+        ),
+        /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(
+          _ModalContent_mjs__WEBPACK_IMPORTED_MODULE_9__.ModalContent,
+          {
+            radius,
+            __hidden: ctx && stackId && opened ? stackId !== ctx.currentId : false,
+            children: [
+              hasHeader && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_ModalHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.ModalHeader, { children: [
+                title && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ModalTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.ModalTitle, { children: title }),
+                withCloseButton && /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ModalCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.ModalCloseButton, { ...closeButtonProps })
+              ] }),
+              /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ModalBody_mjs__WEBPACK_IMPORTED_MODULE_13__.ModalBody, { children })
+            ]
+          }
+        )
+      ]
+    }
+  );
+});
+Modal.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_14__["default"];
+Modal.displayName = "@mantine/core/Modal";
+Modal.Root = _ModalRoot_mjs__WEBPACK_IMPORTED_MODULE_7__.ModalRoot;
+Modal.Overlay = _ModalOverlay_mjs__WEBPACK_IMPORTED_MODULE_8__.ModalOverlay;
+Modal.Content = _ModalContent_mjs__WEBPACK_IMPORTED_MODULE_9__.ModalContent;
+Modal.Body = _ModalBody_mjs__WEBPACK_IMPORTED_MODULE_13__.ModalBody;
+Modal.Header = _ModalHeader_mjs__WEBPACK_IMPORTED_MODULE_10__.ModalHeader;
+Modal.Title = _ModalTitle_mjs__WEBPACK_IMPORTED_MODULE_11__.ModalTitle;
+Modal.CloseButton = _ModalCloseButton_mjs__WEBPACK_IMPORTED_MODULE_12__.ModalCloseButton;
+Modal.Stack = _ModalStack_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalStack;
+
+
+//# sourceMappingURL=Modal.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ classes)
+/* harmony export */ });
+'use client';
+var classes = {"root":"m_9df02822","content":"m_54c44539","inner":"m_1f958f16","header":"m_d0e2b9cd"};
+
+
+//# sourceMappingURL=Modal.module.css.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalBody.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalBody.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalBody: () => (/* binding */ ModalBody)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseBody.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseBody.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalBody = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalBody", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseBody_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseBody,
+    {
+      ref,
+      ...ctx.getStyles("body", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+ModalBody.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+ModalBody.displayName = "@mantine/core/ModalBody";
+
+
+//# sourceMappingURL=ModalBody.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalCloseButton.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalCloseButton.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalCloseButton: () => (/* binding */ ModalCloseButton)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseCloseButton.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseCloseButton.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalCloseButton = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalCloseButton", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseCloseButton_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseCloseButton,
+    {
+      ref,
+      ...ctx.getStyles("close", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+ModalCloseButton.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+ModalCloseButton.displayName = "@mantine/core/ModalCloseButton";
+
+
+//# sourceMappingURL=ModalCloseButton.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalContent.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalContent.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalContent: () => (/* binding */ ModalContent)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../ModalBase/ModalBaseContent.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseContent.mjs");
+/* harmony import */ var _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/NativeScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/NativeScrollArea.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalContent = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalContent", defaultProps, _props);
+  const { classNames, className, style, styles, vars, children, __hidden, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  const Scroll = ctx.scrollAreaComponent || _ModalBase_NativeScrollArea_mjs__WEBPACK_IMPORTED_MODULE_6__.NativeScrollArea;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseContent_mjs__WEBPACK_IMPORTED_MODULE_7__.ModalBaseContent,
+    {
+      ...ctx.getStyles("content", { className, style, styles, classNames }),
+      innerProps: ctx.getStyles("inner", { className, style, styles, classNames }),
+      "data-full-screen": ctx.fullScreen || void 0,
+      "data-modal-content": true,
+      "data-hidden": __hidden || void 0,
+      ref,
+      ...others,
+      children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+        Scroll,
+        {
+          style: {
+            maxHeight: ctx.fullScreen ? "100dvh" : `calc(100dvh - (${(0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_8__.rem)(ctx.yOffset)} * 2))`
+          },
+          children
+        }
+      )
+    }
+  );
+});
+ModalContent.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_9__["default"];
+ModalContent.displayName = "@mantine/core/ModalContent";
+
+
+//# sourceMappingURL=ModalContent.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalHeader.mjs":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalHeader.mjs ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalHeader: () => (/* binding */ ModalHeader)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseHeader.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseHeader.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalHeader = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalHeader", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseHeader_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseHeader,
+    {
+      ref,
+      ...ctx.getStyles("header", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+ModalHeader.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+ModalHeader.displayName = "@mantine/core/ModalHeader";
+
+
+//# sourceMappingURL=ModalHeader.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalOverlay.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalOverlay.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalOverlay: () => (/* binding */ ModalOverlay)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseOverlay.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseOverlay.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalOverlay = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalOverlay", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseOverlay_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseOverlay,
+    {
+      ref,
+      ...ctx.getStyles("overlay", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+ModalOverlay.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+ModalOverlay.displayName = "@mantine/core/ModalOverlay";
+
+
+//# sourceMappingURL=ModalOverlay.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalRoot.mjs":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalRoot.mjs ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalRoot: () => (/* binding */ ModalRoot)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/utils/units-converters/rem.mjs */ "./node_modules/@mantine/core/esm/core/utils/units-converters/rem.mjs");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var _core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../core/utils/get-size/get-size.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-size/get-size.mjs");
+/* harmony import */ var _core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/styles-api/create-vars-resolver/create-vars-resolver.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/create-vars-resolver/create-vars-resolver.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../core/styles-api/use-styles/use-styles.mjs */ "./node_modules/@mantine/core/esm/core/styles-api/use-styles/use-styles.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../ModalBase/ModalBase.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBase.mjs");
+/* harmony import */ var _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../ScrollArea/ScrollArea.mjs */ "./node_modules/@mantine/core/esm/components/ScrollArea/ScrollArea.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {
+  __staticSelector: "Modal",
+  closeOnClickOutside: true,
+  withinPortal: true,
+  lockScroll: true,
+  trapFocus: true,
+  returnFocus: true,
+  closeOnEscape: true,
+  keepMounted: false,
+  zIndex: (0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_3__.getDefaultZIndex)("modal"),
+  transitionProps: { duration: 200, transition: "fade-down" },
+  yOffset: "5dvh"
+};
+const varsResolver = (0,_core_styles_api_create_vars_resolver_create_vars_resolver_mjs__WEBPACK_IMPORTED_MODULE_4__.createVarsResolver)(
+  (_, { radius, size, yOffset, xOffset }) => ({
+    root: {
+      "--modal-radius": radius === void 0 ? void 0 : (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getRadius)(radius),
+      "--modal-size": (0,_core_utils_get_size_get_size_mjs__WEBPACK_IMPORTED_MODULE_5__.getSize)(size, "modal-size"),
+      "--modal-y-offset": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__.rem)(yOffset),
+      "--modal-x-offset": (0,_core_utils_units_converters_rem_mjs__WEBPACK_IMPORTED_MODULE_6__.rem)(xOffset)
+    }
+  })
+);
+const ModalRoot = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_7__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_8__.useProps)("ModalRoot", defaultProps, _props);
+  const {
+    classNames,
+    className,
+    style,
+    styles,
+    unstyled,
+    vars,
+    yOffset,
+    scrollAreaComponent,
+    radius,
+    fullScreen,
+    centered,
+    xOffset,
+    __staticSelector,
+    ...others
+  } = props;
+  const getStyles = (0,_core_styles_api_use_styles_use_styles_mjs__WEBPACK_IMPORTED_MODULE_9__.useStyles)({
+    name: __staticSelector,
+    classes: _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__["default"],
+    props,
+    className,
+    style,
+    classNames,
+    styles,
+    unstyled,
+    vars,
+    varsResolver
+  });
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_11__.ModalProvider, { value: { yOffset, scrollAreaComponent, getStyles, fullScreen }, children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBase_mjs__WEBPACK_IMPORTED_MODULE_12__.ModalBase,
+    {
+      ref,
+      ...getStyles("root"),
+      "data-full-screen": fullScreen || void 0,
+      "data-centered": centered || void 0,
+      "data-offset-scrollbars": scrollAreaComponent === _ScrollArea_ScrollArea_mjs__WEBPACK_IMPORTED_MODULE_13__.ScrollArea.Autosize || void 0,
+      unstyled,
+      ...others
+    }
+  ) });
+});
+ModalRoot.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_10__["default"];
+ModalRoot.displayName = "@mantine/core/ModalRoot";
+
+
+//# sourceMappingURL=ModalRoot.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalStack.mjs":
+/*!************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalStack.mjs ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalStack: () => (/* binding */ ModalStack),
+/* harmony export */   useModalStackContext: () => (/* binding */ useModalStackContext)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/utils/create-optional-context/create-optional-context.mjs */ "./node_modules/@mantine/core/esm/core/utils/create-optional-context/create-optional-context.mjs");
+/* harmony import */ var _core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/utils/get-default-z-index/get-default-z-index.mjs */ "./node_modules/@mantine/core/esm/core/utils/get-default-z-index/get-default-z-index.mjs");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [ModalStackProvider, useModalStackContext] = (0,_core_utils_create_optional_context_create_optional_context_mjs__WEBPACK_IMPORTED_MODULE_3__.createOptionalContext)();
+function ModalStack({ children }) {
+  const [stack, setStack] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+  const [maxZIndex, setMaxZIndex] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)((0,_core_utils_get_default_z_index_get_default_z_index_mjs__WEBPACK_IMPORTED_MODULE_4__.getDefaultZIndex)("modal"));
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    ModalStackProvider,
+    {
+      value: {
+        stack,
+        addModal: (id, zIndex) => {
+          setStack((current) => [.../* @__PURE__ */ new Set([...current, id])]);
+          setMaxZIndex(
+            (current) => typeof zIndex === "number" && typeof current === "number" ? Math.max(current, zIndex) : current
+          );
+        },
+        removeModal: (id) => setStack((current) => current.filter((currentId) => currentId !== id)),
+        getZIndex: (id) => `calc(${maxZIndex} + ${stack.indexOf(id)} + 1)`,
+        currentId: stack[stack.length - 1],
+        maxZIndex
+      },
+      children
+    }
+  );
+}
+ModalStack.displayName = "@mantine/core/ModalStack";
+
+
+//# sourceMappingURL=ModalStack.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@mantine/core/esm/components/Modal/ModalTitle.mjs":
+/*!************************************************************************!*\
+  !*** ./node_modules/@mantine/core/esm/components/Modal/ModalTitle.mjs ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ModalTitle: () => (/* binding */ ModalTitle)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.mjs");
+/* harmony import */ var _core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/MantineProvider/use-props/use-props.mjs */ "./node_modules/@mantine/core/esm/core/MantineProvider/use-props/use-props.mjs");
+/* harmony import */ var _core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../core/factory/factory.mjs */ "./node_modules/@mantine/core/esm/core/factory/factory.mjs");
+/* harmony import */ var _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../ModalBase/ModalBaseTitle.mjs */ "./node_modules/@mantine/core/esm/components/ModalBase/ModalBaseTitle.mjs");
+/* harmony import */ var _Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal.context.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.context.mjs");
+/* harmony import */ var _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Modal.module.css.mjs */ "./node_modules/@mantine/core/esm/components/Modal/Modal.module.css.mjs");
+'use client';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const defaultProps = {};
+const ModalTitle = (0,_core_factory_factory_mjs__WEBPACK_IMPORTED_MODULE_3__.factory)((_props, ref) => {
+  const props = (0,_core_MantineProvider_use_props_use_props_mjs__WEBPACK_IMPORTED_MODULE_4__.useProps)("ModalTitle", defaultProps, _props);
+  const { classNames, className, style, styles, vars, ...others } = props;
+  const ctx = (0,_Modal_context_mjs__WEBPACK_IMPORTED_MODULE_5__.useModalContext)();
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(
+    _ModalBase_ModalBaseTitle_mjs__WEBPACK_IMPORTED_MODULE_6__.ModalBaseTitle,
+    {
+      ref,
+      ...ctx.getStyles("title", { classNames, style, styles, className }),
+      ...others
+    }
+  );
+});
+ModalTitle.classes = _Modal_module_css_mjs__WEBPACK_IMPORTED_MODULE_7__["default"];
+ModalTitle.displayName = "@mantine/core/ModalTitle";
+
+
+//# sourceMappingURL=ModalTitle.mjs.map
 
 
 /***/ }),
@@ -23441,6 +23558,122 @@ var defaultAttributes = {
 
 /***/ }),
 
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconCalendar.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconCalendar.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconCalendar)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconCalendar = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "calendar", "IconCalendar", [["path", { "d": "M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z", "key": "svg-0" }], ["path", { "d": "M16 3v4", "key": "svg-1" }], ["path", { "d": "M8 3v4", "key": "svg-2" }], ["path", { "d": "M4 11h16", "key": "svg-3" }], ["path", { "d": "M11 15h1", "key": "svg-4" }], ["path", { "d": "M12 15v3", "key": "svg-5" }]]);
+
+
+//# sourceMappingURL=IconCalendar.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronDown.mjs":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronDown.mjs ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconChevronDown)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconChevronDown = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "chevron-down", "IconChevronDown", [["path", { "d": "M6 9l6 6l6 -6", "key": "svg-0" }]]);
+
+
+//# sourceMappingURL=IconChevronDown.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronUp.mjs":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronUp.mjs ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconChevronUp)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconChevronUp = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "chevron-up", "IconChevronUp", [["path", { "d": "M6 15l6 -6l6 6", "key": "svg-0" }]]);
+
+
+//# sourceMappingURL=IconChevronUp.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconCopy.mjs":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconCopy.mjs ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconCopy)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconCopy = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "copy", "IconCopy", [["path", { "d": "M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z", "key": "svg-0" }], ["path", { "d": "M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1", "key": "svg-1" }]]);
+
+
+//# sourceMappingURL=IconCopy.mjs.map
+
+
+/***/ }),
+
 /***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs":
 /*!**********************************************************************!*\
   !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs ***!
@@ -23466,6 +23699,93 @@ var IconEdit = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["defaul
 
 
 //# sourceMappingURL=IconEdit.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconExternalLink.mjs":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconExternalLink.mjs ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconExternalLink)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconExternalLink = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "external-link", "IconExternalLink", [["path", { "d": "M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6", "key": "svg-0" }], ["path", { "d": "M11 13l9 -9", "key": "svg-1" }], ["path", { "d": "M15 4h5v5", "key": "svg-2" }]]);
+
+
+//# sourceMappingURL=IconExternalLink.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconFileText.mjs":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconFileText.mjs ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconFileText)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconFileText = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "file-text", "IconFileText", [["path", { "d": "M14 3v4a1 1 0 0 0 1 1h4", "key": "svg-0" }], ["path", { "d": "M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z", "key": "svg-1" }], ["path", { "d": "M9 9l1 0", "key": "svg-2" }], ["path", { "d": "M9 13l6 0", "key": "svg-3" }], ["path", { "d": "M9 17l6 0", "key": "svg-4" }]]);
+
+
+//# sourceMappingURL=IconFileText.mjs.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@tabler/icons-react/dist/esm/icons/IconLink.mjs":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@tabler/icons-react/dist/esm/icons/IconLink.mjs ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IconLink)
+/* harmony export */ });
+/* harmony import */ var _createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createReactComponent.mjs */ "./node_modules/@tabler/icons-react/dist/esm/createReactComponent.mjs");
+/**
+ * @license @tabler/icons-react v3.34.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var IconLink = (0,_createReactComponent_mjs__WEBPACK_IMPORTED_MODULE_0__["default"])("outline", "link", "IconLink", [["path", { "d": "M9 15l6 -6", "key": "svg-0" }], ["path", { "d": "M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464", "key": "svg-1" }], ["path", { "d": "M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463", "key": "svg-2" }]]);
+
+
+//# sourceMappingURL=IconLink.mjs.map
 
 
 /***/ }),
@@ -105392,6 +105712,13 @@ function GraphComponent() {
     _useState8 = _slicedToArray(_useState7, 2),
     selectedNode = _useState8[0],
     setSelectedNode = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      x: 0,
+      y: 0
+    }),
+    _useState0 = _slicedToArray(_useState9, 2),
+    nodePosition = _useState0[0],
+    setNodePosition = _useState0[1];
   var _useDisclosure = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDisclosure)(),
     _useDisclosure2 = _slicedToArray(_useDisclosure, 2),
     opened = _useDisclosure2[0],
@@ -105402,7 +105729,23 @@ function GraphComponent() {
     _useDisclosure4$ = _useDisclosure4[1],
     openModal = _useDisclosure4$.open,
     closeModal = _useDisclosure4$.close;
+  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    _useState10 = _slicedToArray(_useState1, 2),
+    hoveredNode = _useState10[0],
+    setHoveredNode = _useState10[1];
+  var _useState11 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      x: 0,
+      y: 0
+    }),
+    _useState12 = _slicedToArray(_useState11, 2),
+    tooltipPosition = _useState12[0],
+    setTooltipPosition = _useState12[1];
+  var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    showTooltip = _useState14[0],
+    setShowTooltip = _useState14[1];
   var cyRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  var tooltipRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     chrome.storage.local.get(["notes"], function (result) {
       setNotes(result.notes || []);
@@ -105410,24 +105753,27 @@ function GraphComponent() {
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (notes.length === 0 && !loading) return;
-    var processedNodes = notes.filter(function (note) {
+    var sortedNotes = notes.filter(function (note) {
       return note && note.id && typeof note.text === "string";
     }) // Filter out invalid notes
     .sort(function (a, b) {
       var _a$timestamp, _b$timestamp;
       var tA = Number((_a$timestamp = a.timestamp) !== null && _a$timestamp !== void 0 ? _a$timestamp : 0);
       var tB = Number((_b$timestamp = b.timestamp) !== null && _b$timestamp !== void 0 ? _b$timestamp : 0);
-      return tB - tA; // Most recent first
-    }).map(function (note) {
+      return tA - tB; // Earliest first (oldest to newest)
+    });
+    var processedNodes = sortedNotes.map(function (note, index) {
       return {
         group: "nodes",
         data: {
           id: note.id,
-          label: note.text.substring(0, 50) + (note.text.length > 50 ? "..." : ""),
+          label: "#".concat(index + 1),
           fullText: note.text,
+          title: note.title || "Untitled Note",
           url: note.url || "#",
           timestamp: note.timestamp,
-          tags: note.tags || []
+          tags: note.tags || [],
+          nodeNumber: index + 1
         }
       };
     });
@@ -105435,14 +105781,21 @@ function GraphComponent() {
       return n.data.id;
     }));
     var processedEdges = [];
-    if (notes.length > 1) {
-      for (var i = 0; i < notes.length; i++) {
+    if (sortedNotes.length > 1) {
+      for (var i = 0; i < sortedNotes.length; i++) {
         var _loop = function _loop() {
-          var note1 = notes[i];
-          var note2 = notes[j];
+          var note1 = sortedNotes[i];
+          var note2 = sortedNotes[j];
           if (note1 && note2 && validNoteIds.has(note1.id) && validNoteIds.has(note2.id) && note1.tags && note2.tags) {
-            var commonTags = note1.tags.filter(function (tag) {
-              return note2.tags.includes(tag);
+            // Convert tags to lowercase for case-insensitive comparison
+            var note1TagsLower = note1.tags.map(function (tag) {
+              return tag.toLowerCase();
+            });
+            var note2TagsLower = note2.tags.map(function (tag) {
+              return tag.toLowerCase();
+            });
+            var commonTags = note1TagsLower.filter(function (tag) {
+              return note2TagsLower.includes(tag);
             });
             if (commonTags.length > 0) {
               processedEdges.push({
@@ -105457,7 +105810,7 @@ function GraphComponent() {
             }
           }
         };
-        for (var j = i + 1; j < notes.length; j++) {
+        for (var j = i + 1; j < sortedNotes.length; j++) {
           _loop();
         }
       }
@@ -105469,26 +105822,88 @@ function GraphComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (cyRef.current) {
       cyRef.current.on("tap", "node", function (event) {
-        handleNodeClick(event.target.data());
+        var nodeData = event.target.data();
+        var nodePosition = event.target.renderedPosition();
+        setSelectedNode(nodeData);
+        setNodePosition(nodePosition);
+        openModal();
+      });
+
+      // Add hover functionality for tooltip
+      cyRef.current.on("mouseover", "node", function (event) {
+        var nodeData = event.target.data();
+        var nodePosition = event.target.renderedPosition();
+        var note = notes.find(function (n) {
+          return String(n.id) === String(nodeData.id);
+        });
+        if (note) {
+          setHoveredNode(note);
+          setTooltipPosition({
+            x: nodePosition.x + 20,
+            y: nodePosition.y - 20
+          });
+          setShowTooltip(true);
+        }
+      });
+      cyRef.current.on("mouseout", "node", function (event) {
+        setShowTooltip(false);
+        setHoveredNode(null);
       });
       return function () {
         if (cyRef.current) {
           cyRef.current.removeListener("tap", "node");
+          cyRef.current.removeListener("mouseover", "node");
+          cyRef.current.removeListener("mouseout", "node");
         }
       };
     }
-  }, [cyRef.current, elements, openModal]);
-  var handleNodeClick = function handleNodeClick(nodeData) {
-    setSelectedNode(nodeData);
-    openModal();
+  }, [cyRef.current, elements, openModal, notes]);
+
+  // Handle zoom level for small graphs
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (cyRef.current && elements.length > 0) {
+      var cy = cyRef.current;
+      var nodeCount = elements.filter(function (el) {
+        return el.group === "nodes";
+      }).length;
+
+      // Apply zoom immediately and then after layout
+      if (nodeCount === 1) {
+        // For single node, set a reasonable zoom level immediately
+        cy.zoom(1.5);
+        cy.center();
+      } else if (nodeCount <= 3) {
+        // For small graphs, set a moderate zoom immediately
+        cy.zoom(1.2);
+        cy.center();
+      }
+
+      // Wait for layout to complete and apply final zoom
+      setTimeout(function () {
+        if (nodeCount === 1) {
+          cy.zoom(1.5);
+          cy.center();
+        } else if (nodeCount <= 3) {
+          cy.zoom(1.2);
+          cy.center();
+        } else {
+          // For larger graphs, use fit
+          cy.fit();
+        }
+      }, 300); // Reduced delay
+    }
+  }, [elements]);
+  var handleModalClose = function handleModalClose() {
+    closeModal();
   };
   var layout = {
     name: "cose",
     idealEdgeLength: 100,
     nodeOverlap: 20,
     refresh: 20,
-    fit: true,
-    padding: 30,
+    fit: false,
+    // Disable automatic fitting to prevent oversized initial view
+    padding: 50,
     randomize: false,
     componentSpacing: 100,
     nodeRepulsion: 400000,
@@ -105508,9 +105923,10 @@ function GraphComponent() {
       color: "#fff",
       "text-valign": "center",
       "text-halign": "center",
-      "font-size": "10px",
+      "font-size": "12px",
+      "font-weight": "600",
       "text-wrap": "wrap",
-      "text-max-width": "80px"
+      "text-max-width": "60px"
     }
   }, {
     selector: "edge",
@@ -105555,14 +105971,86 @@ function GraphComponent() {
     stylesheet: stylesheet,
     cyRef: cyRef,
     notes: notes,
-    onOpenModal: openModal
+    onOpenModal: openModal,
+    onClearAllNotes: function onClearAllNotes() {
+      chrome.storage.local.set({
+        notes: []
+      }, function () {
+        setNotes([]);
+        console.log("All notes have been cleared.");
+        // Reload the page to ensure proper cleanup
+        window.location.reload();
+      });
+    }
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_GraphComponent_NodeModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
     opened: modalOpened && !!selectedNode,
-    onClose: closeModal,
-    selectedNode: selectedNode,
-    notes: notes,
-    onUpdateNotes: setNotes
-  }));
+    onClose: handleModalClose,
+    nodeData: notes.find(function (note) {
+      return String(note.id) === String(selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.id);
+    }),
+    onUpdateNote: function onUpdateNote(updatedNote) {
+      var updatedNotes = notes.map(function (note) {
+        return note.id === updatedNote.id ? updatedNote : note;
+      });
+      setNotes(updatedNotes);
+      chrome.storage.local.set({
+        notes: updatedNotes
+      });
+    },
+    onDeleteNote: function onDeleteNote(noteId) {
+      var updatedNotes = notes.filter(function (note) {
+        return note.id !== noteId;
+      });
+      setNotes(updatedNotes);
+      chrome.storage.local.set({
+        notes: updatedNotes
+      });
+    },
+    nodePosition: nodePosition
+  }), showTooltip && hoveredNode && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    ref: tooltipRef,
+    style: {
+      position: "absolute",
+      left: tooltipPosition.x,
+      top: tooltipPosition.y,
+      backgroundColor: "#2c2e33",
+      // Dark background like search bar
+      border: "1px solid #373a40",
+      borderRadius: "6px",
+      padding: "8px 12px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+      zIndex: 1000,
+      maxWidth: "200px",
+      pointerEvents: "none",
+      color: "#c1c2c5" // Light text like search bar
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      fontSize: "12px",
+      lineHeight: 1.3,
+      color: "#c1c2c5"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      display: "-webkit-box",
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+      marginBottom: "4px",
+      minHeight: "32px",
+      // Ensures consistent height for 2 lines
+      maxHeight: "32px",
+      // Force 2 lines max
+      wordBreak: "break-word",
+      fontSize: "12px"
+    }
+  }, hoveredNode.text), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "#909296",
+      fontStyle: "italic"
+    }
+  }, "For detailed information click on the node"))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GraphComponent);
 
@@ -105581,20 +106069,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Drawer/Drawer.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Textarea/Textarea.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.mjs");
-/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs");
-/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs");
-/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTrash.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Modal/Modal.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Group/Group.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/ActionIcon/ActionIcon.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Textarea/Textarea.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/TextInput/TextInput.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Badge/Badge.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Tooltip/Tooltip.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Divider/Divider.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconFileText.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconX.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronUp.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconChevronDown.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconCalendar.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconLink.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconCopy.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconExternalLink.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconEdit.mjs");
+/* harmony import */ var _tabler_icons_react__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @tabler/icons-react */ "./node_modules/@tabler/icons-react/dist/esm/icons/IconTrash.mjs");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -105611,95 +106107,152 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 var NodeModal = function NodeModal(_ref) {
+  var _fullNote$text, _fullNote$text2;
   var opened = _ref.opened,
     onClose = _ref.onClose,
-    selectedNode = _ref.selectedNode,
-    notes = _ref.notes,
-    onUpdateNotes = _ref.onUpdateNotes;
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    nodeData = _ref.nodeData,
+    onUpdateNote = _ref.onUpdateNote,
+    onDeleteNote = _ref.onDeleteNote,
+    nodePosition = _ref.nodePosition;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState2 = _slicedToArray(_useState, 2),
-    isEditing = _useState2[0],
-    setIsEditing = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    fullNote = _useState2[0],
+    setFullNote = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    editText = _useState4[0],
-    setEditText = _useState4[1];
+    isEditing = _useState4[0],
+    setIsEditing = _useState4[1];
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState6 = _slicedToArray(_useState5, 2),
-    editTags = _useState6[0],
-    setEditTags = _useState6[1];
-
-  // Find the full note data when modal opens
-  var fullNote = notes.find(function (note) {
-    return String(note.id) === String(selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.id);
-  });
-  var handleEdit = function handleEdit() {
-    if (fullNote) {
-      setEditText(fullNote.text);
-      setEditTags(fullNote.tags ? fullNote.tags.join(", ") : "");
-      setIsEditing(true);
+    editText = _useState6[0],
+    setEditText = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState8 = _slicedToArray(_useState7, 2),
+    editTags = _useState8[0],
+    setEditTags = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState0 = _slicedToArray(_useState9, 2),
+    isTextExpanded = _useState0[0],
+    setIsTextExpanded = _useState0[1];
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (nodeData) {
+      setFullNote(nodeData);
+      setEditText(nodeData.text || "");
+      setEditTags(nodeData.tags ? nodeData.tags.join(", ") : "");
+      setIsTextExpanded(false);
     }
+  }, [nodeData]);
+  var handleEdit = function handleEdit() {
+    setIsEditing(true);
   };
   var handleSave = function handleSave() {
-    if (!fullNote || editText.trim() === "") return;
     var updatedNote = _objectSpread(_objectSpread({}, fullNote), {}, {
       text: editText.trim(),
-      tags: editTags.split(",").map(function (tag) {
+      tags: editTags.trim() ? editTags.split(",").map(function (tag) {
         return tag.trim();
-      }).filter(Boolean)
+      }).filter(function (tag) {
+        return tag;
+      }) : []
     });
-    var updatedNotes = notes.map(function (note) {
-      return note.id === fullNote.id ? updatedNote : note;
-    });
-    chrome.storage.local.set({
-      notes: updatedNotes
-    }, function () {
-      onUpdateNotes(updatedNotes);
-      setIsEditing(false);
-      onClose();
-    });
+    onUpdateNote(updatedNote);
+    setFullNote(updatedNote);
+    setIsEditing(false);
   };
   var handleDelete = function handleDelete() {
-    if (!fullNote) return;
     if (window.confirm("Are you sure you want to delete this note?")) {
-      var updatedNotes = notes.filter(function (note) {
-        return note.id !== fullNote.id;
-      });
-      chrome.storage.local.set({
-        notes: updatedNotes
-      }, function () {
-        onUpdateNotes(updatedNotes);
-        onClose();
-      });
+      onDeleteNote(fullNote.id);
+      onClose();
     }
   };
   var handleCancel = function handleCancel() {
     setIsEditing(false);
-    setEditText("");
-    setEditTags("");
+    setEditText(fullNote.text || "");
+    setEditTags(fullNote.tags ? fullNote.tags.join(", ") : "");
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Drawer, {
+  var copyToClipboard = function copyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+  };
+  var openUrl = function openUrl(url) {
+    if (url && url !== "#") {
+      window.open(url, "_blank");
+    }
+  };
+  var shouldShowExpandButton = (fullNote === null || fullNote === void 0 ? void 0 : fullNote.text) && fullNote.text.length > 150;
+  var displayText = isTextExpanded ? fullNote === null || fullNote === void 0 ? void 0 : fullNote.text : (fullNote === null || fullNote === void 0 || (_fullNote$text = fullNote.text) === null || _fullNote$text === void 0 ? void 0 : _fullNote$text.substring(0, 150)) + ((fullNote === null || fullNote === void 0 || (_fullNote$text2 = fullNote.text) === null || _fullNote$text2 === void 0 ? void 0 : _fullNote$text2.length) > 150 ? "..." : "");
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Modal, {
     opened: opened,
     onClose: onClose,
     zIndex: 9999,
-    title: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
-      justify: "space-between",
-      w: "100%"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Title, {
-      order: 3
-    }, "Note Details"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
-      variant: "subtle",
-      onClick: onClose
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      size: 16
-    }))),
-    size: "md",
-    position: "right"
-  }, !fullNote ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
-    c: "dimmed"
-  }, "Note not found.") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_7__.Stack, {
-    spacing: "md"
-  }, isEditing ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Textarea, {
+    withCloseButton: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+    size: "sm",
+    centered: false,
+    styles: {
+      header: {
+        display: "none"
+      },
+      body: {
+        backgroundColor: "#2c2e33",
+        // Dark background like search bar
+        padding: 0,
+        borderRadius: "8px",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+        border: "1px solid #373a40"
+      },
+      content: {
+        position: "absolute",
+        top: nodePosition !== null && nodePosition !== void 0 && nodePosition.y ? "".concat(nodePosition.y, "px") : "50%",
+        left: nodePosition !== null && nodePosition !== void 0 && nodePosition.x ? "".concat(nodePosition.x, "px") : "50%",
+        transform: "translate(-50%, -50%)",
+        width: "320px",
+        maxHeight: "80vh",
+        overflow: "auto"
+      }
+    }
+  }, !fullNote ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    ta: "center",
+    py: "xl"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    c: "dimmed",
+    size: "lg"
+  }, "Note not found.")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    justify: "space-between",
+    p: "sm",
+    style: {
+      backgroundColor: "#25262b",
+      borderBottom: "1px solid #373a40",
+      borderTopLeftRadius: "8px",
+      borderTopRightRadius: "8px",
+      position: "sticky",
+      top: 0,
+      zIndex: 10
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    size: 16,
+    color: "#c1c2c5"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    fw: 600,
+    size: "sm",
+    style: {
+      color: "#c1c2c5"
+    }
+  }, "Note Details")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.ActionIcon, {
+    variant: "subtle",
+    onClick: onClose,
+    size: "sm",
+    style: {
+      color: "#909296"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    size: 14
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Stack, {
+    spacing: "xs"
+  }, isEditing ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    p: "sm"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Textarea, {
     value: editText,
     onChange: function onChange(e) {
       return setEditText(e.target.value);
@@ -105707,80 +106260,217 @@ var NodeModal = function NodeModal(_ref) {
     placeholder: "Edit your note...",
     label: "Note Content",
     autosize: true,
-    minRows: 4
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.TextInput, {
+    minRows: 3,
+    mb: "sm",
+    styles: {
+      input: {
+        backgroundColor: "#25262b",
+        border: "1px solid #373a40",
+        color: "#c1c2c5",
+        wordBreak: "break-word",
+        overflowWrap: "break-word"
+      },
+      label: {
+        color: "#c1c2c5",
+        marginBottom: 4
+      }
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.TextInput, {
     value: editTags,
     onChange: function onChange(e) {
       return setEditTags(e.target.value);
     },
     placeholder: "Tags (comma-separated)",
-    label: "Tags"
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
-    justify: "flex-end"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Button, {
-    variant: "outline",
-    onClick: handleCancel
-  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Button, {
-    onClick: handleSave
-  }, "Save Changes"))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
-    size: "sm",
-    c: "dimmed",
-    mb: 4
-  }, "Content"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, null, fullNote.text)), fullNote.tags && fullNote.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
-    size: "sm",
-    c: "dimmed",
-    mb: 4
-  }, "Tags"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
-    gap: "xs"
-  }, fullNote.tags.map(function (tag, index) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
-      key: index,
-      size: "xs",
-      bg: "blue.1",
-      c: "blue.7",
-      px: 8,
-      py: 2,
-      style: {
-        borderRadius: 4
+    label: "Tags",
+    mb: "sm",
+    styles: {
+      input: {
+        backgroundColor: "#25262b",
+        border: "1px solid #373a40",
+        color: "#c1c2c5"
+      },
+      label: {
+        color: "#c1c2c5",
+        marginBottom: 4
       }
-    }, tag);
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    justify: "flex-end",
+    gap: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
+    variant: "outline",
     size: "sm",
-    c: "dimmed",
-    mb: 4
-  }, "Created"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
-    size: "sm"
-  }, new Date(fullNote.timestamp).toLocaleString())), fullNote.url && fullNote.url !== "#" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    onClick: handleCancel,
+    style: {
+      color: "#c1c2c5",
+      borderColor: "#373a40"
+    }
+  }, "Cancel"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
     size: "sm",
-    c: "dimmed",
-    mb: 4
-  }, "Source URL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.Text, {
+    onClick: handleSave,
+    style: {
+      backgroundColor: "#1976d2"
+    }
+  }, "Save"))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    p: "sm"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
     size: "sm",
     style: {
-      wordBreak: "break-all"
+      lineHeight: 1.5,
+      color: "#c1c2c5",
+      backgroundColor: "#25262b",
+      padding: "8px",
+      borderRadius: "4px",
+      border: "1px solid #373a40",
+      wordBreak: "break-word",
+      overflowWrap: "break-word",
+      whiteSpace: "pre-wrap",
+      maxWidth: "100%",
+      overflow: "hidden"
     }
-  }, fullNote.url)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Group, {
+  }, displayText), shouldShowExpandButton && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
+    variant: "subtle",
+    size: "xs",
+    onClick: function onClick() {
+      return setIsTextExpanded(!isTextExpanded);
+    },
+    p: 0,
+    mt: 4,
+    style: {
+      color: "#1976d2",
+      height: "auto",
+      backgroundColor: "transparent"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: 4
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "xs"
+  }, isTextExpanded ? "Show less" : "Show more"), isTextExpanded ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    size: 12
+  }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    size: 12
+  })))), fullNote.tags && fullNote.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    px: "sm",
+    pb: 2
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: "xs"
+  }, fullNote.tags.slice(0, 3).map(function (tag, index) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_14__.Badge, {
+      key: index,
+      size: "xs",
+      variant: "light",
+      color: "blue",
+      style: {
+        fontSize: "10px",
+        backgroundColor: "#1976d2",
+        color: "#fff"
+      }
+    }, tag);
+  }), fullNote.tags.length > 3 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "xs",
+    c: "dimmed"
+  }, "+", fullNote.tags.length - 3))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    px: "sm",
+    pb: 2
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_15__["default"], {
+    size: 12,
+    color: "#909296"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "xs",
+    style: {
+      color: "#909296"
+    }
+  }, new Date(fullNote.timestamp).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  })))), fullNote.url && fullNote.url !== "#" && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Box, {
+    px: "sm",
+    pb: 2
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: "xs",
+    align: "center"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    size: 12,
+    color: "#909296"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Text, {
+    size: "xs",
+    style: {
+      color: "#1976d2",
+      flex: 1,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      wordBreak: "break-all"
+    },
+    title: fullNote.url
+  }, fullNote.url.length > 30 ? fullNote.url.substring(0, 30) + "..." : fullNote.url), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
+    gap: 4
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_17__.Tooltip, {
+    label: "Copy URL"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.ActionIcon, {
+    variant: "subtle",
+    color: "blue",
+    onClick: function onClick() {
+      return copyToClipboard(fullNote.url);
+    },
+    size: "xs",
+    style: {
+      color: "#1976d2"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_18__["default"], {
+    size: 10
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_17__.Tooltip, {
+    label: "Open URL"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_6__.ActionIcon, {
+    variant: "subtle",
+    color: "green",
+    onClick: function onClick() {
+      return openUrl(fullNote.url);
+    },
+    size: "xs",
+    style: {
+      color: "#00b894"
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    size: 10
+  })))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_20__.Divider, {
+    my: 4,
+    style: {
+      borderColor: "#373a40"
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Group, {
     justify: "flex-end",
-    mt: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Tooltip, {
-    label: "Edit Note"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
+    p: "sm",
+    gap: "xs"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
     variant: "light",
     color: "blue",
     onClick: handleEdit,
-    size: "lg"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_13__["default"], {
-    size: 16
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Tooltip, {
-    label: "Delete Note"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.ActionIcon, {
+    size: "sm",
+    leftSection: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      size: 14
+    }),
+    style: {
+      backgroundColor: "#1976d2",
+      color: "#fff"
+    }
+  }, "Edit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
     variant: "light",
     color: "red",
     onClick: handleDelete,
-    size: "lg"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_14__["default"], {
-    size: 16
-  })))))));
+    size: "sm",
+    leftSection: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_22__["default"], {
+      size: 14
+    }),
+    style: {
+      backgroundColor: "#e74c3c",
+      color: "#fff"
+    }
+  }, "Delete"))))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NodeModal);
 
@@ -105805,10 +106495,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Title/Title.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Stack/Stack.mjs");
 /* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/core/Box/Box.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
-/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Button/Button.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Center/Center.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Loader/Loader.mjs");
+/* harmony import */ var _mantine_core__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mantine/core */ "./node_modules/@mantine/core/esm/components/Text/Text.mjs");
 /* harmony import */ var react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-cytoscapejs */ "./node_modules/react-cytoscapejs/dist/react-cytoscape.modern.js");
 /* harmony import */ var _SidebarComponent_RecentNotesComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SidebarComponent/RecentNotesComponent */ "./src/components/GraphComponent/SidebarComponent/RecentNotesComponent.js");
 /* harmony import */ var _SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SidebarComponent/SearchBarComponent */ "./src/components/GraphComponent/SidebarComponent/SearchBarComponent.js");
@@ -105835,7 +106525,8 @@ var SidebarComponent = function SidebarComponent(_ref) {
     stylesheet = _ref.stylesheet,
     cyRef = _ref.cyRef,
     notes = _ref.notes,
-    onOpenModal = _ref.onOpenModal;
+    onOpenModal = _ref.onOpenModal,
+    onClearAllNotes = _ref.onClearAllNotes;
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default().useState(null),
     _React$useState2 = _slicedToArray(_React$useState, 2),
     selectedTag = _React$useState2[0],
@@ -105850,16 +106541,24 @@ var SidebarComponent = function SidebarComponent(_ref) {
       // Highlight nodes
       cy.nodes().forEach(function (node) {
         var tags = node.data("tags") || [];
-        if (tags.includes(selectedTag)) {
+        var tagsLower = tags.map(function (tag) {
+          return tag.toLowerCase();
+        });
+        if (tagsLower.includes(selectedTag.toLowerCase())) {
           node.addClass("tag-highlight");
         }
       });
       // Highlight edges if both source and target have the tag
       cy.edges().forEach(function (edge) {
-        var _source$data, _target$data;
         var source = cy.getElementById(edge.data("source"));
         var target = cy.getElementById(edge.data("target"));
-        if ((_source$data = source.data("tags")) !== null && _source$data !== void 0 && _source$data.includes(selectedTag) && (_target$data = target.data("tags")) !== null && _target$data !== void 0 && _target$data.includes(selectedTag)) {
+        var sourceTagsLower = (source.data("tags") || []).map(function (tag) {
+          return tag.toLowerCase();
+        });
+        var targetTagsLower = (target.data("tags") || []).map(function (tag) {
+          return tag.toLowerCase();
+        });
+        if (sourceTagsLower.includes(selectedTag.toLowerCase()) && targetTagsLower.includes(selectedTag.toLowerCase())) {
           edge.addClass("tag-highlight");
         }
       });
@@ -105899,27 +106598,7 @@ var SidebarComponent = function SidebarComponent(_ref) {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_9__.Stack, {
     spacing: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_8__.Title, {
-    order: 4
-  }, "Node Details"), selectedNode ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, {
-    mt: "md"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Text, {
-    size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "ID:"), " ", selectedNode.id), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Text, {
-    size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "Text:"), " ", selectedNode.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Text, {
-    size: "sm"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("b", null, "URL:"), " ", selectedNode.url), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Button, {
-    size: "xs",
-    variant: "light",
-    onClick: onOpenModal,
-    mt: "sm",
-    fullWidth: true
-  }, "View Full Details")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Text, {
-    mt: "md",
-    size: "sm",
-    c: "dimmed"
-  }, "Click a node to see its details.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__["default"], {
     notes: notes,
     onSelectNote: function onSelectNote(note) {
       var cy = cyRef.current;
@@ -105950,7 +106629,19 @@ var SidebarComponent = function SidebarComponent(_ref) {
         }
       }
     }
-  })))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, {
+  })), notes.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Button, {
+    color: "red",
+    variant: "light",
+    fullWidth: true,
+    onClick: function onClick() {
+      if (window.confirm("Are you sure you want to delete all notes? This action cannot be undone.")) {
+        onClearAllNotes();
+      }
+    },
+    style: {
+      marginTop: "16px"
+    }
+  }, "Clear All Notes")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_10__.Box, {
     style: {
       position: "absolute",
       top: "60px",
@@ -105958,19 +106649,19 @@ var SidebarComponent = function SidebarComponent(_ref) {
       right: "0",
       bottom: "0"
     }
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Center, {
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_14__.Loader, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Loader, {
     size: "lg"
   })) : elements.filter(function (el) {
     return el.group === "nodes";
-  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_13__.Center, {
+  }).length === 0 ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_12__.Center, {
     style: {
       height: "100%"
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_11__.Text, {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_14__.Text, {
     size: "lg",
     c: "dimmed"
   }, "No notes yet")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_cytoscapejs__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -106042,7 +106733,7 @@ var RecentNotesComponent = function RecentNotesComponent(_ref) {
         color: "#aaa"
       },
       href: "#"
-    }, truncate(node.data.label || ""));
+    }, node.data.label, " - ", truncate(node.data.fullText || ""));
   }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_2__.Text, {
     size: "sm",
     c: "dimmed"
@@ -106271,7 +106962,6 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
     return truncated + "...";
   };
   var displayText = truncateText(note.text);
-  var highlightedText = highlightText(displayText, searchQuery);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_1__.Paper, {
     p: 8,
     withBorder: true,
@@ -106281,8 +106971,8 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
       borderColor: "#ddd"
     },
     onMouseEnter: function onMouseEnter(e) {
-      e.currentTarget.style.borderColor = "#007bff";
-      e.currentTarget.style.backgroundColor = "darkgrey";
+      e.currentTarget.style.borderColor = "#373a40";
+      e.currentTarget.style.backgroundColor = "#2c2e33";
     },
     onMouseLeave: function onMouseLeave(e) {
       e.currentTarget.style.borderColor = "#ddd";
@@ -106293,8 +106983,13 @@ var SearchResultComponent = function SearchResultComponent(_ref) {
     spacing: 4
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
     size: "sm",
-    lineClamp: 2
-  }, highlightedText)), note.tags && note.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
+    fw: 600,
+    lineClamp: 1
+  }, note.nodeNumber ? "#".concat(note.nodeNumber, " - ") : "", note.title || "Untitled Note")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_3__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_4__.Text, {
+    size: "xs",
+    lineClamp: 1,
+    c: "dimmed"
+  }, displayText)), note.tags && note.tags.length > 0 && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.Group, {
     spacing: "xs"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_6__["default"], {
     size: 12,
@@ -106348,12 +107043,13 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var TopTagsComponent = function TopTagsComponent(_ref) {
   var notes = _ref.notes,
     onSelectTag = _ref.onSelectTag;
-  // Compute tag counts
+  // Compute tag counts (case-insensitive)
   var topTags = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var tagCount = {};
     (notes || []).forEach(function (note) {
       (note.tags || []).forEach(function (tag) {
-        tagCount[tag] = (tagCount[tag] || 0) + 1;
+        var tagLower = tag.toLowerCase();
+        tagCount[tagLower] = (tagCount[tagLower] || 0) + 1;
       });
     });
     // Convert to array and sort by count desc, then alphabetically

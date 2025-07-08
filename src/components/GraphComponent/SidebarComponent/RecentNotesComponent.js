@@ -31,7 +31,7 @@ const RecentNotesComponent = ({ nodes, onSelect }) => {
             style={{ cursor: "pointer", color: "#aaa" }}
             href="#"
           >
-            {truncate(node.data.label || "")}
+            {node.data.label} - {truncate(node.data.fullText || "")}
           </Anchor>
         ))
       ) : (

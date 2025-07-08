@@ -55,19 +55,6 @@ function App() {
     });
   };
 
-  const handleClearAllNotes = () => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete all notes? This action cannot be undone."
-      )
-    ) {
-      chrome.storage.local.set({ notes: [] }, () => {
-        setNotes([]);
-        console.log("All notes have been cleared.");
-      });
-    }
-  };
-
   const openGraphView = () => {
     chrome.tabs.create({ url: "graphView.html" });
   };
@@ -99,17 +86,6 @@ function App() {
               Graph View
             </Button>
           </Group>
-          {notes.length > 0 && (
-            <Button
-              onClick={handleClearAllNotes}
-              color="red"
-              variant="light"
-              fullWidth
-              mt="md"
-            >
-              Clear All Notes
-            </Button>
-          )}
         </Stack>
       </Paper>
     </Box>

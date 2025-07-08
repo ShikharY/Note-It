@@ -27,6 +27,7 @@ const SidebarComponent = ({
   cyRef,
   notes,
   onOpenModal,
+  onClearAllNotes,
 }) => {
   const [selectedTag, setSelectedTag] = React.useState(null);
 
@@ -39,7 +40,8 @@ const SidebarComponent = ({
       // Highlight nodes
       cy.nodes().forEach((node) => {
         const tags = node.data("tags") || [];
-        if (tags.includes(selectedTag)) {
+        const tagsLower = tags.map((tag) => tag.toLowerCase());
+        if (tagsLower.includes(selectedTag.toLowerCase())) {
           node.addClass("tag-highlight");
         }
       });
@@ -47,9 +49,15 @@ const SidebarComponent = ({
       cy.edges().forEach((edge) => {
         const source = cy.getElementById(edge.data("source"));
         const target = cy.getElementById(edge.data("target"));
+        const sourceTagsLower = (source.data("tags") || []).map((tag) =>
+          tag.toLowerCase()
+        );
+        const targetTagsLower = (target.data("tags") || []).map((tag) =>
+          tag.toLowerCase()
+        );
         if (
-          source.data("tags")?.includes(selectedTag) &&
-          target.data("tags")?.includes(selectedTag)
+          sourceTagsLower.includes(selectedTag.toLowerCase()) &&
+          targetTagsLower.includes(selectedTag.toLowerCase())
         ) {
           edge.addClass("tag-highlight");
         }
@@ -80,36 +88,6 @@ const SidebarComponent = ({
 
       <AppShell.Navbar p="md" style={{ overflowY: "auto" }}>
         <Stack spacing="md">
-          <Box>
-            <Title order={4}>Node Details</Title>
-            {selectedNode ? (
-              <Box mt="md">
-                <Text size="sm">
-                  <b>ID:</b> {selectedNode.id}
-                </Text>
-                <Text size="sm">
-                  <b>Text:</b> {selectedNode.label}
-                </Text>
-                <Text size="sm">
-                  <b>URL:</b> {selectedNode.url}
-                </Text>
-                <Button
-                  size="xs"
-                  variant="light"
-                  onClick={onOpenModal}
-                  mt="sm"
-                  fullWidth
-                >
-                  View Full Details
-                </Button>
-              </Box>
-            ) : (
-              <Text mt="md" size="sm" c="dimmed">
-                Click a node to see its details.
-              </Text>
-            )}
-          </Box>
-
           <Box>
             <SearchBarComponent
               notes={notes}
@@ -147,6 +125,29 @@ const SidebarComponent = ({
               }}
             />
           </Box>
+
+          {/* Clear All Notes Button */}
+          {notes.length > 0 && (
+            <Box>
+              <Button
+                color="red"
+                variant="light"
+                fullWidth
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Are you sure you want to delete all notes? This action cannot be undone."
+                    )
+                  ) {
+                    onClearAllNotes();
+                  }
+                }}
+                style={{ marginTop: "16px" }}
+              >
+                Clear All Notes
+              </Button>
+            </Box>
+          )}
         </Stack>
       </AppShell.Navbar>
 
