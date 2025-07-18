@@ -123,14 +123,23 @@ const NodeModal = ({
           boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
           border: "1px solid #373a40",
         },
-        content: {
-          position: "absolute",
-          top: nodePosition?.y ? `${nodePosition.y}px` : "50%",
-          left: nodePosition?.x ? `${nodePosition.x}px` : "50%",
+        content: nodePosition && nodePosition.x !== undefined && nodePosition.y !== undefined ? {
+          position: "fixed",
+          top: Math.max(16, Math.min(window.innerHeight - 400, nodePosition.y - 150)) + "px",
+          left: Math.min(window.innerWidth - 360, nodePosition.x + 60) + "px",
+          width: "340px",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          minHeight: "120px",
+        } : {
+          position: "fixed",
+          top: "50%",
+          left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "320px",
-          maxHeight: "80vh",
-          overflow: "auto",
+          width: "340px",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          minHeight: "120px",
         },
       }}
     >
@@ -163,12 +172,18 @@ const NodeModal = ({
               </Text>
             </Group>
             <ActionIcon
-              variant="subtle"
+              variant="filled"
               onClick={onClose}
-              size="sm"
-              style={{ color: "#909296" }}
+              size="xl"
+              style={{
+                color: '#fff', // white icon
+                background: '#c62828', // dark red background
+                border: '3px solid #fff',
+                borderRadius: '50%',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+              }}
             >
-              <IconX size={14} />
+              <IconX size={28} />
             </ActionIcon>
           </Group>
 
@@ -330,22 +345,27 @@ const NodeModal = ({
                   <Box px="sm" pb={2}>
                     <Group gap="xs" align="center">
                       <IconLink size={12} color="#909296" />
-                      <Text
-                        size="xs"
+                      <a
+                        href={fullNote.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{
-                          color: "#1976d2",
+                          color: "#1a0dab",
                           flex: 1,
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
                           wordBreak: "break-all",
+                          fontSize: '12px',
+                          textDecoration: 'underline',
+                          fontWeight: 500,
                         }}
                         title={fullNote.url}
                       >
                         {fullNote.url.length > 30
                           ? fullNote.url.substring(0, 30) + "..."
                           : fullNote.url}
-                      </Text>
+                      </a>
                       <Group gap={4}>
                         <Tooltip label="Copy URL">
                           <ActionIcon
