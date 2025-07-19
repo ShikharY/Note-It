@@ -19,6 +19,7 @@ import CytoscapeComponent from "react-cytoscapejs";
 import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
 import SearchBarComponent from "./SidebarComponent/SearchBarComponent";
 import TopTagsComponent from "./SidebarComponent/TopTagsComponent";
+import AdvancedTagFilterComponent from "./SidebarComponent/AdvancedTagFilterComponent";
 import PropTypes from "prop-types";
 
 const SidebarComponent = ({
@@ -38,17 +39,56 @@ const SidebarComponent = ({
 }) => {
   const [selectedTag, setSelectedTag] = React.useState(null);
   const [settingsOpened, setSettingsOpened] = React.useState(false);
+  const [advancedFilter, setAdvancedFilter] = React.useState({
+    includeTags: [],
+    orTags: [],
+    excludeTags: [],
+    isEmpty: true,
+  });
+  
   const handleThemeToggle = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
-  // Highlight nodes and edges with the selected tag
+  // Helper function to check if a note matches the advanced filter criteria
+  const noteMatchesAdvancedFilter = (note) => {
+    if (advancedFilter.isEmpty) return true;
+    
+    const noteTags = (note.tags || []).map(tag => tag.toLowerCase());
+    
+    // Check include tags (ALL must be present)
+    const includeMatch = advancedFilter.includeTags.length === 0 || 
+      advancedFilter.includeTags.every(tag => noteTags.includes(tag));
+    
+    // Check OR tags (AT LEAST ONE must be present, if OR tags exist)
+    const orMatch = advancedFilter.orTags.length === 0 || 
+      advancedFilter.orTags.some(tag => noteTags.includes(tag));
+    
+    // Check exclude tags (NONE should be present)
+    const excludeMatch = advancedFilter.excludeTags.length === 0 || 
+      !advancedFilter.excludeTags.some(tag => noteTags.includes(tag));
+    
+    return includeMatch && orMatch && excludeMatch;
+  };
+
+  // Handle advanced filter changes
+  const handleAdvancedFilterChange = (filterCriteria) => {
+    setAdvancedFilter(filterCriteria);
+    // Clear simple tag selection when using advanced filters
+    if (!filterCriteria.isEmpty) {
+      setSelectedTag(null);
+    }
+  };
+
+  // Highlight nodes and edges based on selected tag or advanced filter
   React.useEffect(() => {
     const cy = cyRef.current;
     if (!cy) return;
     cy.elements().removeClass("tag-highlight");
     cy.nodes().removeClass("dimmed");
     cy.edges().removeClass("dimmed");
+    
+    // Handle simple tag selection
     if (selectedTag) {
       // Highlight nodes
       cy.nodes().forEach((node) => {
@@ -79,7 +119,28 @@ const SidebarComponent = ({
       cy.nodes().not('.tag-highlight').addClass('dimmed');
       cy.edges().not('.tag-highlight').addClass('dimmed');
     }
-  }, [selectedTag, cyRef]);
+    // Handle advanced filtering
+    else if (!advancedFilter.isEmpty) {
+      cy.nodes().forEach((node) => {
+        const nodeData = node.data();
+        const note = notes.find(n => String(n.id) === String(nodeData.id));
+        if (note && noteMatchesAdvancedFilter(note)) {
+          node.addClass("tag-highlight");
+        }
+      });
+      // Highlight edges if both source and target match the filter
+      cy.edges().forEach((edge) => {
+        const source = cy.getElementById(edge.data("source"));
+        const target = cy.getElementById(edge.data("target"));
+        if (source.hasClass('tag-highlight') && target.hasClass('tag-highlight')) {
+          edge.addClass("tag-highlight");
+        }
+      });
+      // Dim all nodes and edges that are not highlighted
+      cy.nodes().not('.tag-highlight').addClass('dimmed');
+      cy.edges().not('.tag-highlight').addClass('dimmed');
+    }
+  }, [selectedTag, advancedFilter, cyRef, notes, noteMatchesAdvancedFilter]);
 
   // Add handler to clear tag selection when clicking on background
   React.useEffect(() => {
@@ -88,6 +149,12 @@ const SidebarComponent = ({
     const handleTapBackground = (event) => {
       if (event.target === cy) {
         setSelectedTag(null); // Deselect the tag
+        setAdvancedFilter({
+          includeTags: [],
+          orTags: [],
+          excludeTags: [],
+          isEmpty: true,
+        }); // Clear advanced filters
         if (typeof window !== 'undefined') {
           // Also clear selected node in parent if possible
           if (typeof window.setSelectedNode === 'function') {
@@ -101,14 +168,15 @@ const SidebarComponent = ({
     return () => {
       cy.off('tap', handleTapBackground);
     };
-  }, [selectedTag, cyRef]);
+  }, [selectedTag, advancedFilter, cyRef]);
 
-  // Sync selectedTag to window for global access (for hover tooltip)
+  // Sync selectedTag and advanced filters to window for global access (for hover tooltip)
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       window.selectedTag = selectedTag;
+      window.advancedFilter = advancedFilter;
     }
-  }, [selectedTag]);
+  }, [selectedTag, advancedFilter]);
 
   // On mount, automatically activate sidebar logic as if user interacted
   React.useEffect(() => {
@@ -122,6 +190,16 @@ const SidebarComponent = ({
 
   const handleSelectTag = (tag) => {
     setSelectedTag((prev) => (prev === tag ? null : tag));
+    // Clear advanced filters when selecting a simple tag
+    if (tag) {
+      setAdvancedFilter({
+        includeTags: [],
+        orTags: [],
+        excludeTags: [],
+        isEmpty: true,
+      });
+    }
+    
     // Animate to the first node with this tag
     const cy = cyRef.current;
     if (cy) {
@@ -230,11 +308,24 @@ const SidebarComponent = ({
             </Box>
 
             <Box>
+              <AdvancedTagFilterComponent 
+                notes={notes} 
+                onFilterChange={handleAdvancedFilterChange} 
+              />
+            </Box>
+
+            <Box>
               <RecentNotesComponent
                 nodes={elements.filter((el) => el.group === "nodes")}
                 onSelect={(id) => {
-                  // Deselect any selected tag when a recent note is selected
+                  // Clear both simple tag selection and advanced filters when a recent note is selected
                   setSelectedTag(null);
+                  setAdvancedFilter({
+                    includeTags: [],
+                    orTags: [],
+                    excludeTags: [],
+                    isEmpty: true,
+                  });
                   // Animate directly to the selected node (not by tag)
                   const cy = cyRef.current;
                   if (cy) {
