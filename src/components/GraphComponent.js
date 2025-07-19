@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import SidebarComponent from "./GraphComponent/SidebarComponent";
 import NodeModal from "./GraphComponent/NodeModal";
@@ -46,7 +46,8 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         url: note.url || "#",
         timestamp: note.timestamp,
         tags: note.tags || [],
-        nodeNumber: index + 1,
+        nodeNumber: index + 1
+        // Do NOT set 'label' here!
       },
     }));
 
@@ -81,7 +82,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
                   source: note1.id,
                   target: note2.id,
                   weight: 1,
-                  label: commonTags[0] ? commonTags[0] : '', // Use the first common tag as label
+                  // Removed label to stop edge labelling
                 },
               });
             }
@@ -96,16 +97,38 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     setLoading(false);
   }, [notes, loading]);
 
-  useEffect(() => {
-    if (cyRef.current) {
-      cyRef.current.on("tap", "node", (event) => {
-        const nodeData = event.target.data();
-        const nodePosition = event.target.renderedPosition();
-        setSelectedNode(nodeData);
-        setNodePosition(nodePosition);
-        openModal();
-      });
+  // --- Semantic Zoom Implementation ---
+  const updateNodeLabels = useCallback(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    const zoom = cy.zoom();
+    cy.nodes().forEach((node) => {
+      const data = node.data();
+      if (zoom >= 1.2) {
+        const text = data.fullText || "";
+        const truncated = text.length > 40 ? text.slice(0, 40) + "..." : text;
+        node.data("label", truncated);
+      } else {
+        node.data("label", ""); // No label, but node remains visible
+      }
+    });
+  }, []);
 
+  // Attach zoom event and update labels on mount and when elements change
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.on("zoom", updateNodeLabels);
+    // Initial label update
+    updateNodeLabels();
+    return () => {
+      cy.removeListener("zoom", updateNodeLabels);
+    };
+  }, [elements, updateNodeLabels]);
+
+  // Add mouse events for tooltip functionality when cyRef is ready
+  useEffect(() => {
+    if (cyRef.current && elements) {
       // Add hover functionality for tooltip
       cyRef.current.on("mouseover", "node", (event) => {
         const nodeData = event.target.data();
@@ -167,6 +190,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       };
     }
   }, [cyRef.current, elements, openModal, notes]);
+
+  // Also update node labels after elements are set (in case cy is not ready on first render)
+  useEffect(() => {
+    setTimeout(() => {
+      updateNodeLabels();
+    }, 0);
+  }, [elements, updateNodeLabels]);
 
   useEffect(() => {
     if (cyRef.current) {
@@ -314,17 +344,8 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         width: 2,
         "line-color": "rgba(255,255,255,0.8)",
         "curve-style": "bezier",
-        label: "data(label)",
-        "font-size": "11px",
-        color: "#fff", // White text for tag name
-        "text-background-color": "#1A1A1A", // Match web page background
-        "text-background-opacity": 1,
-        "text-background-padding": 2,
-        "text-margin-y": -10, // Move label above the edge
-        "text-rotation": "autorotate",
-        "text-wrap": "wrap",
-        "text-max-width": 60,
-        "text-opacity": 1, // Default opacity, will be overridden by zoom handler
+        // Removed label and text styling to stop edge labelling
+        "text-opacity": 0, // Hide any potential labels
         'transition-property': 'text-opacity',
         'transition-duration': '0.5s',
       },
