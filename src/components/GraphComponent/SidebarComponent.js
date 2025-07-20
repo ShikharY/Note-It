@@ -24,8 +24,6 @@ import PropTypes from "prop-types";
 import cytoscape from "cytoscape";
 import coseBilkent from "cytoscape-cose-bilkent";
 import fcose from "cytoscape-fcose";
-
-
 cytoscape.use(fcose);
 
 const SidebarComponent = ({
