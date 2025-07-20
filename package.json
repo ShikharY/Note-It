@@ -21,6 +21,7 @@
     "@tabler/icons-react": "^3.34.0",
     "cytoscape": "^3.32.0",
     "cytoscape-cose-bilkent": "^4.1.0",
+    "cytoscape-fcose": "^2.2.0",
     "postcss": "^8.5.6",
     "postcss-loader": "^8.1.1",
     "postcss-preset-mantine": "^1.17.0",

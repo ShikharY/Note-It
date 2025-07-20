@@ -410,19 +410,19 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   };
 
   const layout = {
-    name: "cose",
-    idealEdgeLength: 150, // Increased for better spacing
+    name: "fcose",
+    idealEdgeLength: 160, // Increased for better spacing
     nodeOverlap: 40, // Increased to prevent overlap at high zoom
     refresh: 12, // Frequent layout updates
-    fit: false,
+    fit: true,
     padding: 80, // More padding for breathing room
     randomize: false,
     componentSpacing: 160, // More space between components
-    nodeRepulsion: 650000, // Much stronger repulsion to prevent clustering
-    edgeElasticity: 60, // Less elastic for more rigid positioning
-    nestingFactor: 12, // Higher nesting factor for better hierarchy
-    gravity: 45, // Lower gravity for more spread out layout
-    numIter: 1500, // More iterations for better convergence
+    nodeRepulsion: 800000, // Much stronger repulsion to prevent clustering
+    edgeElasticity: 0.1, // Less elastic for more rigid positioning
+    nestingFactor: 2.5, // Higher nesting factor for better hierarchy
+    gravity: 0.2, // Lower gravity for more spread out layout
+    numIter: 2500, // More iterations for better convergence
     initialTemp: 150,
     coolingFactor: 0.97, // Slower cooling for more refinement
     minTemp: 0.5,
@@ -432,7 +432,9 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     animationEasing: 'ease-out-cubic',
     // Additional spacing improvements
     avoidOverlap: true,
+    tile: true,
     nodeDimensionsIncludeLabels: true,
+   
   };
 
   const stylesheet = [
