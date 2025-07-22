@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import {
   AppShell,
   Box,
@@ -14,7 +14,13 @@ import {
   Popover,
   Switch,
 } from "@mantine/core";
-import { IconSettings, IconSun, IconMoon, IconZoomIn, IconZoomOut } from "@tabler/icons-react";
+import {
+  IconSettings,
+  IconSun,
+  IconMoon,
+  IconZoomIn,
+  IconZoomOut,
+} from "@tabler/icons-react";
 import CytoscapeComponent from "react-cytoscapejs";
 import RecentNotesComponent from "./SidebarComponent/RecentNotesComponent";
 import SearchBarComponent from "./SidebarComponent/SearchBarComponent";
@@ -36,6 +42,8 @@ const SidebarComponent = ({
   onClearAllNotes,
   colorScheme, // add prop
   setColorScheme, // add prop
+  setSelectedNode, // <-- Add this prop for modal logic
+  setNodePosition, // <-- Add this prop for modal logic
 }) => {
   const [selectedTag, setSelectedTag] = React.useState(null);
   const [settingsOpened, setSettingsOpened] = React.useState(false);
@@ -45,7 +53,8 @@ const SidebarComponent = ({
     excludeTags: [],
     isEmpty: true,
   });
-  
+  const [cyReady, setCyReady] = useState(false);
+
   const handleThemeToggle = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
@@ -53,21 +62,24 @@ const SidebarComponent = ({
   // Helper function to check if a note matches the advanced filter criteria
   const noteMatchesAdvancedFilter = (note) => {
     if (advancedFilter.isEmpty) return true;
-    
-    const noteTags = (note.tags || []).map(tag => tag.toLowerCase());
-    
+
+    const noteTags = (note.tags || []).map((tag) => tag.toLowerCase());
+
     // Check include tags (ALL must be present)
-    const includeMatch = advancedFilter.includeTags.length === 0 || 
-      advancedFilter.includeTags.every(tag => noteTags.includes(tag));
-    
+    const includeMatch =
+      advancedFilter.includeTags.length === 0 ||
+      advancedFilter.includeTags.every((tag) => noteTags.includes(tag));
+
     // Check OR tags (AT LEAST ONE must be present, if OR tags exist)
-    const orMatch = advancedFilter.orTags.length === 0 || 
-      advancedFilter.orTags.some(tag => noteTags.includes(tag));
-    
+    const orMatch =
+      advancedFilter.orTags.length === 0 ||
+      advancedFilter.orTags.some((tag) => noteTags.includes(tag));
+
     // Check exclude tags (NONE should be present)
-    const excludeMatch = advancedFilter.excludeTags.length === 0 || 
-      !advancedFilter.excludeTags.some(tag => noteTags.includes(tag));
-    
+    const excludeMatch =
+      advancedFilter.excludeTags.length === 0 ||
+      !advancedFilter.excludeTags.some((tag) => noteTags.includes(tag));
+
     return includeMatch && orMatch && excludeMatch;
   };
 
@@ -87,7 +99,7 @@ const SidebarComponent = ({
     cy.elements().removeClass("tag-highlight");
     cy.nodes().removeClass("dimmed");
     cy.edges().removeClass("dimmed");
-    
+
     // Handle simple tag selection
     if (selectedTag) {
       // Highlight nodes
@@ -116,14 +128,14 @@ const SidebarComponent = ({
         }
       });
       // Dim all nodes and edges that are not highlighted
-      cy.nodes().not('.tag-highlight').addClass('dimmed');
-      cy.edges().not('.tag-highlight').addClass('dimmed');
+      cy.nodes().not(".tag-highlight").addClass("dimmed");
+      cy.edges().not(".tag-highlight").addClass("dimmed");
     }
     // Handle advanced filtering
     else if (!advancedFilter.isEmpty) {
       cy.nodes().forEach((node) => {
         const nodeData = node.data();
-        const note = notes.find(n => String(n.id) === String(nodeData.id));
+        const note = notes.find((n) => String(n.id) === String(nodeData.id));
         if (note && noteMatchesAdvancedFilter(note)) {
           node.addClass("tag-highlight");
         }
@@ -132,13 +144,16 @@ const SidebarComponent = ({
       cy.edges().forEach((edge) => {
         const source = cy.getElementById(edge.data("source"));
         const target = cy.getElementById(edge.data("target"));
-        if (source.hasClass('tag-highlight') && target.hasClass('tag-highlight')) {
+        if (
+          source.hasClass("tag-highlight") &&
+          target.hasClass("tag-highlight")
+        ) {
           edge.addClass("tag-highlight");
         }
       });
       // Dim all nodes and edges that are not highlighted
-      cy.nodes().not('.tag-highlight').addClass('dimmed');
-      cy.edges().not('.tag-highlight').addClass('dimmed');
+      cy.nodes().not(".tag-highlight").addClass("dimmed");
+      cy.edges().not(".tag-highlight").addClass("dimmed");
     }
   }, [selectedTag, advancedFilter, cyRef, notes, noteMatchesAdvancedFilter]);
 
@@ -155,24 +170,24 @@ const SidebarComponent = ({
           excludeTags: [],
           isEmpty: true,
         }); // Clear advanced filters
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           // Also clear selected node in parent if possible
-          if (typeof window.setSelectedNode === 'function') {
+          if (typeof window.setSelectedNode === "function") {
             window.setSelectedNode(null);
           }
         }
         // Do not reload or reset the page
       }
     };
-    cy.on('tap', handleTapBackground);
+    cy.on("tap", handleTapBackground);
     return () => {
-      cy.off('tap', handleTapBackground);
+      cy.off("tap", handleTapBackground);
     };
   }, [selectedTag, advancedFilter, cyRef]);
 
   // Sync selectedTag and advanced filters to window for global access (for hover tooltip)
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.selectedTag = selectedTag;
       window.advancedFilter = advancedFilter;
     }
@@ -181,7 +196,7 @@ const SidebarComponent = ({
   // On mount, automatically activate sidebar logic as if user interacted
   React.useEffect(() => {
     // This ensures window.selectedTag is set and any sidebar effects run
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.selectedTag = selectedTag;
     }
     // Optionally, you can auto-select the first tag or recent note here if desired
@@ -199,27 +214,115 @@ const SidebarComponent = ({
         isEmpty: true,
       });
     }
-    
+
     // Animate to the first node with this tag
     const cy = cyRef.current;
     if (cy) {
-      const node = cy.nodes().filter((n) => {
-        const tags = n.data('tags') || [];
-        return tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase());
-      }).first();
+      const node = cy
+        .nodes()
+        .filter((n) => {
+          const tags = n.data("tags") || [];
+          return tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase());
+        })
+        .first();
       if (node && node.length > 0) {
         cy.animate({
           center: { eles: node },
           zoom: 2,
           duration: 600,
-          easing: 'ease-in-out-cubic',
+          easing: "ease-in-out-cubic",
         });
         node.select();
         // Set _fromTagSelection for tag selection
-        node.data('_fromTagSelection', true);
+        node.data("_fromTagSelection", true);
       }
     }
   };
+
+  // --- Semantic Zoom Implementation ---
+  const updateNodeLabels = useCallback(() => {
+    if (!cyRef.current || !cyReady) return;
+    const cy = cyRef.current;
+    const zoom = cy.zoom();
+    cy.nodes().forEach((node) => {
+      const data = node.data();
+      let label = "";
+      if (zoom < 0.5) {
+        label = "";
+      } else if (zoom < 0.8) {
+        label = `#${data.nodeNumber || ""}`;
+      } else if (zoom < 1.2) {
+        const text = data.fullText || "";
+        const words = text.split(" ").slice(0, 2).join(" ");
+        label =
+          words.length > 0
+            ? words + (text.split(" ").length > 2 ? "..." : "")
+            : `#${data.nodeNumber || ""}`;
+      } else if (zoom < 2.0) {
+        const text = data.fullText || "";
+        label = text.length > 40 ? text.slice(0, 40) + "..." : text;
+      } else if (zoom < 3.0) {
+        const text = data.fullText || "";
+        const truncatedText =
+          text.length > 80 ? text.slice(0, 80) + "..." : text;
+        const tags = data.tags || [];
+        const tagString =
+          tags.length > 0
+            ? `\n[${tags.slice(0, 3).join(", ")}${
+                tags.length > 3 ? "..." : ""
+              }]`
+            : "";
+        label = truncatedText + tagString;
+      } else {
+        const text = data.fullText || "";
+        label = text;
+      }
+      node.data("label", label);
+    });
+  }, [cyRef, cyReady]);
+
+  useEffect(() => {
+    if (!cyRef.current || !cyReady) return;
+    const cy = cyRef.current;
+    cy.on("zoom", updateNodeLabels);
+    updateNodeLabels();
+    return () => {
+      if (cyRef.current) {
+        cyRef.current.removeListener("zoom", updateNodeLabels);
+      }
+    };
+  }, [elements, updateNodeLabels, cyRef, cyReady]);
+
+  // Node click event for modal
+  useEffect(() => {
+    if (!cyRef.current || !cyReady) return;
+    const cy = cyRef.current;
+    const handleNodeClick = (event) => {
+      const nodeData = event.target.data();
+      const nodePosition = event.target.renderedPosition();
+      setSelectedNode(nodeData);
+      setNodePosition(nodePosition);
+      onOpenModal();
+    };
+    cy.on("tap", "node", handleNodeClick);
+    return () => {
+      if (cyRef.current) {
+        cyRef.current.removeListener("tap", "node", handleNodeClick);
+      }
+    };
+  }, [cyRef, setSelectedNode, setNodePosition, onOpenModal, cyReady]);
+
+  // Clean up Cytoscape on unmount
+  useEffect(() => {
+    return () => {
+      if (cyRef.current) {
+        if (cyRef.current.removeAllListeners)
+          cyRef.current.removeAllListeners();
+        cyRef.current = null;
+      }
+      setCyReady(false);
+    };
+  }, []);
 
   return (
     <>
@@ -232,10 +335,12 @@ const SidebarComponent = ({
         }}
         padding="md"
       >
-        <AppShell.Header style={{ background: '#222222', color: '#fff' }}>
-          <Group h="100%" px="md" style={{ width: '100%' }}>
+        <AppShell.Header style={{ background: "#222222", color: "#fff" }}>
+          <Group h="100%" px="md" style={{ width: "100%" }}>
             <Burger opened={opened} onClick={toggle} size="sm" />
-            <Title order={3} style={{ flex: 1 }}>Note It - Knowledge Graph</Title>
+            <Title order={3} style={{ flex: 1 }}>
+              Note It - Knowledge Graph
+            </Title>
             {/* Zoom Controls */}
             <Group spacing={4}>
               <ActionIcon
@@ -244,8 +349,15 @@ const SidebarComponent = ({
                 onClick={() => {
                   const cy = cyRef.current;
                   if (cy) {
-                    const newZoom = Math.min(cy.zoom() * 1.2, cy.maxZoom ? cy.maxZoom() : 5);
-                    cy.animate({ zoom: newZoom, duration: 300, easing: 'ease-in-out-cubic' });
+                    const newZoom = Math.min(
+                      cy.zoom() * 1.2,
+                      cy.maxZoom ? cy.maxZoom() : 5
+                    );
+                    cy.animate({
+                      zoom: newZoom,
+                      duration: 300,
+                      easing: "ease-in-out-cubic",
+                    });
                   }
                 }}
                 title="Zoom In"
@@ -258,8 +370,15 @@ const SidebarComponent = ({
                 onClick={() => {
                   const cy = cyRef.current;
                   if (cy) {
-                    const newZoom = Math.max(cy.zoom() / 1.2, cy.minZoom ? cy.minZoom() : 0.1);
-                    cy.animate({ zoom: newZoom, duration: 300, easing: 'ease-in-out-cubic' });
+                    const newZoom = Math.max(
+                      cy.zoom() / 1.2,
+                      cy.minZoom ? cy.minZoom() : 0.1
+                    );
+                    cy.animate({
+                      zoom: newZoom,
+                      duration: 300,
+                      easing: "ease-in-out-cubic",
+                    });
                   }
                 }}
                 title="Zoom Out"
@@ -271,14 +390,33 @@ const SidebarComponent = ({
               variant="subtle"
               color="gray"
               onClick={handleThemeToggle}
-              title={colorScheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={
+                colorScheme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
             >
-              {colorScheme === "dark" ? <IconSun size={20} /> : <IconMoon size={20} />}
+              {colorScheme === "dark" ? (
+                <IconSun size={20} />
+              ) : (
+                <IconMoon size={20} />
+              )}
             </ActionIcon>
           </Group>
         </AppShell.Header>
 
-        <AppShell.Navbar p="md" style={{ display: 'flex', flexDirection: 'column', height: '100vh', minHeight: '100vh', position: 'relative', background: '#222222', color: '#fff' }}>
+        <AppShell.Navbar
+          p="md"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            minHeight: "100vh",
+            position: "relative",
+            background: "#222222",
+            color: "#fff",
+          }}
+        >
           <Stack spacing="md" style={{ flex: 1 }}>
             <Box>
               <SearchBarComponent
@@ -292,11 +430,11 @@ const SidebarComponent = ({
                         center: { eles: node },
                         zoom: 2,
                         duration: 600,
-                        easing: 'ease-in-out-cubic',
+                        easing: "ease-in-out-cubic",
                       });
                       node.select();
                       // Remove _fromTagSelection for search
-                      node.data('_fromTagSelection', false);
+                      node.data("_fromTagSelection", false);
                     }
                   }
                 }}
@@ -308,9 +446,9 @@ const SidebarComponent = ({
             </Box>
 
             <Box>
-              <AdvancedTagFilterComponent 
-                notes={notes} 
-                onFilterChange={handleAdvancedFilterChange} 
+              <AdvancedTagFilterComponent
+                notes={notes}
+                onFilterChange={handleAdvancedFilterChange}
               />
             </Box>
 
@@ -335,10 +473,10 @@ const SidebarComponent = ({
                         center: { eles: cyNode },
                         zoom: 2,
                         duration: 600,
-                        easing: 'ease-in-out-cubic',
+                        easing: "ease-in-out-cubic",
                       });
                       cyNode.select();
-                      cyNode.data('_fromTagSelection', true);
+                      cyNode.data("_fromTagSelection", true);
                     }
                   }
                 }}
@@ -347,16 +485,18 @@ const SidebarComponent = ({
             </Box>
           </Stack>
           {/* Second bottom row: Clear All Notes and Settings */}
-          <div style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 8,
-            position: 'relative',
-            marginBottom: 56
-          }}>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: 8,
+              position: "relative",
+              marginBottom: 56,
+            }}
+          >
             {notes.length > 0 && (
               <Button
                 color="red"
@@ -366,15 +506,15 @@ const SidebarComponent = ({
                   height: 40,
                   minHeight: 40,
                   maxHeight: 40,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  background: '#c62828', // dark red
-                  color: '#fff', // white text
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  background: "#c62828", // dark red
+                  color: "#fff", // white text
                   fontWeight: 700,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
-                  border: 'none',
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
+                  border: "none",
                 }}
                 onClick={() => {
                   if (
@@ -391,7 +531,15 @@ const SidebarComponent = ({
             )}
           </div>
           {/* True bottom: Footer/info placeholder */}
-          <div style={{ width: '100%', textAlign: 'center', color: '#888', fontSize: 12, paddingBottom: 8 }}>
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              color: "#888",
+              fontSize: 12,
+              paddingBottom: 8,
+            }}
+          >
             {/* You can put footer info or copyright here */}
           </div>
         </AppShell.Navbar>
@@ -405,7 +553,7 @@ const SidebarComponent = ({
               right: "0",
               bottom: "0",
               zIndex: 1,
-              pointerEvents: 'auto',
+              pointerEvents: "auto",
             }}
           >
             {loading ? (
@@ -428,15 +576,18 @@ const SidebarComponent = ({
                 userZoomingEnabled={true}
                 cy={(cy) => {
                   cyRef.current = cy;
+                  cy.ready(() => {
+                    setCyReady(true);
+                  });
                   // Always unlock all nodes for dragging, even after tag selection
                   cy.ready(() => {
                     cy.nodes().forEach((node) => node.unlock());
                   });
                   // Also unlock nodes after any tag-based highlighting
-                  cy.on('select', 'node', (event) => {
+                  cy.on("select", "node", (event) => {
                     event.target.unlock();
                   });
-                  cy.on('add', 'node', (event) => {
+                  cy.on("add", "node", (event) => {
                     event.target.unlock();
                   });
                 }}
@@ -463,6 +614,8 @@ SidebarComponent.propTypes = {
   onClearAllNotes: PropTypes.func.isRequired,
   colorScheme: PropTypes.string.isRequired,
   setColorScheme: PropTypes.func.isRequired,
+  setSelectedNode: PropTypes.func.isRequired,
+  setNodePosition: PropTypes.func.isRequired,
 };
 
 export default SidebarComponent;
