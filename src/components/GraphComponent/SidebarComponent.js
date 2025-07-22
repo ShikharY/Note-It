@@ -94,6 +94,18 @@ const SidebarComponent = ({
             window.setSelectedNode(null);
           }
         }
+        // Restore all nodes and edges to normal
+        cy.nodes().removeClass('tag-highlight');
+        cy.nodes().removeClass('dimmed');
+        cy.edges().removeClass('dimmed');
+        // Also clear any selected recent note highlight
+        cy.nodes().forEach((node) => {
+          node.removeClass('tag-highlight');
+          node.removeClass('dimmed');
+        });
+        cy.edges().forEach((edge) => {
+          edge.removeClass('dimmed');
+        });
         // Do not reload or reset the page
       }
     };
@@ -235,21 +247,41 @@ const SidebarComponent = ({
                 onSelect={(id) => {
                   // Deselect any selected tag when a recent note is selected
                   setSelectedTag(null);
-                  // Animate directly to the selected node (not by tag)
-                  const cy = cyRef.current;
-                  if (cy) {
-                    const cyNode = cy.getElementById(id);
-                    if (cyNode) {
-                      cy.animate({
-                        center: { eles: cyNode },
-                        zoom: 2,
-                        duration: 600,
-                        easing: 'ease-in-out-cubic',
-                      });
-                      cyNode.select();
-                      cyNode.data('_fromTagSelection', true);
-                    }
+                  // Force clear selectedNode in parent to ensure highlight effect always runs
+                  if (typeof window !== 'undefined' && typeof window.setSelectedNode === 'function') {
+                    window.setSelectedNode(null);
                   }
+                  setTimeout(() => {
+                    const cy = cyRef.current;
+                    if (cy) {
+                      const cyNode = cy.getElementById(id);
+                      if (cyNode) {
+                        cy.animate({
+                          center: { eles: cyNode },
+                          zoom: 2,
+                          duration: 600,
+                          easing: 'ease-in-out-cubic',
+                        });
+                        cyNode.select();
+                        cyNode.data('_fromTagSelection', true);
+                        // Always clear previous highlights/fades before applying new
+                        cy.nodes().removeClass('tag-highlight');
+                        cy.nodes().removeClass('dimmed');
+                        cy.edges().removeClass('dimmed');
+                        // Highlight/fade logic: highlight selected node, fade others
+                        cy.nodes().forEach((node) => {
+                          if (node.id() === id) {
+                            node.addClass('tag-highlight');
+                          } else {
+                            node.addClass('dimmed');
+                          }
+                        });
+                        cy.edges().forEach((edge) => {
+                          edge.addClass('dimmed');
+                        });
+                      }
+                    }
+                  }, 0);
                 }}
                 selectedId={selectedNode?.id}
               />
@@ -299,10 +331,6 @@ const SidebarComponent = ({
               </Button>
             )}
           </div>
-          {/* True bottom: Footer/info placeholder */}
-          <div style={{ width: '100%', textAlign: 'center', color: '#888', fontSize: 12, paddingBottom: 8 }}>
-            {/* You can put footer info or copyright here */}
-          </div>
         </AppShell.Navbar>
 
         <AppShell.Main>
@@ -314,7 +342,7 @@ const SidebarComponent = ({
               right: "0",
               bottom: "0",
               zIndex: 1,
-              pointerEvents: 'auto',
+              pointerEvents: 'auto', // Always allow pointer events
             }}
           >
             {loading ? (

@@ -11,7 +11,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   const [loading, setLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState(null);
   const [nodePosition, setNodePosition] = useState({ x: 0, y: 0 });
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle }] = useDisclosure(); // Sidebar open by default
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure();
   const [hoveredNode, setHoveredNode] = useState(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
@@ -170,21 +170,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
 
   useEffect(() => {
     if (cyRef.current) {
-      const cy = cyRef.current;
       // Remove previous listeners
-      cy.removeListener("tap", "node");
-      cy.removeListener("doubleTap", "node");
-      cy.removeListener("tap", handleTapBackground);
+      cyRef.current.removeListener("tap", "node");
+      cyRef.current.removeListener("doubleTap", "node");
+      cyRef.current.removeListener("tap", handleTapBackground);
 
-      // Single click: highlight node and neighbors
-      cy.on("tap", "node", (event) => {
-        const nodeData = event.target.data();
-        setSelectedNode(nodeData);
-        // Do not open modal on single click
-      });
-
-      // Double click: open node detail modal
-      cy.on("doubleTap", "node", (event) => {
+      // Single click: open node detail modal
+      cyRef.current.on("tap", "node", (event) => {
         const nodeData = event.target.data();
         const nodePosition = event.target.renderedPosition();
         setSelectedNode(nodeData);
@@ -194,20 +186,19 @@ function GraphComponent({ colorScheme, setColorScheme }) {
 
       // Background tap: clear selection
       const handleTapBackground = (event) => {
-        if (event.target === cy) {
+        if (event.target === cyRef.current) {
           setSelectedNode(null);
           // Do not reload or reset the page
         }
       };
-      cy.on('tap', handleTapBackground);
+      cyRef.current.on('tap', handleTapBackground);
 
       return () => {
-        cy.removeListener("tap", "node");
-        cy.removeListener("doubleTap", "node");
-        cy.removeListener('tap', handleTapBackground);
+        cyRef.current.removeListener("tap", "node");
+        cyRef.current.removeListener('tap', handleTapBackground);
       };
     }
-  }, [selectedNode, cyRef, openModal]);
+  }, [cyRef, openModal]);
 
   // Highlight/dim logic for selected node and neighbors
   useEffect(() => {
@@ -238,37 +229,17 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   useEffect(() => {
     if (cyRef.current && elements.length > 0) {
       const cy = cyRef.current;
-      const nodeCount = elements.filter((el) => el.group === "nodes").length;
-
-      // Apply zoom immediately and then after layout
-      if (nodeCount === 1) {
-        // For single node, set a reasonable zoom level immediately
-        cy.zoom(1.5);
-        cy.center();
-      } else if (nodeCount <= 3) {
-        // For small graphs, set a moderate zoom immediately
-        cy.zoom(1.2);
-        cy.center();
-      }
-
-      // Wait for layout to complete and apply final zoom
-      setTimeout(() => {
-        if (nodeCount === 1) {
-          cy.zoom(1.5);
-          cy.center();
-        } else if (nodeCount <= 3) {
-          cy.zoom(1.2);
-          cy.center();
-        } else {
-          // For larger graphs, use fit
-          cy.fit();
-        }
-      }, 300); // Reduced delay
+      // Always center and set to medium zoom on first load
+      cy.center();
+      cy.zoom(1.2);
+      // Optionally, you can fit if you want to ensure all nodes are visible:
+      // cy.fit(undefined, 50); // 50px padding
     }
   }, [elements]);
 
   const handleModalClose = () => {
     closeModal();
+    setSelectedNode(null); // Clear selection so graph returns to normal
   };
 
   const layout = {

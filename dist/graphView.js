@@ -105922,7 +105922,7 @@ function GraphComponent(_ref) {
   var _useDisclosure = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDisclosure)(),
     _useDisclosure2 = _slicedToArray(_useDisclosure, 2),
     opened = _useDisclosure2[0],
-    toggle = _useDisclosure2[1].toggle;
+    toggle = _useDisclosure2[1].toggle; // Sidebar open by default
   var _useDisclosure3 = (0,_mantine_hooks__WEBPACK_IMPORTED_MODULE_3__.useDisclosure)(),
     _useDisclosure4 = _slicedToArray(_useDisclosure3, 2),
     modalOpened = _useDisclosure4[0],
@@ -106100,21 +106100,13 @@ function GraphComponent(_ref) {
   }, [cyRef.current, elements, openModal, notes]);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (cyRef.current) {
-      var cy = cyRef.current;
       // Remove previous listeners
-      cy.removeListener("tap", "node");
-      cy.removeListener("doubleTap", "node");
-      cy.removeListener("tap", handleTapBackground);
+      cyRef.current.removeListener("tap", "node");
+      cyRef.current.removeListener("doubleTap", "node");
+      cyRef.current.removeListener("tap", handleTapBackground);
 
-      // Single click: highlight node and neighbors
-      cy.on("tap", "node", function (event) {
-        var nodeData = event.target.data();
-        setSelectedNode(nodeData);
-        // Do not open modal on single click
-      });
-
-      // Double click: open node detail modal
-      cy.on("doubleTap", "node", function (event) {
+      // Single click: open node detail modal
+      cyRef.current.on("tap", "node", function (event) {
         var nodeData = event.target.data();
         var nodePosition = event.target.renderedPosition();
         setSelectedNode(nodeData);
@@ -106124,19 +106116,18 @@ function GraphComponent(_ref) {
 
       // Background tap: clear selection
       var handleTapBackground = function handleTapBackground(event) {
-        if (event.target === cy) {
+        if (event.target === cyRef.current) {
           setSelectedNode(null);
           // Do not reload or reset the page
         }
       };
-      cy.on('tap', handleTapBackground);
+      cyRef.current.on('tap', handleTapBackground);
       return function () {
-        cy.removeListener("tap", "node");
-        cy.removeListener("doubleTap", "node");
-        cy.removeListener('tap', handleTapBackground);
+        cyRef.current.removeListener("tap", "node");
+        cyRef.current.removeListener('tap', handleTapBackground);
       };
     }
-  }, [selectedNode, cyRef, openModal]);
+  }, [cyRef, openModal]);
 
   // Highlight/dim logic for selected node and neighbors
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -106167,38 +106158,16 @@ function GraphComponent(_ref) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (cyRef.current && elements.length > 0) {
       var cy = cyRef.current;
-      var nodeCount = elements.filter(function (el) {
-        return el.group === "nodes";
-      }).length;
-
-      // Apply zoom immediately and then after layout
-      if (nodeCount === 1) {
-        // For single node, set a reasonable zoom level immediately
-        cy.zoom(1.5);
-        cy.center();
-      } else if (nodeCount <= 3) {
-        // For small graphs, set a moderate zoom immediately
-        cy.zoom(1.2);
-        cy.center();
-      }
-
-      // Wait for layout to complete and apply final zoom
-      setTimeout(function () {
-        if (nodeCount === 1) {
-          cy.zoom(1.5);
-          cy.center();
-        } else if (nodeCount <= 3) {
-          cy.zoom(1.2);
-          cy.center();
-        } else {
-          // For larger graphs, use fit
-          cy.fit();
-        }
-      }, 300); // Reduced delay
+      // Always center and set to medium zoom on first load
+      cy.center();
+      cy.zoom(1.2);
+      // Optionally, you can fit if you want to ensure all nodes are visible:
+      // cy.fit(undefined, 50); // 50px padding
     }
   }, [elements]);
   var handleModalClose = function handleModalClose() {
     closeModal();
+    setSelectedNode(null); // Clear selection so graph returns to normal
   };
   var layout = {
     name: "cose",
@@ -107023,6 +106992,18 @@ var SidebarComponent = function SidebarComponent(_ref) {
             window.setSelectedNode(null);
           }
         }
+        // Restore all nodes and edges to normal
+        cy.nodes().removeClass('tag-highlight');
+        cy.nodes().removeClass('dimmed');
+        cy.edges().removeClass('dimmed');
+        // Also clear any selected recent note highlight
+        cy.nodes().forEach(function (node) {
+          node.removeClass('tag-highlight');
+          node.removeClass('dimmed');
+        });
+        cy.edges().forEach(function (edge) {
+          edge.removeClass('dimmed');
+        });
         // Do not reload or reset the page
       }
     };
@@ -107201,23 +107182,43 @@ var SidebarComponent = function SidebarComponent(_ref) {
     onSelect: function onSelect(id) {
       // Deselect any selected tag when a recent note is selected
       setSelectedTag(null);
-      // Animate directly to the selected node (not by tag)
-      var cy = cyRef.current;
-      if (cy) {
-        var cyNode = cy.getElementById(id);
-        if (cyNode) {
-          cy.animate({
-            center: {
-              eles: cyNode
-            },
-            zoom: 2,
-            duration: 600,
-            easing: 'ease-in-out-cubic'
-          });
-          cyNode.select();
-          cyNode.data('_fromTagSelection', true);
-        }
+      // Force clear selectedNode in parent to ensure highlight effect always runs
+      if (typeof window !== 'undefined' && typeof window.setSelectedNode === 'function') {
+        window.setSelectedNode(null);
       }
+      setTimeout(function () {
+        var cy = cyRef.current;
+        if (cy) {
+          var cyNode = cy.getElementById(id);
+          if (cyNode) {
+            cy.animate({
+              center: {
+                eles: cyNode
+              },
+              zoom: 2,
+              duration: 600,
+              easing: 'ease-in-out-cubic'
+            });
+            cyNode.select();
+            cyNode.data('_fromTagSelection', true);
+            // Always clear previous highlights/fades before applying new
+            cy.nodes().removeClass('tag-highlight');
+            cy.nodes().removeClass('dimmed');
+            cy.edges().removeClass('dimmed');
+            // Highlight/fade logic: highlight selected node, fade others
+            cy.nodes().forEach(function (node) {
+              if (node.id() === id) {
+                node.addClass('tag-highlight');
+              } else {
+                node.addClass('dimmed');
+              }
+            });
+            cy.edges().forEach(function (edge) {
+              edge.addClass('dimmed');
+            });
+          }
+        }
+      }, 0);
     },
     selectedId: selectedNode === null || selectedNode === void 0 ? void 0 : selectedNode.id
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -107256,15 +107257,7 @@ var SidebarComponent = function SidebarComponent(_ref) {
         onClearAllNotes();
       }
     }
-  }, "Clear All Notes")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      width: '100%',
-      textAlign: 'center',
-      color: '#888',
-      fontSize: 12,
-      paddingBottom: 8
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_15__.Box, {
+  }, "Clear All Notes"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_5__.AppShell.Main, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_15__.Box, {
     style: {
       position: "absolute",
       top: "60px",
@@ -107272,7 +107265,7 @@ var SidebarComponent = function SidebarComponent(_ref) {
       right: "0",
       bottom: "0",
       zIndex: 1,
-      pointerEvents: 'auto'
+      pointerEvents: 'auto' // Always allow pointer events
     }
   }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_17__.Center, {
     style: {
