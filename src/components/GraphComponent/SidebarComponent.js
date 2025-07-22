@@ -445,9 +445,16 @@ const SidebarComponent = ({
             position: "relative",
             background: "#222222",
             color: "#fff",
+            overflow: "hidden", // Prevent navbar itself from scrolling
           }}
         >
-          <Stack spacing="md" style={{ flex: 1 }}>
+          <div style={{ 
+            flex: 1, 
+            overflowY: "auto", // Allow internal content to scroll
+            overflowX: "hidden",
+            paddingRight: "4px" // Space for scrollbar
+          }}>
+            <Stack spacing="md">
             <Box>
               <SearchBarComponent
                 notes={notes}
@@ -515,17 +522,20 @@ const SidebarComponent = ({
               />
             </Box>
           </Stack>
-          {/* Second bottom row: Clear All Notes and Settings */}
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: 8,
-              position: "relative",
-              marginBottom: 56,
+          </div>
+          {/* Fixed bottom section */}
+          <div style={{ flexShrink: 0 }}>
+            {/* Second bottom row: Clear All Notes and Settings */}
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 8,
+                position: "relative",
+                marginBottom: 56,
             }}
           >
             {notes.length > 0 && (
@@ -561,6 +571,7 @@ const SidebarComponent = ({
               </Button>
             )}
           </div>
+          </div>
           {/* True bottom: Footer/info placeholder */}
           <div
             style={{
@@ -575,7 +586,7 @@ const SidebarComponent = ({
           </div>
         </AppShell.Navbar>
 
-        <AppShell.Main style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}>
+        <AppShell.Main style={{ height: '100vh', maxHeight: '100vh' }}>
           <Box
             style={{
               position: "absolute",
