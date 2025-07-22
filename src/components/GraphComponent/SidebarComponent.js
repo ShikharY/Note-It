@@ -485,7 +485,6 @@ const SidebarComponent = ({
               <RecentNotesComponent
                 nodes={elements.filter((el) => el.group === "nodes")}
                 onSelect={(id) => {
-                  // Clear both simple tag selection and advanced filters when a recent note is selected
                   setSelectedTag(null);
                   setAdvancedFilter({
                     includeTags: [],
@@ -493,7 +492,6 @@ const SidebarComponent = ({
                     excludeTags: [],
                     isEmpty: true,
                   });
-                  // Animate directly to the selected node (not by tag)
                   const cy = cyRef.current;
                   if (cy) {
                     const cyNode = cy.getElementById(id);
@@ -506,6 +504,9 @@ const SidebarComponent = ({
                       });
                       cyNode.select();
                       cyNode.data("_fromTagSelection", true);
+                      // Highlight/select the node in React state as well
+                      setSelectedNode(cyNode.data());
+                      setNodePosition(cyNode.renderedPosition());
                     }
                   }
                 }}

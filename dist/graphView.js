@@ -106867,7 +106867,6 @@ var SidebarComponent = function SidebarComponent(_ref) {
       return el.group === "nodes";
     }),
     onSelect: function onSelect(id) {
-      // Clear both simple tag selection and advanced filters when a recent note is selected
       setSelectedTag(null);
       setAdvancedFilter({
         includeTags: [],
@@ -106875,7 +106874,6 @@ var SidebarComponent = function SidebarComponent(_ref) {
         excludeTags: [],
         isEmpty: true
       });
-      // Animate directly to the selected node (not by tag)
       var cy = cyRef.current;
       if (cy) {
         var cyNode = cy.getElementById(id);
@@ -106890,6 +106888,9 @@ var SidebarComponent = function SidebarComponent(_ref) {
           });
           cyNode.select();
           cyNode.data("_fromTagSelection", true);
+          // Highlight/select the node in React state as well
+          setSelectedNode(cyNode.data());
+          setNodePosition(cyNode.renderedPosition());
         }
       }
     },
