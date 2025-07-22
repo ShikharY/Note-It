@@ -22,11 +22,15 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   useEffect(() => {
     chrome.storage.local.get(["notes"], (result) => {
       setNotes(result.notes || []);
+      setLoading(false); // Set loading to false after fetching data
     });
   }, []);
 
   useEffect(() => {
-    if (notes.length === 0 && !loading) return;
+    if (notes.length === 0) {
+      setElements([]); // Clear elements when no notes
+      return;
+    }
 
     const sortedNotes = notes
       .filter((note) => note && note.id && typeof note.text === "string") // Filter out invalid notes
@@ -98,8 +102,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     const finalElements = [...processedNodes, ...processedEdges];
 
     setElements(finalElements);
-    setLoading(false);
-  }, [notes, loading]);
+  }, [notes]);
 
   // --- Enhanced Semantic Zoom Implementation ---
   const updateNodeLabels = useCallback(() => {
