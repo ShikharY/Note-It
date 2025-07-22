@@ -398,7 +398,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   ];
 
   return (
-    <>
+    <div style={{ 
+      height: '100vh',
+      width: '100%',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'row'
+    }}>
       <SidebarComponent
         opened={opened}
         toggle={toggle}
@@ -587,7 +593,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

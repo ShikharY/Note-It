@@ -363,6 +363,7 @@ const SidebarComponent = ({
           collapsed: { mobile: !opened, desktop: !opened },
         }}
         padding="md"
+        style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
       >
         <AppShell.Header style={{ background: "#222222", color: "#fff" }}>
           <Group h="100%" px="md" style={{ width: "100%" }}>
@@ -574,7 +575,7 @@ const SidebarComponent = ({
           </div>
         </AppShell.Navbar>
 
-        <AppShell.Main>
+        <AppShell.Main style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}>
           <Box
             style={{
               position: "absolute",
