@@ -105495,8 +105495,8 @@ function GraphComponent(_ref) {
     prevNodeCountRef.current = nodeCount;
   }, [elements]);
   var handleModalClose = function handleModalClose() {
-    console.log("Modal closing");
     closeModal();
+    setSelectedNode(null); // Clear selection when modal closes
   };
   var layout = {
     name: "cose",
@@ -106694,17 +106694,42 @@ var SidebarComponent = function SidebarComponent(_ref) {
     var handleNodeClick = function handleNodeClick(event) {
       var nodeData = event.target.data();
       var nodePosition = event.target.renderedPosition();
-      setSelectedNode(nodeData);
-      setNodePosition(nodePosition);
-      onOpenModal();
+      // If the same node is clicked again, toggle modal
+      if (selectedNode && selectedNode.id === nodeData.id) {
+        setSelectedNode(null);
+        setNodePosition({
+          x: 0,
+          y: 0
+        });
+        onOpenModal(); // This will close the modal if open
+      } else {
+        setSelectedNode(nodeData);
+        setNodePosition(nodePosition);
+        onOpenModal();
+      }
     };
     cy.on("tap", "node", handleNodeClick);
+    // Background click: clear selection and close modal
+    var handleTapBackground = function handleTapBackground(event) {
+      if (event.target === cy) {
+        setSelectedNode(null);
+        setNodePosition({
+          x: 0,
+          y: 0
+        });
+        if (typeof window !== "undefined" && typeof window.closeModal === "function") {
+          window.closeModal();
+        }
+      }
+    };
+    cy.on("tap", handleTapBackground);
     return function () {
       if (cyRef.current) {
         cyRef.current.removeListener("tap", "node", handleNodeClick);
+        cyRef.current.removeListener("tap", handleTapBackground);
       }
     };
-  }, [cyRef, setSelectedNode, setNodePosition, onOpenModal, cyReady]);
+  }, [cyRef, setSelectedNode, setNodePosition, onOpenModal, cyReady, selectedNode]);
 
   // Clean up Cytoscape on unmount
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {

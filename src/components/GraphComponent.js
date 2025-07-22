@@ -228,8 +228,8 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   }, [elements]);
 
   const handleModalClose = () => {
-    console.log("Modal closing");
     closeModal();
+    setSelectedNode(null); // Clear selection when modal closes
   };
 
   const layout = {
