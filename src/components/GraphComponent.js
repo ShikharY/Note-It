@@ -254,82 +254,80 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         else labelOpacity = 0.3 + (zoom - 0.8) * 1.0; // smooth transition
         
         cy.nodes().forEach((node) => {
-          // Conservative node sizing to prevent overlap
+          // Much more conservative node sizing with strict caps
           let nodeSize;
           if (zoom < 0.5) {
             nodeSize = 8; // Smaller dots when zoomed out
           } else if (zoom < 1.0) {
-            nodeSize = 8 + (zoom - 0.5) * 24; // Scale from 8 to 20
-          } else if (zoom < 2.0) {
-            nodeSize = 20 + (zoom - 1.0) * 15; // Scale from 20 to 35
-          } else if (zoom < 4.0) {
-            nodeSize = 35 + (zoom - 2.0) * 10; // Scale from 35 to 55
+            nodeSize = 8 + (zoom - 0.5) * 16; // Scale from 8 to 16
+          } else if (zoom < 1.5) {
+            nodeSize = 16 + (zoom - 1.0) * 8; // Scale from 16 to 20
+          } else if (zoom < 2.5) {
+            nodeSize = 20 + (zoom - 1.5) * 6; // Scale from 20 to 26
           } else {
-            nodeSize = Math.min(65, 55 + (zoom - 4.0) * 5); // Cap at 65px
+            nodeSize = 26; // Hard cap at 26px - no more growth beyond 2.5x zoom
           }
           
           node.style('width', `${nodeSize}px`);
           node.style('height', `${nodeSize}px`);
           
-          // Conservative font sizing
+          // Much more conservative font sizing with strict caps
           let fontSize;
           if (zoom < 0.8) {
             fontSize = 0; // No text at low zoom
           } else if (zoom < 1.2) {
-            fontSize = 8 + (zoom - 0.8) * 5; // 8 to 10px
-          } else if (zoom < 2.0) {
-            fontSize = 10 + (zoom - 1.2) * 2.5; // 10 to 12px
-          } else if (zoom < 3.0) {
-            fontSize = 12 + (zoom - 2.0) * 2; // 12 to 14px
+            fontSize = 8 + (zoom - 0.8) * 3; // 8 to 9.2px
+          } else if (zoom < 1.8) {
+            fontSize = 9.2 + (zoom - 1.2) * 1.3; // 9.2 to 10px
+          } else if (zoom < 2.5) {
+            fontSize = 10 + (zoom - 1.8) * 1.4; // 10 to 11px
           } else {
-            fontSize = Math.min(16, 14 + (zoom - 3.0) * 2); // Cap at 16px
+            fontSize = 11; // Hard cap at 11px - no more font growth
           }
           
           node.style('font-size', `${fontSize}px`);
           node.style('text-opacity', labelOpacity);
           
-          // Conservative text width to prevent overlap
+          // Conservative text width with early cap
           let textWidth;
           if (zoom < 1.0) {
             textWidth = 60;
-          } else if (zoom < 1.8) {
-            textWidth = 60 + (zoom - 1.0) * 62.5; // 60 to 110px
-          } else if (zoom < 3.0) {
-            textWidth = 110 + (zoom - 1.8) * 50; // 110 to 170px
+          } else if (zoom < 1.5) {
+            textWidth = 60 + (zoom - 1.0) * 40; // 60 to 80px
+          } else if (zoom < 2.0) {
+            textWidth = 80 + (zoom - 1.5) * 30; // 80 to 95px
           } else {
-            textWidth = Math.min(220, 170 + (zoom - 3.0) * 50); // Up to 220px
+            textWidth = 95; // Hard cap at 95px - prevents text crowding
           }
           
           node.style('text-max-width', `${textWidth}px`);
           
-          // More conservative text positioning
-          const textMargin = -Math.max(12, nodeSize * 0.5 + 8);
+          // Conservative text positioning that doesn't scale aggressively
+          const textMargin = -Math.max(8, nodeSize * 0.4 + 4);
           node.style('text-margin-y', textMargin);
         });
         
-        // Conservative edge width to reduce visual clutter
+        // Very conservative edge width with early cap
         cy.edges().forEach((edge) => {
           let edgeWidth;
           if (zoom < 0.5) {
             edgeWidth = 0.3; // Very thin when zoomed out
           } else if (zoom < 1.0) {
-            edgeWidth = 0.3 + (zoom - 0.5) * 1.4; // 0.3 to 1
-          } else if (zoom < 2.0) {
-            edgeWidth = 1 + (zoom - 1.0) * 1.5; // 1 to 2.5
-          } else if (zoom < 4.0) {
-            edgeWidth = 2.5 + (zoom - 2.0) * 0.75; // 2.5 to 4
+            edgeWidth = 0.3 + (zoom - 0.5) * 1.0; // 0.3 to 0.8
+          } else if (zoom < 1.8) {
+            edgeWidth = 0.8 + (zoom - 1.0) * 0.75; // 0.8 to 1.4
           } else {
-            edgeWidth = Math.min(4.5, 4 + (zoom - 4.0) * 0.5); // Cap at 4.5px
+            edgeWidth = 1.4; // Hard cap at 1.4px - keeps edges thin
           }
           
           edge.style('width', edgeWidth);
           edge.style('text-opacity', 0); // Keep edges unlabeled
           
-          // Keep edges subtle at high zoom
+          // Keep edges very subtle at high zoom
           if (zoom > 2.0) {
-            edge.style('opacity', Math.min(0.7, 0.4 + (zoom - 2.0) * 0.15));
+            edge.style('opacity', Math.min(0.5, 0.3 + (zoom - 2.0) * 0.1));
           } else {
-            edge.style('opacity', 0.4);
+            edge.style('opacity', 0.3);
           }
         });
       };
@@ -584,7 +582,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   ];
 
   return (
-    <>
+    <div style={{ 
+      height: '100vh',
+      width: '100%',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'row'
+    }}>
       <SidebarComponent
         opened={opened}
         toggle={toggle}
@@ -731,7 +735,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

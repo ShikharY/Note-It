@@ -9,6 +9,9 @@ import {
   Collapse,
   Button,
   Flex,
+  TextInput,
+  ScrollArea,
+  Box,
 } from "@mantine/core";
 import {
   IconFilter,
@@ -17,6 +20,7 @@ import {
   IconX,
   IconPlus,
   IconMinus,
+  IconSearch,
 } from "@tabler/icons-react";
 
 const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
@@ -24,6 +28,16 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
   const [includeTags, setIncludeTags] = useState([]); // Tags that MUST be present (AND logic)
   const [orTags, setOrTags] = useState([]); // Tags where ANY can be present (OR logic)
   const [excludeTags, setExcludeTags] = useState([]); // Tags that must NOT be present (NOT logic)
+  
+  // Search states for each section
+  const [includeSearchQuery, setIncludeSearchQuery] = useState("");
+  const [orSearchQuery, setOrSearchQuery] = useState("");
+  const [excludeSearchQuery, setExcludeSearchQuery] = useState("");
+  
+  // Show more tags states
+  const [showMoreInclude, setShowMoreInclude] = useState(false);
+  const [showMoreOr, setShowMoreOr] = useState(false);
+  const [showMoreExclude, setShowMoreExclude] = useState(false);
 
   // Get all unique tags from notes
   const allTags = useMemo(() => {
@@ -38,24 +52,48 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
 
   // Get available tags for inclusion (not already included, or-ed, or excluded)
   const availableIncludeTags = useMemo(() => {
-    return allTags.filter(
+    const filtered = allTags.filter(
       (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
     );
-  }, [allTags, includeTags, orTags, excludeTags]);
+    
+    if (includeSearchQuery.trim()) {
+      return filtered.filter(tag => 
+        tag.toLowerCase().includes(includeSearchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [allTags, includeTags, orTags, excludeTags, includeSearchQuery]);
 
   // Get available tags for OR logic (not already included, or-ed, or excluded)
   const availableOrTags = useMemo(() => {
-    return allTags.filter(
+    const filtered = allTags.filter(
       (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
     );
-  }, [allTags, includeTags, orTags, excludeTags]);
+    
+    if (orSearchQuery.trim()) {
+      return filtered.filter(tag => 
+        tag.toLowerCase().includes(orSearchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [allTags, includeTags, orTags, excludeTags, orSearchQuery]);
 
   // Get available tags for exclusion (not already excluded, included, or or-ed)
   const availableExcludeTags = useMemo(() => {
-    return allTags.filter(
+    const filtered = allTags.filter(
       (tag) => !excludeTags.includes(tag) && !includeTags.includes(tag) && !orTags.includes(tag)
     );
-  }, [allTags, includeTags, orTags, excludeTags]);
+    
+    if (excludeSearchQuery.trim()) {
+      return filtered.filter(tag => 
+        tag.toLowerCase().includes(excludeSearchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [allTags, includeTags, orTags, excludeTags, excludeSearchQuery]);
 
   // Handle adding a tag to include list
   const handleAddIncludeTag = (tag) => {
@@ -104,6 +142,12 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
     setIncludeTags([]);
     setOrTags([]);
     setExcludeTags([]);
+    setIncludeSearchQuery("");
+    setOrSearchQuery("");
+    setExcludeSearchQuery("");
+    setShowMoreInclude(false);
+    setShowMoreOr(false);
+    setShowMoreExclude(false);
     updateFilter([], [], []);
   };
 
@@ -119,6 +163,114 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
   };
 
   const hasActiveFilters = includeTags.length > 0 || orTags.length > 0 || excludeTags.length > 0;
+
+  // Helper function to render tag selection section
+  const renderTagSection = (title, color, selectedTags, availableTags, searchQuery, setSearchQuery, showMore, setShowMore, onAdd, onRemove, addIcon, isNot = false) => {
+    const displayTags = showMore ? availableTags : availableTags.slice(0, 8);
+    const hasMoreTags = availableTags.length > 8;
+    
+    return (
+      <div>
+        <Text size="xs" fw={600} mb="xs" color={color}>
+          {title}
+        </Text>
+        
+        {/* Selected tags */}
+        {selectedTags.length > 0 && (
+          <Group spacing="xs" mb="xs">
+            {selectedTags.map((tag) => (
+              <Badge
+                key={tag}
+                color={color}
+                variant="filled"
+                rightSection={
+                  <ActionIcon
+                    size="xs"
+                    color={color}
+                    variant="transparent"
+                    onClick={() => onRemove(tag)}
+                  >
+                    <IconX size={10} />
+                  </ActionIcon>
+                }
+              >
+                {tag}
+              </Badge>
+            ))}
+          </Group>
+        )}
+        
+        {/* Search input */}
+        <TextInput
+          size="xs"
+          placeholder={`Search ${title.toLowerCase()}...`}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          icon={<IconSearch size={12} />}
+          mb="xs"
+          rightSection={
+            searchQuery && (
+              <ActionIcon
+                size="xs"
+                variant="transparent"
+                onClick={() => setSearchQuery("")}
+              >
+                <IconX size={12} />
+              </ActionIcon>
+            )
+          }
+        />
+        
+        {/* Available tags */}
+        {availableTags.length > 0 ? (
+          <Box>
+            <ScrollArea.Autosize maxHeight={showMore ? 200 : "auto"} mb="xs">
+              <Group spacing="xs">
+                {displayTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    color="gray"
+                    variant="outline"
+                    style={{ cursor: "pointer" }}
+                    rightSection={
+                      <ActionIcon
+                        size="xs"
+                        color={color}
+                        variant="transparent"
+                        onClick={() => onAdd(tag)}
+                      >
+                        {addIcon}
+                      </ActionIcon>
+                    }
+                    onClick={() => onAdd(tag)}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
+            </ScrollArea.Autosize>
+            
+            {/* Show more/less button */}
+            {hasMoreTags && !searchQuery && (
+              <Button
+                size="xs"
+                variant="subtle"
+                color="gray"
+                onClick={() => setShowMore(!showMore)}
+                fullWidth
+              >
+                {showMore ? `Show Less (${availableTags.length - 8} hidden)` : `Show More (+${availableTags.length - 8} more)`}
+              </Button>
+            )}
+          </Box>
+        ) : (
+          <Text size="xs" color="dimmed" ta="center" py="sm">
+            {searchQuery ? `No tags found matching "${searchQuery}"` : "No available tags"}
+          </Text>
+        )}
+      </div>
+    );
+  };
 
   return (
     <Stack spacing="xs" mt="md">
@@ -144,167 +296,54 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
       <Collapse in={isExpanded}>
         <Stack spacing="sm" pl="md">
           {/* Include Tags Section */}
-          <div>
-            <Text size="xs" fw={600} mb="xs" color="green">
-              Must Have These Tags (AND)
-            </Text>
-            {includeTags.length > 0 && (
-              <Group spacing="xs" mb="xs">
-                {includeTags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    color="green"
-                    variant="filled"
-                    rightSection={
-                      <ActionIcon
-                        size="xs"
-                        color="green"
-                        variant="transparent"
-                        onClick={() => handleRemoveIncludeTag(tag)}
-                      >
-                        <IconX size={10} />
-                      </ActionIcon>
-                    }
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </Group>
-            )}
-            <Group spacing="xs" mb="sm">
-              {availableIncludeTags.slice(0, 5).map((tag) => (
-                <Badge
-                  key={tag}
-                  color="gray"
-                  variant="outline"
-                  style={{ cursor: "pointer" }}
-                  rightSection={
-                    <ActionIcon
-                      size="xs"
-                      color="green"
-                      variant="transparent"
-                      onClick={() => handleAddIncludeTag(tag)}
-                    >
-                      <IconPlus size={10} />
-                    </ActionIcon>
-                  }
-                  onClick={() => handleAddIncludeTag(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </Group>
-          </div>
+          {renderTagSection(
+            "Must Have These Tags (AND)",
+            "green",
+            includeTags,
+            availableIncludeTags,
+            includeSearchQuery,
+            setIncludeSearchQuery,
+            showMoreInclude,
+            setShowMoreInclude,
+            handleAddIncludeTag,
+            handleRemoveIncludeTag,
+            <IconPlus size={10} />
+          )}
 
           <Divider size="xs" />
 
           {/* OR Tags Section */}
-          <div>
-            <Text size="xs" fw={600} mb="xs" color="blue">
-              Can Have Any of These Tags (OR)
-            </Text>
-            {orTags.length > 0 && (
-              <Group spacing="xs" mb="xs">
-                {orTags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    color="blue"
-                    variant="filled"
-                    rightSection={
-                      <ActionIcon
-                        size="xs"
-                        color="blue"
-                        variant="transparent"
-                        onClick={() => handleRemoveOrTag(tag)}
-                      >
-                        <IconX size={10} />
-                      </ActionIcon>
-                    }
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </Group>
-            )}
-            <Group spacing="xs" mb="sm">
-              {availableOrTags.slice(0, 5).map((tag) => (
-                <Badge
-                  key={tag}
-                  color="gray"
-                  variant="outline"
-                  style={{ cursor: "pointer" }}
-                  rightSection={
-                    <ActionIcon
-                      size="xs"
-                      color="blue"
-                      variant="transparent"
-                      onClick={() => handleAddOrTag(tag)}
-                    >
-                      <IconPlus size={10} />
-                    </ActionIcon>
-                  }
-                  onClick={() => handleAddOrTag(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </Group>
-          </div>
+          {renderTagSection(
+            "Can Have Any of These Tags (OR)",
+            "blue",
+            orTags,
+            availableOrTags,
+            orSearchQuery,
+            setOrSearchQuery,
+            showMoreOr,
+            setShowMoreOr,
+            handleAddOrTag,
+            handleRemoveOrTag,
+            <IconPlus size={10} />
+          )}
 
           <Divider size="xs" />
 
           {/* Exclude Tags Section */}
-          <div>
-            <Text size="xs" fw={600} mb="xs" color="red">
-              Must NOT Have These Tags (NOT)
-            </Text>
-            {excludeTags.length > 0 && (
-              <Group spacing="xs" mb="xs">
-                {excludeTags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    color="red"
-                    variant="filled"
-                    rightSection={
-                      <ActionIcon
-                        size="xs"
-                        color="red"
-                        variant="transparent"
-                        onClick={() => handleRemoveExcludeTag(tag)}
-                      >
-                        <IconX size={10} />
-                      </ActionIcon>
-                    }
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </Group>
-            )}
-            <Group spacing="xs" mb="sm">
-              {availableExcludeTags.slice(0, 5).map((tag) => (
-                <Badge
-                  key={tag}
-                  color="gray"
-                  variant="outline"
-                  style={{ cursor: "pointer" }}
-                  rightSection={
-                    <ActionIcon
-                      size="xs"
-                      color="red"
-                      variant="transparent"
-                      onClick={() => handleAddExcludeTag(tag)}
-                    >
-                      <IconMinus size={10} />
-                    </ActionIcon>
-                  }
-                  onClick={() => handleAddExcludeTag(tag)}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </Group>
-          </div>
+          {renderTagSection(
+            "Must NOT Have These Tags (NOT)",
+            "red",
+            excludeTags,
+            availableExcludeTags,
+            excludeSearchQuery,
+            setExcludeSearchQuery,
+            showMoreExclude,
+            setShowMoreExclude,
+            handleAddExcludeTag,
+            handleRemoveExcludeTag,
+            <IconMinus size={10} />,
+            true
+          )}
 
           {hasActiveFilters && (
             <Flex justify="center" mt="sm">

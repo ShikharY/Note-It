@@ -231,6 +231,7 @@ const SidebarComponent = ({
           collapsed: { mobile: !opened, desktop: !opened },
         }}
         padding="md"
+        style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}
       >
         <AppShell.Header style={{ background: '#222222', color: '#fff' }}>
           <Group h="100%" px="md" style={{ width: '100%' }}>
@@ -278,91 +279,94 @@ const SidebarComponent = ({
           </Group>
         </AppShell.Header>
 
-        <AppShell.Navbar p="md" style={{ display: 'flex', flexDirection: 'column', height: '100vh', minHeight: '100vh', position: 'relative', background: '#222222', color: '#fff' }}>
-          <Stack spacing="md" style={{ flex: 1 }}>
-            <Box>
-              <SearchBarComponent
-                notes={notes}
-                onSelectNote={(note) => {
-                  const cy = cyRef.current;
-                  if (cy) {
-                    const node = cy.getElementById(note.id);
-                    if (node) {
-                      cy.animate({
-                        center: { eles: node },
-                        zoom: 2,
-                        duration: 600,
-                        easing: 'ease-in-out-cubic',
-                      });
-                      node.select();
-                      // Remove _fromTagSelection for search
-                      node.data('_fromTagSelection', false);
+        <AppShell.Navbar p="md" style={{ display: 'flex', flexDirection: 'column', height: '100vh', minHeight: '100vh', position: 'relative', background: '#222222', color: '#fff', overflow: 'hidden' }}>
+          <Box style={{ 
+            flex: 1, 
+            overflow: 'auto',
+            paddingRight: '8px', // Space for scrollbar
+            marginRight: '-8px' // Negative margin to hide scrollbar styling
+          }}>
+            <Stack spacing="md">
+              <Box>
+                <SearchBarComponent
+                  notes={notes}
+                  onSelectNote={(note) => {
+                    const cy = cyRef.current;
+                    if (cy) {
+                      const node = cy.getElementById(note.id);
+                      if (node) {
+                        cy.animate({
+                          center: { eles: node },
+                          zoom: 2,
+                          duration: 600,
+                          easing: 'ease-in-out-cubic',
+                        });
+                        node.select();
+                        // Remove _fromTagSelection for search
+                        node.data('_fromTagSelection', false);
+                      }
                     }
-                  }
-                }}
-              />
-            </Box>
+                  }}
+                />
+              </Box>
 
-            <Box>
-              <TopTagsComponent notes={notes} onSelectTag={handleSelectTag} />
-            </Box>
+              <Box>
+                <TopTagsComponent notes={notes} onSelectTag={handleSelectTag} />
+              </Box>
 
-            <Box>
-              <AdvancedTagFilterComponent 
-                notes={notes} 
-                onFilterChange={handleAdvancedFilterChange} 
-              />
-            </Box>
+              <Box>
+                <AdvancedTagFilterComponent 
+                  notes={notes} 
+                  onFilterChange={handleAdvancedFilterChange} 
+                />
+              </Box>
 
-            <Box>
-              <RecentNotesComponent
-                nodes={elements.filter((el) => el.group === "nodes")}
-                onSelect={(id) => {
-                  // Clear both simple tag selection and advanced filters when a recent note is selected
-                  setSelectedTag(null);
-                  setAdvancedFilter({
-                    includeTags: [],
-                    orTags: [],
-                    excludeTags: [],
-                    isEmpty: true,
-                  });
-                  // Animate directly to the selected node (not by tag)
-                  const cy = cyRef.current;
-                  if (cy) {
-                    const cyNode = cy.getElementById(id);
-                    if (cyNode) {
-                      cy.animate({
-                        center: { eles: cyNode },
-                        zoom: 2,
-                        duration: 600,
-                        easing: 'ease-in-out-cubic',
-                      });
-                      cyNode.select();
-                      cyNode.data('_fromTagSelection', true);
+              <Box>
+                <RecentNotesComponent
+                  nodes={elements.filter((el) => el.group === "nodes")}
+                  onSelect={(id) => {
+                    // Clear both simple tag selection and advanced filters when a recent note is selected
+                    setSelectedTag(null);
+                    setAdvancedFilter({
+                      includeTags: [],
+                      orTags: [],
+                      excludeTags: [],
+                      isEmpty: true,
+                    });
+                    // Animate directly to the selected node (not by tag)
+                    const cy = cyRef.current;
+                    if (cy) {
+                      const cyNode = cy.getElementById(id);
+                      if (cyNode) {
+                        cy.animate({
+                          center: { eles: cyNode },
+                          zoom: 2,
+                          duration: 600,
+                          easing: 'ease-in-out-cubic',
+                        });
+                        cyNode.select();
+                        cyNode.data('_fromTagSelection', true);
+                      }
                     }
-                  }
-                }}
-                selectedId={selectedNode?.id}
-              />
-            </Box>
-          </Stack>
-          {/* Second bottom row: Clear All Notes and Settings */}
-          <div style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 8,
-            position: 'relative',
-            marginBottom: 56
+                  }}
+                  selectedId={selectedNode?.id}
+                />
+              </Box>
+            </Stack>
+          </Box>
+          {/* Fixed bottom section for settings and clear button */}
+          <Box style={{
+            flexShrink: 0,
+            borderTop: '1px solid #444',
+            paddingTop: '12px',
+            marginTop: '12px'
           }}>
             {notes.length > 0 && (
               <Button
                 color="red"
                 variant="filled"
                 style={{
-                  flex: 1,
+                  width: '100%',
                   height: 40,
                   minHeight: 40,
                   maxHeight: 40,
@@ -389,14 +393,10 @@ const SidebarComponent = ({
                 Clear All Notes
               </Button>
             )}
-          </div>
-          {/* True bottom: Footer/info placeholder */}
-          <div style={{ width: '100%', textAlign: 'center', color: '#888', fontSize: 12, paddingBottom: 8 }}>
-            {/* You can put footer info or copyright here */}
-          </div>
+          </Box>
         </AppShell.Navbar>
 
-        <AppShell.Main>
+        <AppShell.Main style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden' }}>
           <Box
             style={{
               position: "absolute",
