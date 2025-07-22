@@ -153,13 +153,55 @@ function GraphComponent({ colorScheme, setColorScheme }) {
 
   // Add mouse events for tooltip functionality when cyRef is ready
   useEffect(() => {
-    if (cyRef.current && elements) {
+    if (cyRef.current && elements.length > 0) {
+      const cy = cyRef.current;
+      console.log("Setting up all node event handlers", { elementsCount: elements.length });
+      
+      // Remove all previous listeners
+      cy.removeListener("tap", "node");
+      cy.removeListener("tap");
+      cy.removeListener("mouseover", "node");
+      cy.removeListener("mouseout", "node");
+
+      // Use a timeout to distinguish between single and double clicks
+      let clickTimeout = null;
+      
+      // Handle both single and double clicks
+      cy.on("tap", "node", (event) => {
+        event.stopPropagation();
+        const nodeData = event.target.data();
+        const nodePosition = event.target.renderedPosition();
+        
+        // Clear any existing timeout
+        if (clickTimeout) {
+          clearTimeout(clickTimeout);
+          clickTimeout = null;
+          
+          // This is a double click
+          console.log("Node double-clicked!", nodeData);
+          setSelectedNode(nodeData);
+          setNodePosition(nodePosition);
+          console.log("Opening modal from double-click with nodeData:", nodeData);
+          openModal();
+        } else {
+          // Set a timeout for single click
+          clickTimeout = setTimeout(() => {
+            // This is a single click
+            console.log("Node single-clicked!", nodeData);
+            setSelectedNode(nodeData);
+            setNodePosition(nodePosition);
+            console.log("Node selected:", nodeData);
+            clickTimeout = null;
+          }, 300); // 300ms delay to detect double clicks
+        }
+      });
+
       // Add hover functionality for tooltip with zoom-aware content
-      cyRef.current.on("mouseover", "node", (event) => {
+      cy.on("mouseover", "node", (event) => {
         const nodeData = event.target.data();
         const nodePosition = event.target.renderedPosition();
         const note = notes.find((n) => String(n.id) === String(nodeData.id));
-        const currentZoom = cyRef.current.zoom();
+        const currentZoom = cy.zoom();
 
         if (note) {
           // Add zoom level to the hovered node for tooltip customization
@@ -187,13 +229,20 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         }
       });
 
-      cyRef.current.on("mouseout", "node", (event) => {
+      cy.on("mouseout", "node", (event) => {
         setShowTooltip(false);
         setHoveredNode(null);
       });
 
+      // Background tap: clear selection
+      cy.on('tap', (event) => {
+        if (event.target === cy) {
+          console.log("Background clicked");
+          setSelectedNode(null);
+        }
+      });
+
       // Conservative semantic zoom for better readability
-      const cy = cyRef.current;
       const updateVisualScaling = () => {
         const zoom = cy.zoom();
         
@@ -289,15 +338,16 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       updateVisualScaling();
 
       return () => {
-        if (cyRef.current) {
-          cyRef.current.removeListener("tap", "node");
-          cyRef.current.removeListener("mouseover", "node");
-          cyRef.current.removeListener("mouseout", "node");
-          cyRef.current.removeListener("zoom", updateVisualScaling);
+        if (cy) {
+          cy.removeListener("tap", "node");
+          cy.removeListener("tap");
+          cy.removeListener("mouseover", "node");
+          cy.removeListener("mouseout", "node");
+          cy.removeListener("zoom", updateVisualScaling);
         }
       };
     }
-  }, [cyRef.current, elements, openModal, notes]);
+  }, [elements, openModal, notes]);
 
   // Also update node labels after elements are set (in case cy is not ready on first render)
   useEffect(() => {
@@ -305,47 +355,6 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       updateNodeLabels();
     }, 0);
   }, [elements, updateNodeLabels]);
-
-  useEffect(() => {
-    if (cyRef.current) {
-      const cy = cyRef.current;
-      // Remove previous listeners
-      cy.removeListener("tap", "node");
-      cy.removeListener("doubleTap", "node");
-      cy.removeListener("tap", handleTapBackground);
-
-      // Single click: highlight node and neighbors
-      cy.on("tap", "node", (event) => {
-        const nodeData = event.target.data();
-        setSelectedNode(nodeData);
-        // Do not open modal on single click
-      });
-
-      // Double click: open node detail modal
-      cy.on("doubleTap", "node", (event) => {
-        const nodeData = event.target.data();
-        const nodePosition = event.target.renderedPosition();
-        setSelectedNode(nodeData);
-        setNodePosition(nodePosition);
-        openModal();
-      });
-
-      // Background tap: clear selection
-      const handleTapBackground = (event) => {
-        if (event.target === cy) {
-          setSelectedNode(null);
-          // Do not reload or reset the page
-        }
-      };
-      cy.on('tap', handleTapBackground);
-
-      return () => {
-        cy.removeListener("tap", "node");
-        cy.removeListener("doubleTap", "node");
-        cy.removeListener('tap', handleTapBackground);
-      };
-    }
-  }, [selectedNode, cyRef, openModal]);
 
   // Highlight/dim logic for selected node and neighbors
   useEffect(() => {
@@ -406,6 +415,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
   }, [elements]);
 
   const handleModalClose = () => {
+    console.log("Modal closing");
     closeModal();
   };
 
@@ -461,11 +471,6 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         "transition-property": "width, height, font-size, text-max-width, text-margin-y, border-width",
         "transition-duration": "0.15s", // Faster transitions
         "transition-timing-function": "ease-out",
-        // Subtle shadow for depth
-        "box-shadow": "0 1px 4px rgba(0,0,0,0.2)",
-        // Better text handling
-        "text-outline-width": 1,
-        "text-outline-color": "rgba(0,0,0,0.3)",
       },
     },
     {
@@ -481,10 +486,6 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         'transition-property': 'width, opacity, line-color',
         'transition-duration': '0.15s',
         'transition-timing-function': 'ease-out',
-        // Very subtle glow
-        "shadow-blur": 1,
-        "shadow-color": "rgba(255,255,255,0.2)",
-        "shadow-opacity": 0.6,
       },
     },
     {
@@ -492,15 +493,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       style: {
         "background-color": "rgba(255,255,255,1)",
         "border-color": "rgba(77, 171, 247, 0.8)",
-        "border-width": 2, // Reduced border width
+        "border-width": 2,
         "z-index": 15,
-        "transition-property": "background-color, border-color, box-shadow, opacity",
+        "transition-property": "background-color, border-color, opacity",
         "transition-duration": "0.25s",
         "transition-timing-function": "ease-out",
-        "box-shadow": "0 0 15px 3px rgba(77, 171, 247, 0.3), 0 0 30px 6px rgba(77, 171, 247, 0.15)",
-        // Conservative scaling for highlights - only slight increase
-        "width": "+=8px",
-        "height": "+=8px",
+        "width": 28, // Fixed size instead of +=8px
+        "height": 28,
       },
     },
     {
@@ -508,15 +507,11 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       style: {
         "line-color": "rgba(77, 171, 247, 0.8)",
         "z-index": 12,
-        "transition-property": "line-color, width, shadow-blur, opacity",
+        "transition-property": "line-color, width, opacity",
         "transition-duration": "0.25s",
         "transition-timing-function": "ease-out",
-        "shadow-blur": 6,
-        "shadow-color": "rgba(77, 171, 247, 0.5)",
-        "shadow-opacity": 0.8,
         opacity: 0.85,
-        // Conservative width increase
-        "width": "+=1.5px",
+        "width": 2.5, // Fixed width instead of +=1.5px
       },
     },
     {
@@ -524,16 +519,14 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       style: {
         'background-color': '#fff',
         'border-color': '#4dabf7',
-        'border-width': 3, // Reduced border
+        'border-width': 3,
         'color': '#1a1b1e',
         'font-weight': 'bold',
-        'box-shadow': '0 0 20px 4px rgba(77, 171, 247, 0.4), 0 0 40px 8px rgba(77, 171, 247, 0.15)',
         'z-index': 25,
-        'transition-property': 'all',
+        'transition-property': 'background-color, border-color, border-width',
         'transition-duration': '0.25s',
-        // Conservative highlight scaling - only slight increase
-        'width': '+=10px',
-        'height': '+=10px',
+        'width': 30, // Fixed size instead of +=10px
+        'height': 30,
       },
     },
     {
@@ -580,7 +573,6 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         'color': '#fff',
         'text-opacity': 1,
         'font-weight': 'bold',
-        'text-shadow': '0 1px 3px rgba(0,0,0,0.5)',
       },
     },
     {
@@ -617,12 +609,13 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         setColorScheme={setColorScheme}
       />
       <NodeModal
-        opened={modalOpened && !!selectedNode}
+        opened={modalOpened}
         onClose={handleModalClose}
         nodeData={notes.find(
           (note) => String(note.id) === String(selectedNode?.id)
         )}
         onUpdateNote={(updatedNote) => {
+          console.log("Updating note:", updatedNote);
           const updatedNotes = notes.map((note) =>
             note.id === updatedNote.id ? updatedNote : note
           );
@@ -630,6 +623,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
           chrome.storage.local.set({ notes: updatedNotes });
         }}
         onDeleteNote={(noteId) => {
+          console.log("Deleting note:", noteId);
           const updatedNotes = notes.filter((note) => note.id !== noteId);
           setNotes(updatedNotes);
           chrome.storage.local.set({ notes: updatedNotes });
