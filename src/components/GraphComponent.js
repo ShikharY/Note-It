@@ -46,7 +46,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         url: note.url || "#",
         timestamp: note.timestamp,
         tags: note.tags || [],
-        nodeNumber: index + 1
+        nodeNumber: index + 1,
         // Do NOT set 'label' here!
       },
     }));
@@ -71,10 +71,14 @@ function GraphComponent({ colorScheme, setColorScheme }) {
             // Connect if there is at least one common tag
             const note1TagsLower = note1.tags.map((tag) => tag.toLowerCase());
             const note2TagsLower = note2.tags.map((tag) => tag.toLowerCase());
-            const hasCommonTag = note1TagsLower.some((tag) => note2TagsLower.includes(tag));
+            const hasCommonTag = note1TagsLower.some((tag) =>
+              note2TagsLower.includes(tag)
+            );
             if (hasCommonTag) {
               // Find the common tags
-              const commonTags = note1TagsLower.filter((tag) => note2TagsLower.includes(tag));
+              const commonTags = note1TagsLower.filter((tag) =>
+                note2TagsLower.includes(tag)
+              );
               processedEdges.push({
                 group: "edges",
                 data: {
@@ -102,11 +106,11 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     const cy = cyRef.current;
     if (!cy) return;
     const zoom = cy.zoom();
-    
+
     cy.nodes().forEach((node) => {
       const data = node.data();
       let label = "";
-      
+
       if (zoom < 0.5) {
         // Very zoomed out: No labels, just dots
         label = "";
@@ -116,8 +120,11 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       } else if (zoom < 1.2) {
         // Medium zoom: Show first few words of text
         const text = data.fullText || "";
-        const words = text.split(' ').slice(0, 2).join(' ');
-        label = words.length > 0 ? words + (text.split(' ').length > 2 ? "..." : "") : `#${data.nodeNumber || ""}`;
+        const words = text.split(" ").slice(0, 2).join(" ");
+        label =
+          words.length > 0
+            ? words + (text.split(" ").length > 2 ? "..." : "")
+            : `#${data.nodeNumber || ""}`;
       } else if (zoom < 2.0) {
         // Close zoom: Show truncated text (current behavior)
         const text = data.fullText || "";
@@ -125,16 +132,22 @@ function GraphComponent({ colorScheme, setColorScheme }) {
       } else if (zoom < 3.0) {
         // Very close zoom: Show more text + tags
         const text = data.fullText || "";
-        const truncatedText = text.length > 80 ? text.slice(0, 80) + "..." : text;
+        const truncatedText =
+          text.length > 80 ? text.slice(0, 80) + "..." : text;
         const tags = data.tags || [];
-        const tagString = tags.length > 0 ? `\n[${tags.slice(0, 3).join(', ')}${tags.length > 3 ? '...' : ''}]` : "";
+        const tagString =
+          tags.length > 0
+            ? `\n[${tags.slice(0, 3).join(", ")}${
+                tags.length > 3 ? "..." : ""
+              }]`
+            : "";
         label = truncatedText + tagString;
       } else {
         // Maximum zoom: Show full text only
         const text = data.fullText || "";
         label = text;
       }
-      
+
       node.data("label", label);
     });
   }, []);
@@ -151,255 +164,55 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     };
   }, [elements, updateNodeLabels]);
 
-  // Add mouse events for tooltip functionality when cyRef is ready
-  useEffect(() => {
-    if (cyRef.current && elements.length > 0) {
-      const cy = cyRef.current;
-      console.log("Setting up all node event handlers", { elementsCount: elements.length });
-      
-      // Remove all previous listeners
-      cy.removeListener("tap", "node");
-      cy.removeListener("tap");
-      cy.removeListener("mouseover", "node");
-      cy.removeListener("mouseout", "node");
-
-      // Use a timeout to distinguish between single and double clicks
-      let clickTimeout = null;
-      
-      // Handle both single and double clicks
-      cy.on("tap", "node", (event) => {
-        event.stopPropagation();
-        const nodeData = event.target.data();
-        const nodePosition = event.target.renderedPosition();
-        
-        // Clear any existing timeout
-        if (clickTimeout) {
-          clearTimeout(clickTimeout);
-          clickTimeout = null;
-          
-          // This is a double click
-          console.log("Node double-clicked!", nodeData);
-          setSelectedNode(nodeData);
-          setNodePosition(nodePosition);
-          console.log("Opening modal from double-click with nodeData:", nodeData);
-          openModal();
-        } else {
-          // Set a timeout for single click
-          clickTimeout = setTimeout(() => {
-            // This is a single click
-            console.log("Node single-clicked!", nodeData);
-            setSelectedNode(nodeData);
-            setNodePosition(nodePosition);
-            console.log("Node selected:", nodeData);
-            clickTimeout = null;
-          }, 300); // 300ms delay to detect double clicks
-        }
-      });
-
-      // Add hover functionality for tooltip with zoom-aware content
-      cy.on("mouseover", "node", (event) => {
-        const nodeData = event.target.data();
-        const nodePosition = event.target.renderedPosition();
-        const note = notes.find((n) => String(n.id) === String(nodeData.id));
-        const currentZoom = cy.zoom();
-
-        if (note) {
-          // Add zoom level to the hovered node for tooltip customization
-          const enhancedNote = {
-            ...note,
-            currentZoom,
-          };
-
-          // If a tag is selected, show all notes with that tag in the tooltip
-          if (window.selectedTag && note.tags && note.tags.map(t => t.toLowerCase()).includes(window.selectedTag.toLowerCase())) {
-            const notesWithTag = notes.filter(n => (n.tags || []).map(t => t.toLowerCase()).includes(window.selectedTag.toLowerCase()));
-            setHoveredNode({
-              ...enhancedNote,
-              tagTooltip: window.selectedTag,
-              notesWithTag,
-            });
-          } else {
-            setHoveredNode(enhancedNote);
-          }
-          setTooltipPosition({
-            x: nodePosition.x + 20,
-            y: nodePosition.y - 20,
-          });
-          setShowTooltip(true);
-        }
-      });
-
-      cy.on("mouseout", "node", (event) => {
-        setShowTooltip(false);
-        setHoveredNode(null);
-      });
-
-      // Background tap: clear selection
-      cy.on('tap', (event) => {
-        if (event.target === cy) {
-          console.log("Background clicked");
-          setSelectedNode(null);
-        }
-      });
-
-      // Conservative semantic zoom for better readability
-      const updateVisualScaling = () => {
-        const zoom = cy.zoom();
-        
-        // Smooth opacity curve for labels
-        let labelOpacity = 0;
-        if (zoom < 0.5) labelOpacity = 0;
-        else if (zoom < 0.8) labelOpacity = Math.pow((zoom - 0.5) / 0.3, 0.7);
-        else if (zoom > 1.5) labelOpacity = 1;
-        else labelOpacity = 0.3 + (zoom - 0.8) * 1.0; // smooth transition
-        
-        cy.nodes().forEach((node) => {
-          // Conservative node sizing to prevent overlap
-          let nodeSize;
-          if (zoom < 0.5) {
-            nodeSize = 8; // Smaller dots when zoomed out
-          } else if (zoom < 1.0) {
-            nodeSize = 8 + (zoom - 0.5) * 24; // Scale from 8 to 20
-          } else if (zoom < 2.0) {
-            nodeSize = 20 + (zoom - 1.0) * 15; // Scale from 20 to 35
-          } else if (zoom < 4.0) {
-            nodeSize = 35 + (zoom - 2.0) * 10; // Scale from 35 to 55
-          } else {
-            nodeSize = Math.min(65, 55 + (zoom - 4.0) * 5); // Cap at 65px
-          }
-          
-          node.style('width', `${nodeSize}px`);
-          node.style('height', `${nodeSize}px`);
-          
-          // Conservative font sizing
-          let fontSize;
-          if (zoom < 0.8) {
-            fontSize = 0; // No text at low zoom
-          } else if (zoom < 1.2) {
-            fontSize = 8 + (zoom - 0.8) * 5; // 8 to 10px
-          } else if (zoom < 2.0) {
-            fontSize = 10 + (zoom - 1.2) * 2.5; // 10 to 12px
-          } else if (zoom < 3.0) {
-            fontSize = 12 + (zoom - 2.0) * 2; // 12 to 14px
-          } else {
-            fontSize = Math.min(16, 14 + (zoom - 3.0) * 2); // Cap at 16px
-          }
-          
-          node.style('font-size', `${fontSize}px`);
-          node.style('text-opacity', labelOpacity);
-          
-          // Conservative text width to prevent overlap
-          let textWidth;
-          if (zoom < 1.0) {
-            textWidth = 60;
-          } else if (zoom < 1.8) {
-            textWidth = 60 + (zoom - 1.0) * 62.5; // 60 to 110px
-          } else if (zoom < 3.0) {
-            textWidth = 110 + (zoom - 1.8) * 50; // 110 to 170px
-          } else {
-            textWidth = Math.min(220, 170 + (zoom - 3.0) * 50); // Up to 220px
-          }
-          
-          node.style('text-max-width', `${textWidth}px`);
-          
-          // More conservative text positioning
-          const textMargin = -Math.max(12, nodeSize * 0.5 + 8);
-          node.style('text-margin-y', textMargin);
-        });
-        
-        // Conservative edge width to reduce visual clutter
-        cy.edges().forEach((edge) => {
-          let edgeWidth;
-          if (zoom < 0.5) {
-            edgeWidth = 0.3; // Very thin when zoomed out
-          } else if (zoom < 1.0) {
-            edgeWidth = 0.3 + (zoom - 0.5) * 1.4; // 0.3 to 1
-          } else if (zoom < 2.0) {
-            edgeWidth = 1 + (zoom - 1.0) * 1.5; // 1 to 2.5
-          } else if (zoom < 4.0) {
-            edgeWidth = 2.5 + (zoom - 2.0) * 0.75; // 2.5 to 4
-          } else {
-            edgeWidth = Math.min(4.5, 4 + (zoom - 4.0) * 0.5); // Cap at 4.5px
-          }
-          
-          edge.style('width', edgeWidth);
-          edge.style('text-opacity', 0); // Keep edges unlabeled
-          
-          // Keep edges subtle at high zoom
-          if (zoom > 2.0) {
-            edge.style('opacity', Math.min(0.7, 0.4 + (zoom - 2.0) * 0.15));
-          } else {
-            edge.style('opacity', 0.4);
-          }
-        });
-      };
-      cy.on('zoom', updateVisualScaling);
-      // Set initial scaling
-      updateVisualScaling();
-
-      return () => {
-        if (cy) {
-          cy.removeListener("tap", "node");
-          cy.removeListener("tap");
-          cy.removeListener("mouseover", "node");
-          cy.removeListener("mouseout", "node");
-          cy.removeListener("zoom", updateVisualScaling);
-        }
-      };
-    }
-  }, [elements, openModal, notes]);
-
-  // Also update node labels after elements are set (in case cy is not ready on first render)
-  useEffect(() => {
-    setTimeout(() => {
-      updateNodeLabels();
-    }, 0);
-  }, [elements, updateNodeLabels]);
-
   // Highlight/dim logic for selected node and neighbors
   useEffect(() => {
     if (cyRef.current) {
       const cy = cyRef.current;
-      cy.nodes().removeClass('selected');
-      cy.nodes().removeClass('faded');
-      cy.edges().removeClass('faded');
+      cy.nodes().removeClass("selected");
+      cy.nodes().removeClass("faded");
+      cy.edges().removeClass("faded");
       // Label brightness logic
-      cy.nodes().removeClass('bright-label');
-      cy.nodes().removeClass('dim-label');
+      cy.nodes().removeClass("bright-label");
+      cy.nodes().removeClass("dim-label");
       if (selectedNode && selectedNode.id) {
         // Highlight only the selected node
         const node = cy.getElementById(selectedNode.id);
         if (node) {
-          node.addClass('selected');
-          node.addClass('bright-label');
+          node.addClass("selected");
+          node.addClass("bright-label");
         }
         // Dim all other nodes and all edges
-        cy.nodes().not(node).addClass('faded');
-        cy.nodes().not(node).addClass('dim-label');
-        cy.edges().addClass('faded');
+        cy.nodes().not(node).addClass("faded");
+        cy.nodes().not(node).addClass("dim-label");
+        cy.edges().addClass("faded");
       }
     }
   }, [selectedNode, cyRef]);
 
-  // Handle zoom level for small graphs
-  useEffect(() => {
-    if (cyRef.current && elements.length > 0) {
-      const cy = cyRef.current;
-      const nodeCount = elements.filter((el) => el.group === "nodes").length;
+  // Track previous node count to detect new node addition
+  const prevNodeCountRef = useRef(
+    elements.filter((el) => el.group === "nodes").length
+  );
 
-      // Apply zoom immediately and then after layout
+  // Handle zoom level for small graphs ONLY on initial mount or node addition
+  useEffect(() => {
+    if (!cyRef.current || elements.length === 0) return;
+    const cy = cyRef.current;
+    const nodeCount = elements.filter((el) => el.group === "nodes").length;
+    const prevNodeCount = prevNodeCountRef.current;
+
+    // Only apply zoom/center/fit if node count increased (new node added) or on first mount
+    if (nodeCount > prevNodeCount || prevNodeCount === 0) {
       if (nodeCount === 1) {
-        // For single node, set a reasonable zoom level immediately
         cy.zoom(1.5);
         cy.center();
       } else if (nodeCount <= 3) {
-        // For small graphs, set a moderate zoom immediately
         cy.zoom(1.2);
         cy.center();
       }
-
-      // Wait for layout to complete and apply final zoom
       setTimeout(() => {
+        if (!cyRef.current) return;
+        const cy = cyRef.current;
         if (nodeCount === 1) {
           cy.zoom(1.5);
           cy.center();
@@ -407,16 +220,16 @@ function GraphComponent({ colorScheme, setColorScheme }) {
           cy.zoom(1.2);
           cy.center();
         } else {
-          // For larger graphs, use fit
           cy.fit();
         }
-      }, 300); // Reduced delay
+      }, 300);
     }
+    prevNodeCountRef.current = nodeCount;
   }, [elements]);
 
   const handleModalClose = () => {
-    console.log("Modal closing");
     closeModal();
+    setSelectedNode(null); // Clear selection when modal closes
   };
 
   const layout = {
@@ -439,7 +252,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     // Animation settings
     animate: true,
     animationDuration: 600,
-    animationEasing: 'ease-out-cubic',
+    animationEasing: "ease-out-cubic",
     // Additional spacing improvements
     avoidOverlap: true,
     nodeDimensionsIncludeLabels: true,
@@ -463,10 +276,11 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         "border-width": 1,
         "border-color": "rgba(255,255,255,0.4)",
         "border-opacity": 0.6,
-        "width": "20px", // Smaller default size
-        "height": "20px",
+        width: "20px", // Smaller default size
+        height: "20px",
         // Enhanced transitions for seamless zoom
-        "transition-property": "width, height, font-size, text-max-width, text-margin-y, border-width",
+        "transition-property":
+          "width, height, font-size, text-max-width, text-margin-y, border-width",
         "transition-duration": "0.15s", // Faster transitions
         "transition-timing-function": "ease-out",
       },
@@ -481,9 +295,9 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         "text-opacity": 0,
         opacity: 0.5, // More subtle by default
         // Smoother transitions for edges
-        'transition-property': 'width, opacity, line-color',
-        'transition-duration': '0.15s',
-        'transition-timing-function': 'ease-out',
+        "transition-property": "width, opacity, line-color",
+        "transition-duration": "0.15s",
+        "transition-timing-function": "ease-out",
       },
     },
     {
@@ -496,8 +310,8 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         "transition-property": "background-color, border-color, opacity",
         "transition-duration": "0.25s",
         "transition-timing-function": "ease-out",
-        "width": 28, // Fixed size instead of +=8px
-        "height": 28,
+        width: 28, // Fixed size instead of +=8px
+        height: 28,
       },
     },
     {
@@ -509,76 +323,76 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         "transition-duration": "0.25s",
         "transition-timing-function": "ease-out",
         opacity: 0.85,
-        "width": 2.5, // Fixed width instead of +=1.5px
+        width: 2.5, // Fixed width instead of +=1.5px
       },
     },
     {
-      selector: 'node.selected',
+      selector: "node.selected",
       style: {
-        'background-color': '#fff',
-        'border-color': '#4dabf7',
-        'border-width': 3,
-        'color': '#1a1b1e',
-        'font-weight': 'bold',
-        'z-index': 25,
-        'transition-property': 'background-color, border-color, border-width',
-        'transition-duration': '0.25s',
-        'width': 30, // Fixed size instead of +=10px
-        'height': 30,
+        "background-color": "#fff",
+        "border-color": "#4dabf7",
+        "border-width": 3,
+        color: "#1a1b1e",
+        "font-weight": "bold",
+        "z-index": 25,
+        "transition-property": "background-color, border-color, border-width",
+        "transition-duration": "0.25s",
+        width: 30, // Fixed size instead of +=10px
+        height: 30,
       },
     },
     {
-      selector: 'node.faded',
+      selector: "node.faded",
       style: {
-        'opacity': 0.08,
-        'text-opacity': 0.05,
-        'transition-property': 'opacity, text-opacity',
-        'transition-duration': '0.4s',
-        'transition-timing-function': 'ease-out',
+        opacity: 0.08,
+        "text-opacity": 0.05,
+        "transition-property": "opacity, text-opacity",
+        "transition-duration": "0.4s",
+        "transition-timing-function": "ease-out",
       },
     },
     {
-      selector: 'edge.faded',
+      selector: "edge.faded",
       style: {
-        'opacity': 0.05,
-        'transition-property': 'opacity',
-        'transition-duration': '0.4s',
-        'transition-timing-function': 'ease-out',
+        opacity: 0.05,
+        "transition-property": "opacity",
+        "transition-duration": "0.4s",
+        "transition-timing-function": "ease-out",
       },
     },
     {
-      selector: 'node.dimmed',
+      selector: "node.dimmed",
       style: {
-        'opacity': 0.15,
-        'text-opacity': 0.1,
-        'transition-property': 'opacity, text-opacity',
-        'transition-duration': '0.3s',
-        'transition-timing-function': 'ease-out',
+        opacity: 0.15,
+        "text-opacity": 0.1,
+        "transition-property": "opacity, text-opacity",
+        "transition-duration": "0.3s",
+        "transition-timing-function": "ease-out",
       },
     },
     {
-      selector: 'edge.dimmed',
+      selector: "edge.dimmed",
       style: {
-        'opacity': 0.1,
-        'transition-property': 'opacity',
-        'transition-duration': '0.3s',
-        'transition-timing-function': 'ease-out',
+        opacity: 0.1,
+        "transition-property": "opacity",
+        "transition-duration": "0.3s",
+        "transition-timing-function": "ease-out",
       },
     },
     {
-      selector: 'node.bright-label',
+      selector: "node.bright-label",
       style: {
-        'color': '#fff',
-        'text-opacity': 1,
-        'font-weight': 'bold',
+        color: "#fff",
+        "text-opacity": 1,
+        "font-weight": "bold",
       },
     },
     {
-      selector: 'node.dim-label',
+      selector: "node.dim-label",
       style: {
-        'color': '#666',
-        'text-opacity': 0.25,
-        'font-weight': '500',
+        color: "#666",
+        "text-opacity": 0.25,
+        "font-weight": "500",
       },
     },
   ];
@@ -605,6 +419,8 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         }}
         colorScheme={colorScheme}
         setColorScheme={setColorScheme}
+        setSelectedNode={setSelectedNode} // <-- pass down
+        setNodePosition={setNodePosition} // <-- pass down
       />
       <NodeModal
         opened={modalOpened}
@@ -658,16 +474,38 @@ function GraphComponent({ colorScheme, setColorScheme }) {
             {/* If tagTooltip is present, show tag and all notes with that tag */}
             {hoveredNode.tagTooltip ? (
               <>
-                <div style={{ fontWeight: 'bold', color: '#4dabf7', marginBottom: 4 }}>
+                <div
+                  style={{
+                    fontWeight: "bold",
+                    color: "#4dabf7",
+                    marginBottom: 4,
+                  }}
+                >
                   Tag: {hoveredNode.tagTooltip}
                 </div>
-                <div style={{ fontSize: '11px', color: '#aaa', marginBottom: 4 }}>
+                <div
+                  style={{ fontSize: "11px", color: "#aaa", marginBottom: 4 }}
+                >
                   Notes with this tag:
                 </div>
-                <ul style={{ paddingLeft: 16, margin: 0, maxHeight: 80, overflowY: 'auto' }}>
-                  {hoveredNode.notesWithTag.map(n => (
-                    <li key={n.id} style={{ fontSize: '11px', color: '#c1c2c5', marginBottom: 2 }}>
-                      {n.title || n.text?.slice(0, 40) || 'Untitled'}
+                <ul
+                  style={{
+                    paddingLeft: 16,
+                    margin: 0,
+                    maxHeight: 80,
+                    overflowY: "auto",
+                  }}
+                >
+                  {hoveredNode.notesWithTag.map((n) => (
+                    <li
+                      key={n.id}
+                      style={{
+                        fontSize: "11px",
+                        color: "#c1c2c5",
+                        marginBottom: 2,
+                      }}
+                    >
+                      {n.title || n.text?.slice(0, 40) || "Untitled"}
                     </li>
                   ))}
                 </ul>
@@ -678,10 +516,10 @@ function GraphComponent({ colorScheme, setColorScheme }) {
                 {hoveredNode.currentZoom < 1.0 ? (
                   // Low zoom: Show basic info
                   <>
-                    <div style={{ fontWeight: 'bold', marginBottom: 4 }}>
+                    <div style={{ fontWeight: "bold", marginBottom: 4 }}>
                       Note #{hoveredNode.id}
                     </div>
-                    <div style={{ fontSize: '11px', color: '#aaa' }}>
+                    <div style={{ fontSize: "11px", color: "#aaa" }}>
                       {hoveredNode.text?.slice(0, 50)}...
                     </div>
                   </>
@@ -704,24 +542,42 @@ function GraphComponent({ colorScheme, setColorScheme }) {
                       {hoveredNode.text}
                     </div>
                     {hoveredNode.tags && hoveredNode.tags.length > 0 && (
-                      <div style={{ fontSize: '10px', color: '#4dabf7', marginBottom: 4 }}>
-                        🏷️ {hoveredNode.tags.slice(0, 3).join(', ')}
-                        {hoveredNode.tags.length > 3 && '...'}
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          color: "#4dabf7",
+                          marginBottom: 4,
+                        }}
+                      >
+                        🏷️ {hoveredNode.tags.slice(0, 3).join(", ")}
+                        {hoveredNode.tags.length > 3 && "..."}
                       </div>
                     )}
-                    <div style={{ fontSize: "11px", color: "#909296", fontStyle: "italic" }}>
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        color: "#909296",
+                        fontStyle: "italic",
+                      }}
+                    >
                       Double-click for details
                     </div>
                   </>
                 ) : (
                   // High zoom: Show full text content only
                   <>
-                    <div style={{ marginBottom: 6, fontSize: '12px', lineHeight: 1.4 }}>
+                    <div
+                      style={{
+                        marginBottom: 6,
+                        fontSize: "12px",
+                        lineHeight: 1.4,
+                      }}
+                    >
                       {hoveredNode.text}
                     </div>
                     {hoveredNode.tags && hoveredNode.tags.length > 0 && (
-                      <div style={{ fontSize: '11px', color: '#4dabf7' }}>
-                        🏷️ {hoveredNode.tags.join(', ')}
+                      <div style={{ fontSize: "11px", color: "#4dabf7" }}>
+                        🏷️ {hoveredNode.tags.join(", ")}
                       </div>
                     )}
                   </>
