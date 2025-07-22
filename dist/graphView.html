@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note It - Graph View</title>
-    <style>
-      html, body, #root {
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Note It - Graph View</title><style>html, body, #root {
+        height: 100vh;
         min-height: 100vh;
+        max-height: 100vh;
         margin: 0;
         padding: 0;
+        overflow: hidden;
       }
-    </style>
-<script defer src="graphView.js"></script></head>
-<body>
-    <div id="root"></div>
-</body>
-</html> 
+      
+      /* Prevent any scrolling on the main page */
+      body {
+        position: fixed;
+        width: 100%;
+      }</style><script defer="defer" src="graphView.js"></script></head><body><div id="root"></div></body></html>

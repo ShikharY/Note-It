@@ -1,0 +1,446 @@
+import React, { useState, useMemo } from "react";
+  // Get available tags for inclusion (not already included, or-ed, or excluded)
+  const availableIncludeTags = useMemo(() => {
+    const filtered = allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+    if (!includeSearch.trim()) return filtered;
+    return filtered.filter(tag => tag.toLowerCase().includes(includeSearch.toLowerCase()));
+  }, [allTags, includeTags, orTags, excludeTags, includeSearch]);
+
+  // Get available tags for OR logic (not already included, or-ed, or excluded)
+  const availableOrTags = useMemo(() => {
+    const filtered = allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+    if (!orSearch.trim()) return filtered;
+    return filtered.filter(tag => tag.toLowerCase().includes(orSearch.toLowerCase()));
+  }, [allTags, includeTags, orTags, excludeTags, orSearch]);
+
+import React, { useState, useMemo } from "react";
+import {
+  Stack,
+  Text,
+  Badge,
+  Group,
+  Divider,
+  ActionIcon,
+  Collapse,
+  Button,
+  Flex,
+  TextInput,
+} from "@mantine/core";
+import {
+  IconFilter,
+  IconChevronDown,
+  IconChevronRight,
+  IconX,
+  IconPlus,
+  IconMinus,
+  IconSearch,
+} from "@tabler/icons-react";
+
+const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [includeTags, setIncludeTags] = useState([]); // Tags that MUST be present (AND logic)
+  const [orTags, setOrTags] = useState([]); // Tags where ANY can be present (OR logic)
+  const [excludeTags, setExcludeTags] = useState([]); // Tags that must NOT be present (NOT logic)
+  
+  // Show more state for each section
+  const [showMoreInclude, setShowMoreInclude] = useState(false);
+  const [showMoreOr, setShowMoreOr] = useState(false);
+  const [showMoreExclude, setShowMoreExclude] = useState(false);
+  
+  // Search state for each section
+  const [includeSearch, setIncludeSearch] = useState("");
+  const [orSearch, setOrSearch] = useState("");
+  const [excludeSearch, setExcludeSearch] = useState("");
+
+  // Get all unique tags from notes
+  const allTags = useMemo(() => {
+    const tagSet = new Set();
+    (notes || []).forEach((note) => {
+      (note.tags || []).forEach((tag) => {
+        tagSet.add(tag.toLowerCase());
+      });
+    });
+    return Array.from(tagSet).sort();
+  }, [notes]);
+
+  // Get available tags for inclusion (not already included, or-ed, or excluded)
+  const availableIncludeTags = useMemo(() => {
+    const filtered = allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+    if (!includeSearch.trim()) return filtered;
+    return filtered.filter(tag => tag.toLowerCase().includes(includeSearch.toLowerCase()));
+  }, [allTags, includeTags, orTags, excludeTags, includeSearch]);
+
+  // Get available tags for OR logic (not already included, or-ed, or excluded)
+  const availableOrTags = useMemo(() => {
+    const filtered = allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+    if (!orSearch.trim()) return filtered;
+    return filtered.filter(tag => tag.toLowerCase().includes(orSearch.toLowerCase()));
+  }, [allTags, includeTags, orTags, excludeTags, orSearch]);
+
+  // Get available tags for exclusion (not already included, or-ed, or excluded)
+  const availableExcludeTags = useMemo(() => {
+    const filtered = allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+    if (!excludeSearch.trim()) return filtered;
+    return filtered.filter(tag => tag.toLowerCase().includes(excludeSearch.toLowerCase()));
+  }, [allTags, includeTags, orTags, excludeTags, excludeSearch]);
+
+const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [includeTags, setIncludeTags] = useState([]); // Tags that MUST be present (AND logic)
+  const [orTags, setOrTags] = useState([]); // Tags where ANY can be present (OR logic)
+  const [excludeTags, setExcludeTags] = useState([]); // Tags that must NOT be present (NOT logic)
+  
+  // Show more state for each section
+  const [showMoreInclude, setShowMoreInclude] = useState(false);
+  const [showMoreOr, setShowMoreOr] = useState(false);
+  const [showMoreExclude, setShowMoreExclude] = useState(false);
+  
+  // Search state for each section
+  const [includeSearch, setIncludeSearch] = useState("");
+  const [orSearch, setOrSearch] = useState("");
+  const [excludeSearch, setExcludeSearch] = useState("");
+
+  // Get all unique tags from notes
+  const allTags = useMemo(() => {
+    const tagSet = new Set();
+    (notes || []).forEach((note) => {
+      (note.tags || []).forEach((tag) => {
+        tagSet.add(tag.toLowerCase());
+      });
+    });
+    return Array.from(tagSet).sort();
+  }, [notes]);
+
+  // Get available tags for inclusion (not already included, or-ed, or excluded)
+  const availableIncludeTags = useMemo(() => {
+    return allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+  }, [allTags, includeTags, orTags, excludeTags]);
+
+  // Get available tags for OR logic (not already included, or-ed, or excluded)
+  const availableOrTags = useMemo(() => {
+    return allTags.filter(
+      (tag) => !includeTags.includes(tag) && !orTags.includes(tag) && !excludeTags.includes(tag)
+    );
+  }, [allTags, includeTags, orTags, excludeTags]);
+
+  // Get available tags for exclusion (not already excluded, included, or or-ed)
+  const availableExcludeTags = useMemo(() => {
+    return allTags.filter(
+      (tag) => !excludeTags.includes(tag) && !includeTags.includes(tag) && !orTags.includes(tag)
+    );
+  }, [allTags, includeTags, orTags, excludeTags]);
+
+  // Handle adding a tag to include list
+  const handleAddIncludeTag = (tag) => {
+    const newIncludeTags = [...includeTags, tag];
+    setIncludeTags(newIncludeTags);
+    updateFilter(newIncludeTags, orTags, excludeTags);
+  };
+
+  // Handle adding a tag to OR list
+  const handleAddOrTag = (tag) => {
+    const newOrTags = [...orTags, tag];
+    setOrTags(newOrTags);
+    updateFilter(includeTags, newOrTags, excludeTags);
+  };
+
+  // Handle adding a tag to exclude list
+  const handleAddExcludeTag = (tag) => {
+    const newExcludeTags = [...excludeTags, tag];
+    setExcludeTags(newExcludeTags);
+    updateFilter(includeTags, orTags, newExcludeTags);
+  };
+
+  // Handle removing a tag from include list
+  const handleRemoveIncludeTag = (tag) => {
+    const newIncludeTags = includeTags.filter((t) => t !== tag);
+    setIncludeTags(newIncludeTags);
+    updateFilter(newIncludeTags, orTags, excludeTags);
+  };
+
+  // Handle removing a tag from OR list
+  const handleRemoveOrTag = (tag) => {
+    const newOrTags = orTags.filter((t) => t !== tag);
+    setOrTags(newOrTags);
+    updateFilter(includeTags, newOrTags, excludeTags);
+  };
+
+  // Handle removing a tag from exclude list
+  const handleRemoveExcludeTag = (tag) => {
+    const newExcludeTags = excludeTags.filter((t) => t !== tag);
+    setExcludeTags(newExcludeTags);
+    updateFilter(includeTags, orTags, newExcludeTags);
+  };
+
+  // Clear all filters
+  const handleClearAll = () => {
+    setIncludeTags([]);
+    setOrTags([]);
+    setExcludeTags([]);
+    updateFilter([], [], []);
+  };
+
+  // Update the filter and notify parent component
+  const updateFilter = (includeList, orList, excludeList) => {
+    const filterCriteria = {
+      includeTags: includeList,
+      orTags: orList,
+      excludeTags: excludeList,
+      isEmpty: includeList.length === 0 && orList.length === 0 && excludeList.length === 0,
+    };
+    onFilterChange(filterCriteria);
+  };
+
+  const hasActiveFilters = includeTags.length > 0 || orTags.length > 0 || excludeTags.length > 0;
+
+  // Helper function to render tag sections with proper scrolling and search
+  const renderTagSection = (availableTags, showMore, setShowMore, onAddTag, color = "gray", searchValue, setSearchValue, sectionName) => {
+    const displayLimit = 8;
+    const tagsToShow = showMore ? availableTags : availableTags.slice(0, displayLimit);
+    const hasMoreTags = availableTags.length > displayLimit;
+
+    return (
+      <>
+        {/* Search input for this section */}
+        <TextInput
+          placeholder={`Search ${sectionName} tags...`}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          leftSection={<IconSearch size={14} />}
+          size="xs"
+          mb="xs"
+          styles={{
+            input: {
+              backgroundColor: '#2c2c2c',
+              border: '1px solid #444',
+              color: '#fff',
+              '&::placeholder': {
+                color: '#888'
+              }
+            }
+          }}
+        />
+        
+        <div style={{ 
+          maxHeight: showMore ? "200px" : "auto", 
+          overflowY: showMore ? "auto" : "visible",
+          overflowX: "hidden",
+          paddingRight: showMore ? "4px" : "0"
+        }}>
+          <Group spacing="xs" mb="xs">
+            {tagsToShow.map((tag) => (
+              <Badge
+                key={tag}
+                color={color}
+                variant="outline"
+                style={{ cursor: "pointer" }}
+                rightSection={
+                  <ActionIcon
+                    size="xs"
+                    color={color}
+                    variant="transparent"
+                    onClick={() => onAddTag(tag)}
+                  >
+                    <IconPlus size={10} />
+                  </ActionIcon>
+                }
+                onClick={() => onAddTag(tag)}
+              >
+                {tag}
+              </Badge>
+            ))}
+          </Group>
+        </div>
+        {hasMoreTags && (
+          <Button
+            variant="subtle"
+            size="xs"
+            compact
+            onClick={() => setShowMore(!showMore)}
+            leftIcon={showMore ? <IconMinus size={12} /> : <IconPlus size={12} />}
+          >
+            {showMore ? "Show Less" : `Show ${availableTags.length - displayLimit} More`}
+          </Button>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <Stack spacing="xs" mt="md">
+      <Group spacing="xs">
+        <ActionIcon
+          variant="subtle"
+          size="sm"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
+        </ActionIcon>
+        <Text fw={700} size="sm">
+          Advanced Filters
+        </Text>
+        <IconFilter size={14} />
+        {hasActiveFilters && (
+          <Badge size="xs" color="blue" variant="filled">
+            Active
+          </Badge>
+        )}
+      </Group>
+
+      <Collapse in={isExpanded}>
+        <Stack spacing="sm" pl="md">
+          {/* Include Tags Section */}
+          <div>
+            <Text size="xs" fw={600} mb="xs" color="green">
+              Must Have These Tags (AND)
+            </Text>
+            {includeTags.length > 0 && (
+              <Group spacing="xs" mb="xs">
+                {includeTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    color="green"
+                    variant="filled"
+                    rightSection={
+                      <ActionIcon
+                        size="xs"
+                        color="green"
+                        variant="transparent"
+                        onClick={() => handleRemoveIncludeTag(tag)}
+                      >
+                        <IconX size={10} />
+                      </ActionIcon>
+                    }
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
+            )}
+            {renderTagSection(
+              availableIncludeTags, 
+              showMoreInclude, 
+              setShowMoreInclude, 
+              handleAddIncludeTag, 
+              "green",
+              includeSearch,
+              setIncludeSearch,
+              "include"
+            )}
+          </div>
+
+          <Divider size="xs" />
+
+          {/* OR Tags Section */}
+          <div>
+            <Text size="xs" fw={600} mb="xs" color="blue">
+              Can Have Any of These Tags (OR)
+            </Text>
+            {orTags.length > 0 && (
+              <Group spacing="xs" mb="xs">
+                {orTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    color="blue"
+                    variant="filled"
+                    rightSection={
+                      <ActionIcon
+                        size="xs"
+                        color="blue"
+                        variant="transparent"
+                        onClick={() => handleRemoveOrTag(tag)}
+                      >
+                        <IconX size={10} />
+                      </ActionIcon>
+                    }
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
+            )}
+            {renderTagSection(
+              availableOrTags, 
+              showMoreOr, 
+              setShowMoreOr, 
+              handleAddOrTag, 
+              "blue",
+              orSearch,
+              setOrSearch,
+              "OR"
+            )}
+          </div>
+
+          <Divider size="xs" />
+
+          {/* Exclude Tags Section */}
+          <div>
+            <Text size="xs" fw={600} mb="xs" color="red">
+              Must NOT Have These Tags (NOT)
+            </Text>
+            {excludeTags.length > 0 && (
+              <Group spacing="xs" mb="xs">
+                {excludeTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    color="red"
+                    variant="filled"
+                    rightSection={
+                      <ActionIcon
+                        size="xs"
+                        color="red"
+                        variant="transparent"
+                        onClick={() => handleRemoveExcludeTag(tag)}
+                      >
+                        <IconX size={10} />
+                      </ActionIcon>
+                    }
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </Group>
+            )}
+            {renderTagSection(
+              availableExcludeTags, 
+              showMoreExclude, 
+              setShowMoreExclude, 
+              handleAddExcludeTag, 
+              "red",
+              excludeSearch,
+              setExcludeSearch,
+              "exclude"
+            )}
+          </div>
+
+          {hasActiveFilters && (
+            <Flex justify="center" mt="sm">
+              <Button
+                size="xs"
+                variant="light"
+                color="gray"
+                onClick={handleClearAll}
+              >
+                Clear All Filters
+              </Button>
+            </Flex>
+          )}
+        </Stack>
+      </Collapse>
+    </Stack>
+  );
+};
+
+export default AdvancedTagFilterComponent;
