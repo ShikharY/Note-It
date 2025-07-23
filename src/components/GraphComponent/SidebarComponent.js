@@ -16,8 +16,6 @@ import {
 } from "@mantine/core";
 import {
   IconSettings,
-  IconSun,
-  IconMoon,
   IconZoomIn,
   IconZoomOut,
 } from "@tabler/icons-react";
@@ -40,10 +38,12 @@ const SidebarComponent = ({
   notes,
   onOpenModal,
   onClearAllNotes,
-  colorScheme, // add prop
-  setColorScheme, // add prop
   setSelectedNode, // <-- Add this prop for modal logic
   setNodePosition, // <-- Add this prop for modal logic
+  // Hover functionality props
+  setHoveredNode,
+  setShowTooltip,
+  setTooltipPosition,
 }) => {
   const [selectedTag, setSelectedTag] = React.useState(null);
   const [settingsOpened, setSettingsOpened] = React.useState(false);
@@ -54,10 +54,6 @@ const SidebarComponent = ({
     isEmpty: true,
   });
   const [cyReady, setCyReady] = useState(false);
-
-  const handleThemeToggle = () => {
-    setColorScheme(colorScheme === "dark" ? "light" : "dark");
-  };
 
   // Helper function to check if a note matches the advanced filter criteria
   const noteMatchesAdvancedFilter = (note) => {
@@ -314,6 +310,41 @@ const SidebarComponent = ({
       }
     };
     cy.on("tap", "node", handleNodeClick);
+
+    // Mouse hover events for tooltips
+    const handleMouseOver = (event) => {
+      const nodeData = event.target.data();
+      const zoom = cy.zoom();
+      
+      // Set hovered node data with zoom context
+      setHoveredNode({
+        id: nodeData.id,
+        text: nodeData.fullText,
+        title: nodeData.title,
+        tags: nodeData.tags,
+        currentZoom: zoom,
+      });
+      
+      // Set tooltip position based on mouse position
+      const renderedPosition = event.target.renderedPosition();
+      const containerBounds = cy.container().getBoundingClientRect();
+      
+      setTooltipPosition({
+        x: containerBounds.left + renderedPosition.x + 15,
+        y: containerBounds.top + renderedPosition.y - 10
+      });
+      
+      setShowTooltip(true);
+    };
+
+    const handleMouseOut = () => {
+      setShowTooltip(false);
+      setHoveredNode(null);
+    };
+
+    cy.on("mouseover", "node", handleMouseOver);
+    cy.on("mouseout", "node", handleMouseOut);
+
     // Background click: clear selection and close modal
     const handleTapBackground = (event) => {
       if (event.target === cy) {
@@ -331,6 +362,8 @@ const SidebarComponent = ({
     return () => {
       if (cyRef.current) {
         cyRef.current.removeListener("tap", "node", handleNodeClick);
+        cyRef.current.removeListener("mouseover", "node", handleMouseOver);
+        cyRef.current.removeListener("mouseout", "node", handleMouseOut);
         cyRef.current.removeListener("tap", handleTapBackground);
       }
     };
@@ -341,6 +374,9 @@ const SidebarComponent = ({
     onOpenModal,
     cyReady,
     selectedNode,
+    setHoveredNode,
+    setShowTooltip,
+    setTooltipPosition,
   ]);
 
   // Clean up Cytoscape on unmount
@@ -418,22 +454,6 @@ const SidebarComponent = ({
                 <IconZoomOut size={20} />
               </ActionIcon>
             </Group>
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              onClick={handleThemeToggle}
-              title={
-                colorScheme === "dark"
-                  ? "Switch to light mode"
-                  : "Switch to dark mode"
-              }
-            >
-              {colorScheme === "dark" ? (
-                <IconSun size={20} />
-              ) : (
-                <IconMoon size={20} />
-              )}
-            </ActionIcon>
           </Group>
         </AppShell.Header>
 
@@ -682,10 +702,11 @@ SidebarComponent.propTypes = {
   notes: PropTypes.array.isRequired,
   onOpenModal: PropTypes.func.isRequired,
   onClearAllNotes: PropTypes.func.isRequired,
-  colorScheme: PropTypes.string.isRequired,
-  setColorScheme: PropTypes.func.isRequired,
   setSelectedNode: PropTypes.func.isRequired,
   setNodePosition: PropTypes.func.isRequired,
+  setHoveredNode: PropTypes.func.isRequired,
+  setShowTooltip: PropTypes.func.isRequired,
+  setTooltipPosition: PropTypes.func.isRequired,
 };
 
 export default SidebarComponent;
