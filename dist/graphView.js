@@ -106672,6 +106672,12 @@ var SidebarComponent = function SidebarComponent(_ref) {
         excludeTags: [],
         isEmpty: true
       });
+      // Clear node selection and position
+      setSelectedNode(null);
+      setNodePosition({
+        x: 0,
+        y: 0
+      });
     }
 
     // Animate to the first node with this tag
