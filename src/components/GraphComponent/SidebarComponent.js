@@ -55,6 +55,38 @@ const SidebarComponent = ({
   });
   const [cyReady, setCyReady] = useState(false);
 
+  // Stable event handlers using useCallback
+  const handleMouseOver = useCallback((event) => {
+    if (!cyRef.current) return;
+    const nodeData = event.target.data();
+    const zoom = cyRef.current.zoom();
+    
+    // Set hovered node data with zoom context
+    setHoveredNode({
+      id: nodeData.id,
+      text: nodeData.fullText,
+      title: nodeData.title,
+      tags: nodeData.tags,
+      currentZoom: zoom,
+    });
+    
+    // Set tooltip position based on mouse position
+    const renderedPosition = event.target.renderedPosition();
+    const containerBounds = cyRef.current.container().getBoundingClientRect();
+    
+    setTooltipPosition({
+      x: containerBounds.left + renderedPosition.x + 15,
+      y: containerBounds.top + renderedPosition.y - 10
+    });
+    
+    setShowTooltip(true);
+  }, [setHoveredNode, setTooltipPosition, setShowTooltip, cyRef]);
+
+  const handleMouseOut = useCallback(() => {
+    setShowTooltip(false);
+    setHoveredNode(null);
+  }, [setShowTooltip, setHoveredNode]);
+
   // Helper function to check if a note matches the advanced filter criteria
   const noteMatchesAdvancedFilter = (note) => {
     if (advancedFilter.isEmpty) return true;
@@ -286,7 +318,7 @@ const SidebarComponent = ({
     updateNodeLabels();
     return () => {
       if (cyRef.current) {
-        cyRef.current.removeListener("zoom", updateNodeLabels);
+        cyRef.current.off("zoom", updateNodeLabels);
       }
     };
   }, [elements, updateNodeLabels, cyRef, cyReady]);
@@ -311,37 +343,7 @@ const SidebarComponent = ({
     };
     cy.on("tap", "node", handleNodeClick);
 
-    // Mouse hover events for tooltips
-    const handleMouseOver = (event) => {
-      const nodeData = event.target.data();
-      const zoom = cy.zoom();
-      
-      // Set hovered node data with zoom context
-      setHoveredNode({
-        id: nodeData.id,
-        text: nodeData.fullText,
-        title: nodeData.title,
-        tags: nodeData.tags,
-        currentZoom: zoom,
-      });
-      
-      // Set tooltip position based on mouse position
-      const renderedPosition = event.target.renderedPosition();
-      const containerBounds = cy.container().getBoundingClientRect();
-      
-      setTooltipPosition({
-        x: containerBounds.left + renderedPosition.x + 15,
-        y: containerBounds.top + renderedPosition.y - 10
-      });
-      
-      setShowTooltip(true);
-    };
-
-    const handleMouseOut = () => {
-      setShowTooltip(false);
-      setHoveredNode(null);
-    };
-
+    // Mouse hover events for tooltips using stable handlers
     cy.on("mouseover", "node", handleMouseOver);
     cy.on("mouseout", "node", handleMouseOut);
 
@@ -360,11 +362,11 @@ const SidebarComponent = ({
     };
     cy.on("tap", handleTapBackground);
     return () => {
-      if (cyRef.current) {
-        cyRef.current.removeListener("tap", "node", handleNodeClick);
-        cyRef.current.removeListener("mouseover", "node", handleMouseOver);
-        cyRef.current.removeListener("mouseout", "node", handleMouseOut);
-        cyRef.current.removeListener("tap", handleTapBackground);
+      if (cyRef.current && !cyRef.current.destroyed()) {
+        cyRef.current.off("tap", "node", handleNodeClick);
+        cyRef.current.off("mouseover", "node", handleMouseOver);
+        cyRef.current.off("mouseout", "node", handleMouseOut);
+        cyRef.current.off("tap", handleTapBackground);
       }
     };
   }, [
@@ -374,17 +376,16 @@ const SidebarComponent = ({
     onOpenModal,
     cyReady,
     selectedNode,
-    setHoveredNode,
-    setShowTooltip,
-    setTooltipPosition,
+    handleMouseOver,
+    handleMouseOut,
   ]);
 
   // Clean up Cytoscape on unmount
   useEffect(() => {
     return () => {
-      if (cyRef.current) {
-        if (cyRef.current.removeAllListeners)
-          cyRef.current.removeAllListeners();
+      if (cyRef.current && !cyRef.current.destroyed()) {
+        // Remove all event listeners properly
+        cyRef.current.removeAllListeners();
         cyRef.current = null;
       }
       setCyReady(false);

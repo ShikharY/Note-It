@@ -29,11 +29,9 @@ if (typeof document !== 'undefined' && !document.getElementById('graphview-globa
 function GraphViewApp() {
   const [colorScheme, setColorScheme] = useState("dark");
   return (
-    <React.StrictMode>
-      <MantineProvider theme={theme} colorScheme={colorScheme} defaultColorScheme="dark">
-        <GraphComponent colorScheme={colorScheme} setColorScheme={setColorScheme} />
-      </MantineProvider>
-    </React.StrictMode>
+    <MantineProvider theme={theme} colorScheme={colorScheme} defaultColorScheme="dark">
+      <GraphComponent colorScheme={colorScheme} setColorScheme={setColorScheme} />
+    </MantineProvider>
   );
 }
 

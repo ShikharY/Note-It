@@ -109,48 +109,16 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     const cy = cyRef.current;
     if (!cy) return;
     const zoom = cy.zoom();
-
     cy.nodes().forEach((node) => {
       const data = node.data();
       let label = "";
-
-      if (zoom < 0.5) {
-        // Very zoomed out: No labels, just dots
-        label = "";
-      } else if (zoom < 0.8) {
-        // Far zoom: Just node numbers or minimal identifier
-        label = `#${data.nodeNumber || ""}`;
-      } else if (zoom < 1.2) {
-        // Medium zoom: Show first few words of text
-        const text = data.fullText || "";
-        const words = text.split(" ").slice(0, 2).join(" ");
-        label =
-          words.length > 0
-            ? words + (text.split(" ").length > 2 ? "..." : "")
-            : `#${data.nodeNumber || ""}`;
-      } else if (zoom < 2.0) {
-        // Close zoom: Show truncated text (current behavior)
+      // Only show label if zoomed in enough
+      if (zoom >= 1.0) {
         const text = data.fullText || "";
         label = text.length > 40 ? text.slice(0, 40) + "..." : text;
-      } else if (zoom < 3.0) {
-        // Very close zoom: Show more text + tags
-        const text = data.fullText || "";
-        const truncatedText =
-          text.length > 80 ? text.slice(0, 80) + "..." : text;
-        const tags = data.tags || [];
-        const tagString =
-          tags.length > 0
-            ? `\n[${tags.slice(0, 3).join(", ")}${
-                tags.length > 3 ? "..." : ""
-              }]`
-            : "";
-        label = truncatedText + tagString;
       } else {
-        // Maximum zoom: Show full text only
-        const text = data.fullText || "";
-        label = text;
+        label = "";
       }
-
       node.data("label", label);
     });
   }, []);
@@ -237,26 +205,24 @@ function GraphComponent({ colorScheme, setColorScheme }) {
 
   const layout = {
     name: "cose",
-    idealEdgeLength: 150, // Increased for better spacing
-    nodeOverlap: 40, // Increased to prevent overlap at high zoom
-    refresh: 12, // Frequent layout updates
+    idealEdgeLength: 150,
+    nodeOverlap: 40,
+    refresh: 12,
     fit: false,
-    padding: 80, // More padding for breathing room
+    padding: 120, // More padding for breathing room
     randomize: false,
-    componentSpacing: 160, // More space between components
-    nodeRepulsion: 650000, // Much stronger repulsion to prevent clustering
-    edgeElasticity: 60, // Less elastic for more rigid positioning
-    nestingFactor: 12, // Higher nesting factor for better hierarchy
-    gravity: 45, // Lower gravity for more spread out layout
-    numIter: 1500, // More iterations for better convergence
+    componentSpacing: 200, // More space between components
+    nodeRepulsion: 900000, // Much stronger repulsion to prevent clustering
+    edgeElasticity: 60,
+    nestingFactor: 12,
+    gravity: 45,
+    numIter: 1500,
     initialTemp: 150,
-    coolingFactor: 0.97, // Slower cooling for more refinement
+    coolingFactor: 0.97,
     minTemp: 0.5,
-    // Animation settings
     animate: true,
     animationDuration: 600,
     animationEasing: "ease-out-cubic",
-    // Additional spacing improvements
     avoidOverlap: true,
     nodeDimensionsIncludeLabels: true,
   };
@@ -265,26 +231,27 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     {
       selector: "node",
       style: {
-        "background-color": "rgba(255,255,255,0.9)",
+        "background-color": "rgba(255,255,255,0.95)",
         label: "data(label)",
-        color: "rgba(255,255,255,1)",
-        "text-valign": "top",
+        color: "#000",
+        "text-valign": "center",
         "text-halign": "center",
-        "text-margin-y": -18,
-        "font-size": "10px",
-        "font-weight": "600",
+        "text-margin-y": 0,
+        "font-size": "8px",
+        "font-weight": "700",
         "text-wrap": "wrap",
-        "text-max-width": "100px", // Reduced for less overlap
+        "text-max-width": "60px",
         "text-opacity": 1,
+        "text-outline-width": 2,
+        "text-outline-color": "#fff",
         "border-width": 1,
         "border-color": "rgba(255,255,255,0.4)",
         "border-opacity": 0.6,
-        width: "20px", // Smaller default size
+        width: "20px",
         height: "20px",
-        // Enhanced transitions for seamless zoom
         "transition-property":
           "width, height, font-size, text-max-width, text-margin-y, border-width",
-        "transition-duration": "0.15s", // Faster transitions
+        "transition-duration": "0.15s",
         "transition-timing-function": "ease-out",
       },
     },
@@ -430,6 +397,9 @@ function GraphComponent({ colorScheme, setColorScheme }) {
         setColorScheme={setColorScheme}
         setSelectedNode={setSelectedNode} // <-- pass down
         setNodePosition={setNodePosition} // <-- pass down
+        setHoveredNode={setHoveredNode} // <-- pass down for tooltip
+        setShowTooltip={setShowTooltip} // <-- pass down for tooltip
+        setTooltipPosition={setTooltipPosition} // <-- pass down for tooltip
       />
       <NodeModal
         opened={modalOpened}
@@ -462,7 +432,7 @@ function GraphComponent({ colorScheme, setColorScheme }) {
             position: "absolute",
             left: tooltipPosition.x,
             top: tooltipPosition.y,
-            backgroundColor: "#2c2e33", // Dark background like search bar
+            backgroundColor: "#2c2e33",
             border: "1px solid #373a40",
             borderRadius: "6px",
             padding: "8px 12px",
@@ -470,128 +440,17 @@ function GraphComponent({ colorScheme, setColorScheme }) {
             zIndex: 1000,
             maxWidth: "260px",
             pointerEvents: "none",
-            color: "#c1c2c5", // Light text like search bar
+            color: "#c1c2c5",
           }}
         >
-          <div
-            style={{
-              fontSize: "12px",
-              lineHeight: 1.3,
-              color: "#c1c2c5",
-            }}
-          >
-            {/* If tagTooltip is present, show tag and all notes with that tag */}
-            {hoveredNode.tagTooltip ? (
-              <>
-                <div
-                  style={{
-                    fontWeight: "bold",
-                    color: "#4dabf7",
-                    marginBottom: 4,
-                  }}
-                >
-                  Tag: {hoveredNode.tagTooltip}
-                </div>
-                <div
-                  style={{ fontSize: "11px", color: "#aaa", marginBottom: 4 }}
-                >
-                  Notes with this tag:
-                </div>
-                <ul
-                  style={{
-                    paddingLeft: 16,
-                    margin: 0,
-                    maxHeight: 80,
-                    overflowY: "auto",
-                  }}
-                >
-                  {hoveredNode.notesWithTag.map((n) => (
-                    <li
-                      key={n.id}
-                      style={{
-                        fontSize: "11px",
-                        color: "#c1c2c5",
-                        marginBottom: 2,
-                      }}
-                    >
-                      {n.title || n.text?.slice(0, 40) || "Untitled"}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <>
-                {/* Zoom-aware tooltip content */}
-                {hoveredNode.currentZoom < 1.0 ? (
-                  // Low zoom: Show basic info
-                  <>
-                    <div style={{ fontWeight: "bold", marginBottom: 4 }}>
-                      Note #{hoveredNode.id}
-                    </div>
-                    <div style={{ fontSize: "11px", color: "#aaa" }}>
-                      {hoveredNode.text?.slice(0, 50)}...
-                    </div>
-                  </>
-                ) : hoveredNode.currentZoom < 2.0 ? (
-                  // Medium zoom: Show text preview
-                  <>
-                    <div
-                      style={{
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        marginBottom: "4px",
-                        minHeight: "32px",
-                        maxHeight: "32px",
-                        wordBreak: "break-word",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {hoveredNode.text}
-                    </div>
-                    {hoveredNode.tags && hoveredNode.tags.length > 0 && (
-                      <div
-                        style={{
-                          fontSize: "10px",
-                          color: "#4dabf7",
-                          marginBottom: 4,
-                        }}
-                      >
-                        🏷️ {hoveredNode.tags.slice(0, 3).join(", ")}
-                        {hoveredNode.tags.length > 3 && "..."}
-                      </div>
-                    )}
-                    <div
-                      style={{
-                        fontSize: "11px",
-                        color: "#909296",
-                        fontStyle: "italic",
-                      }}
-                    >
-                      Double-click for details
-                    </div>
-                  </>
-                ) : (
-                  // High zoom: Show full text content only
-                  <>
-                    <div
-                      style={{
-                        marginBottom: 6,
-                        fontSize: "12px",
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {hoveredNode.text}
-                    </div>
-                    {hoveredNode.tags && hoveredNode.tags.length > 0 && (
-                      <div style={{ fontSize: "11px", color: "#4dabf7" }}>
-                        🏷️ {hoveredNode.tags.join(", ")}
-                      </div>
-                    )}
-                  </>
-                )}
-              </>
+          <div style={{ fontSize: "12px", lineHeight: 1.4 }}>
+            <div style={{ marginBottom: hoveredNode.tags && hoveredNode.tags.length > 0 ? 6 : 0 }}>
+              {hoveredNode.text}
+            </div>
+            {hoveredNode.tags && hoveredNode.tags.length > 0 && (
+              <div style={{ fontSize: "11px", color: "#4dabf7" }}>
+                🏷️ {hoveredNode.tags.join(", ")}
+              </div>
             )}
           </div>
         </div>
