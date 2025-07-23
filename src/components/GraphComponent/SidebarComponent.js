@@ -13,6 +13,8 @@ import {
   ActionIcon,
   Popover,
   Switch,
+  Card,
+  Badge,
 } from "@mantine/core";
 import {
   IconSettings,
@@ -25,6 +27,44 @@ import SearchBarComponent from "./SidebarComponent/SearchBarComponent";
 import TopTagsComponent from "./SidebarComponent/TopTagsComponent";
 import AdvancedTagFilterComponent from "./SidebarComponent/AdvancedTagFilterComponent";
 import PropTypes from "prop-types";
+
+const CLUSTERS = [
+  {
+    id: "cluster-1",
+    name: "Computation & Logic",
+    color: "#1976d2",
+    description: "Algorithms, AI, mathematics, and formal reasoning.",
+    noteIds: ["cs-1", "cs-2", "cs-3", "cs-4", "math-1", "math-2", "math-3", "math-4", "inter-4"],
+  },
+  {
+    id: "cluster-2",
+    name: "Society & Ethics",
+    color: "#43a047",
+    description: "Ethics, philosophy, law, and social impact.",
+    noteIds: ["ethics-1", "ethics-2", "ethics-3", "ethics-4", "pol-1", "pol-2", "pol-3", "pol-4", "inter-2"],
+  },
+  {
+    id: "cluster-3",
+    name: "Culture & Humanities",
+    color: "#8e24aa",
+    description: "Literature, art, media, and cultural studies.",
+    noteIds: ["lit-1", "lit-2", "lit-3", "lit-4", "art-1", "art-2", "art-3", "art-4", "inter-1"],
+  },
+  {
+    id: "cluster-4",
+    name: "Science & Nature",
+    color: "#fbc02d",
+    description: "Natural sciences, biology, environment, and technology.",
+    noteIds: ["sci-1", "sci-2", "sci-3", "sci-4", "inter-2", "math-4"],
+  },
+  {
+    id: "cluster-5",
+    name: "Mind & Behavior",
+    color: "#e64a19",
+    description: "Psychology, neuroscience, and behavioral science.",
+    noteIds: ["psych-1", "psych-2", "psych-3", "psych-4", "inter-3"],
+  },
+];
 
 const SidebarComponent = ({
   opened,
@@ -54,6 +94,8 @@ const SidebarComponent = ({
     isEmpty: true,
   });
   const [cyReady, setCyReady] = useState(false);
+  const [semanticClustering, setSemanticClustering] = useState(false);
+  const [selectedCluster, setSelectedCluster] = useState(null);
 
   // Stable event handlers using useCallback
   const handleMouseOver = useCallback((event) => {
@@ -184,6 +226,32 @@ const SidebarComponent = ({
       cy.edges().not(".tag-highlight").addClass("dimmed");
     }
   }, [selectedTag, advancedFilter, cyRef, notes, noteMatchesAdvancedFilter]);
+
+  // Semantic clustering effect (demo only)
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.nodes().removeClass("cluster-dimmed");
+    cy.nodes().removeClass("cluster-highlight");
+    cy.nodes().forEach((node) => {
+      node.style("background-color", "");
+      node.style("border-color", "");
+    });
+    if (semanticClustering && selectedCluster) {
+      const cluster = CLUSTERS.find((c) => c.id === selectedCluster);
+      if (cluster) {
+        cy.nodes().forEach((node) => {
+          if (cluster.noteIds.includes(node.id())) {
+            node.addClass("cluster-highlight");
+            node.style("background-color", cluster.color);
+            node.style("border-color", cluster.color);
+          } else {
+            node.addClass("cluster-dimmed");
+          }
+        });
+      }
+    }
+  }, [semanticClustering, selectedCluster, cyRef]);
 
   // Add handler to clear tag selection when clicking on background
   React.useEffect(() => {
@@ -392,6 +460,28 @@ const SidebarComponent = ({
     };
   }, []);
 
+  // Add Cytoscape stylesheet overrides for cluster highlighting
+  const clusterStylesheet = [
+    {
+      selector: 'node.cluster-highlight',
+      style: {
+        'opacity': 1,
+        'border-width': 3,
+        'z-index': 100,
+      },
+    },
+    {
+      selector: 'node.cluster-dimmed',
+      style: {
+        'opacity': 0.15,
+        'z-index': 1,
+      },
+    },
+  ];
+
+  // Merge clusterStylesheet with the main stylesheet before passing to CytoscapeComponent
+  const mergedStylesheet = [...stylesheet, ...clusterStylesheet];
+
   return (
     <>
       <AppShell
@@ -570,6 +660,44 @@ const SidebarComponent = ({
                 selectedId={selectedNode?.id}
               />
             </Box>
+            {/* Semantic Clusters Section */}
+            <Card shadow="xs" p="sm" radius="md" withBorder style={{ background: '#23243a', marginBottom: 8 }}>
+              <Group position="apart" align="center" mb={4}>
+                <Text fw={700} size="sm" style={{ color: '#fff' }}>Semantic Clusters (Demo)</Text>
+                <Switch size="sm" checked={semanticClustering} onChange={() => {
+                  setSemanticClustering((v) => !v);
+                  setSelectedCluster(null);
+                }} color="blue" />
+              </Group>
+              {semanticClustering && (
+                <Stack spacing={4}>
+                  {CLUSTERS.map((cluster) => (
+                    <Card
+                      key={cluster.id}
+                      shadow="xs"
+                      p={8}
+                      radius="sm"
+                      withBorder
+                      style={{
+                        background: selectedCluster === cluster.id ? cluster.color : '#23243a',
+                        color: selectedCluster === cluster.id ? '#fff' : '#e0e0e0',
+                        cursor: 'pointer',
+                        borderColor: cluster.color,
+                        marginBottom: 2,
+                        transition: 'background 0.2s, color 0.2s',
+                      }}
+                      onClick={() => setSelectedCluster(cluster.id)}
+                    >
+                      <Group spacing={8} align="center">
+                        <Badge color={cluster.color} variant="filled" size="sm" style={{ minWidth: 16, minHeight: 16, borderRadius: 8, marginRight: 4 }} />
+                        <Text fw={700} size="sm" style={{ flex: 1 }}>{cluster.name}</Text>
+                      </Group>
+                      <Text size="xs" style={{ color: selectedCluster === cluster.id ? '#fff' : '#bdbdbd', marginTop: 2 }}>{cluster.description}</Text>
+                    </Card>
+                  ))}
+                </Stack>
+              )}
+            </Card>
           </Stack>
           </div>
           {/* Fixed bottom section */}
@@ -662,7 +790,7 @@ const SidebarComponent = ({
                 elements={elements}
                 style={{ width: "100%", height: "100%" }}
                 layout={layout}
-                stylesheet={stylesheet}
+                stylesheet={mergedStylesheet}
                 userPanningEnabled={true}
                 userZoomingEnabled={true}
                 cy={(cy) => {
