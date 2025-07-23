@@ -77,25 +77,15 @@ const AdvancedTagFilterComponent = ({ notes, onFilterChange }) => {
 
   // Apply filters and update parent component
   const applyFilters = (newIncludeTags, newOrTags, newExcludeTags) => {
-    const filteredNotes = (notes || []).filter((note) => {
-      const noteTags = (note.tags || []).map((tag) => tag.toLowerCase());
-
-      // Check include tags (ALL must be present - AND logic)
-      const includeMatch = newIncludeTags.length === 0 || 
-        newIncludeTags.every((tag) => noteTags.includes(tag));
-
-      // Check OR tags (ANY can be present - OR logic)
-      const orMatch = newOrTags.length === 0 || 
-        newOrTags.some((tag) => noteTags.includes(tag));
-
-      // Check exclude tags (NONE should be present - NOT logic)
-      const excludeMatch = newExcludeTags.length === 0 || 
-        !newExcludeTags.some((tag) => noteTags.includes(tag));
-
-      return includeMatch && orMatch && excludeMatch;
+    onFilterChange({
+      includeTags: newIncludeTags,
+      orTags: newOrTags,
+      excludeTags: newExcludeTags,
+      isEmpty:
+        newIncludeTags.length === 0 &&
+        newOrTags.length === 0 &&
+        newExcludeTags.length === 0,
     });
-
-    onFilterChange(filteredNotes);
   };
 
   // Handlers for adding/removing tags
