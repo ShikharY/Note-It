@@ -19,7 +19,7 @@ const RecentNotesComponent = ({ nodes, onSelect, selectedId }) => {
   return (
     <>
       <Text fw={700} size="sm" style={{ marginTop: '1rem', marginBottom: '0.75rem' }}>
-        Top 5 Recent Notes
+        Recent Notes
       </Text>
       <Paper shadow="xs" p="md" radius="md" withBorder style={{ background: '#2a2a2a' }}>
         <Stack spacing="xs">

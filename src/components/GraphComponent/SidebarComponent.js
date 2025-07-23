@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useMemo } from "react";
 import {
   AppShell,
   Box,
@@ -96,6 +96,32 @@ const SidebarComponent = ({
   const [cyReady, setCyReady] = useState(false);
   const [semanticClustering, setSemanticClustering] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState(null);
+  const [sourceClustering, setSourceClustering] = useState(false);
+  const [sourceDomainColors, setSourceDomainColors] = useState({});
+  const [selectedDomain, setSelectedDomain] = useState(null);
+
+  // Helper: extract domain from URL
+  function getDomain(url) {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      return null;
+    }
+  }
+
+  // Compute unique domains and assign colors (demo palette)
+  const domainList = useMemo(() => {
+    const domains = Array.from(new Set((notes || []).map(n => getDomain(n.url)).filter(Boolean)));
+    return domains;
+  }, [notes]);
+  const palette = ["#1976d2", "#43a047", "#8e24aa", "#fbc02d", "#e64a19", "#00bcd4", "#c62828", "#6d4c41", "#388e3c", "#7b1fa2"];
+  useEffect(() => {
+    const mapping = {};
+    domainList.forEach((domain, i) => {
+      mapping[domain] = palette[i % palette.length];
+    });
+    setSourceDomainColors(mapping);
+  }, [domainList]);
 
   // Stable event handlers using useCallback
   const handleMouseOver = useCallback((event) => {
@@ -252,6 +278,35 @@ const SidebarComponent = ({
       }
     }
   }, [semanticClustering, selectedCluster, cyRef]);
+
+  // Update source domain clustering effect to support domain selection
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.nodes().removeClass("source-dimmed");
+    cy.nodes().removeClass("source-highlight");
+    cy.nodes().forEach((node) => {
+      node.style("background-color", "");
+      node.style("border-color", "");
+    });
+    if (sourceClustering) {
+      cy.nodes().forEach((node) => {
+        const note = notes.find(n => n.id === node.id());
+        const domain = note ? getDomain(note.url) : null;
+        if (domain && sourceDomainColors[domain]) {
+          if (!selectedDomain || selectedDomain === domain) {
+            node.addClass("source-highlight");
+            node.style("background-color", sourceDomainColors[domain]);
+            node.style("border-color", sourceDomainColors[domain]);
+          } else {
+            node.addClass("source-dimmed");
+          }
+        } else {
+          node.addClass("source-dimmed");
+        }
+      });
+    }
+  }, [sourceClustering, sourceDomainColors, notes, cyRef, selectedDomain]);
 
   // Add handler to clear tag selection when clicking on background
   React.useEffect(() => {
@@ -479,8 +534,27 @@ const SidebarComponent = ({
     },
   ];
 
-  // Merge clusterStylesheet with the main stylesheet before passing to CytoscapeComponent
-  const mergedStylesheet = [...stylesheet, ...clusterStylesheet];
+  // Add Cytoscape stylesheet overrides for source highlighting and source edges
+  const sourceStylesheet = [
+    {
+      selector: 'node.source-highlight',
+      style: {
+        'opacity': 1,
+        'border-width': 3,
+        'z-index': 100,
+      },
+    },
+    {
+      selector: 'node.source-dimmed',
+      style: {
+        'opacity': 0.15,
+        'z-index': 1,
+      },
+    },
+  ];
+
+  // Merge all stylesheets
+  const mergedStylesheet = [...stylesheet, ...clusterStylesheet, ...sourceStylesheet];
 
   return (
     <>
@@ -697,6 +771,50 @@ const SidebarComponent = ({
                   ))}
                 </Stack>
               )}
+            </Card>
+            {/* Source Intelligence Section */}
+            <Card shadow="xs" p="sm" radius="md" withBorder style={{ background: '#23243a', marginBottom: 8 }}>
+              <Text fw={700} size="sm" style={{ color: '#fff', marginBottom: 4 }}>Source Intelligence (Demo)</Text>
+              <Stack spacing={4}>
+                <Group position="apart" align="center">
+                  <Text size="xs" style={{ color: '#e0e0e0' }}>Domain Clustering</Text>
+                  <Switch size="sm" checked={sourceClustering} onChange={() => { setSourceClustering(v => !v); setSelectedDomain(null); }} color="cyan" />
+                </Group>
+                {sourceClustering && (
+                  <Stack spacing={2} style={{ marginLeft: 8, marginTop: 2 }}>
+                    {domainList.map(domain => (
+                      <Card
+                        key={domain}
+                        shadow="xs"
+                        p={6}
+                        radius="sm"
+                        withBorder
+                        style={{
+                          background: selectedDomain === domain ? sourceDomainColors[domain] : '#23243a',
+                          color: selectedDomain === domain ? '#fff' : '#e0e0e0',
+                          cursor: 'pointer',
+                          borderColor: sourceDomainColors[domain],
+                          marginBottom: 2,
+                          transition: 'background 0.2s, color 0.2s',
+                          fontSize: 13,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                        onClick={() => setSelectedDomain(selectedDomain === domain ? null : domain)}
+                      >
+                        <Badge color={sourceDomainColors[domain]} variant="filled" size="sm" style={{ minWidth: 16, minHeight: 16, borderRadius: 8, marginRight: 6 }} />
+                        <span style={{ fontWeight: 600 }}>{domain}</span>
+                      </Card>
+                    ))}
+                    {selectedDomain && (
+                      <Button size="xs" color="gray" variant="subtle" style={{ marginTop: 2 }} onClick={() => setSelectedDomain(null)}>
+                        Clear Domain Selection
+                      </Button>
+                    )}
+                  </Stack>
+                )}
+              </Stack>
             </Card>
           </Stack>
           </div>

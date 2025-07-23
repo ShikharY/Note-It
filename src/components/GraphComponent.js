@@ -299,10 +299,14 @@ function GraphComponent({ colorScheme, setColorScheme }) {
     {
       selector: "node.selected",
       style: {
-        "background-color": "#fff",
+        "background-color": "#1976d2",
         "border-color": "#4dabf7",
         "border-width": 3,
-        color: "#1a1b1e",
+        color: "#fff",
+        "text-outline-width": 0,
+        "text-shadow-color": "#222",
+        "text-shadow-blur": 2,
+        "text-shadow-opacity": 0.7,
         "font-weight": "bold",
         "z-index": 25,
         "transition-property": "background-color, border-color, border-width",
