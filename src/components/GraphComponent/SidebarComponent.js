@@ -462,20 +462,46 @@ const SidebarComponent = ({
               <SearchBarComponent
                 notes={notes}
                 onSelectNote={(note) => {
+                  setSelectedTag(null);
+                  setAdvancedFilter({
+                    includeTags: [],
+                    orTags: [],
+                    excludeTags: [],
+                    isEmpty: true,
+                  });
                   const cy = cyRef.current;
                   if (cy) {
-                    const node = cy.getElementById(note.id);
-                    if (node) {
+                    const cyNode = cy.getElementById(note.id);
+                    if (cyNode) {
                       cy.animate({
-                        center: { eles: node },
+                        center: { eles: cyNode },
                         zoom: 2,
                         duration: 600,
                         easing: "ease-in-out-cubic",
                       });
-                      node.select();
-                      // Remove _fromTagSelection for search
-                      node.data("_fromTagSelection", false);
+                      cyNode.select();
+                      cyNode.data("_fromTagSelection", true);
+                      setSelectedNode(cyNode.data());
+                      setNodePosition(cyNode.renderedPosition());
                     }
+                  }
+                }}
+                onClear={() => {
+                  setSelectedNode(null);
+                  setNodePosition({ x: 0, y: 0 });
+                  setSelectedTag(null);
+                  setAdvancedFilter({
+                    includeTags: [],
+                    orTags: [],
+                    excludeTags: [],
+                    isEmpty: true,
+                  });
+                  const cy = cyRef.current;
+                  if (cy) {
+                    cy.nodes().removeClass("tag-highlight");
+                    cy.edges().removeClass("tag-highlight");
+                    cy.nodes().removeClass("dimmed");
+                    cy.edges().removeClass("dimmed");
                   }
                 }}
               />

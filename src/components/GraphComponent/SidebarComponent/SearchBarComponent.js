@@ -3,7 +3,7 @@ import { TextInput, Stack, Text, Group, Button } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
 import SearchResultComponent from "./SearchBarComponent/SearchResultComponent";
 
-const SearchBarComponent = ({ notes, onSelectNote }) => {
+const SearchBarComponent = ({ notes, onSelectNote, onClear }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -58,6 +58,7 @@ const SearchBarComponent = ({ notes, onSelectNote }) => {
   const handleClear = () => {
     setSearchQuery("");
     setIsSearching(false);
+    if (onClear) onClear();
   };
 
   const handleSelectNote = (note) => {

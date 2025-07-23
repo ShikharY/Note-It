@@ -106911,22 +106911,51 @@ var SidebarComponent = function SidebarComponent(_ref) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_16__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_SearchBarComponent__WEBPACK_IMPORTED_MODULE_3__["default"], {
     notes: notes,
     onSelectNote: function onSelectNote(note) {
+      setSelectedTag(null);
+      setAdvancedFilter({
+        includeTags: [],
+        orTags: [],
+        excludeTags: [],
+        isEmpty: true
+      });
       var cy = cyRef.current;
       if (cy) {
-        var node = cy.getElementById(note.id);
-        if (node) {
+        var cyNode = cy.getElementById(note.id);
+        if (cyNode) {
           cy.animate({
             center: {
-              eles: node
+              eles: cyNode
             },
             zoom: 2,
             duration: 600,
             easing: "ease-in-out-cubic"
           });
-          node.select();
-          // Remove _fromTagSelection for search
-          node.data("_fromTagSelection", false);
+          cyNode.select();
+          cyNode.data("_fromTagSelection", true);
+          setSelectedNode(cyNode.data());
+          setNodePosition(cyNode.renderedPosition());
         }
+      }
+    },
+    onClear: function onClear() {
+      setSelectedNode(null);
+      setNodePosition({
+        x: 0,
+        y: 0
+      });
+      setSelectedTag(null);
+      setAdvancedFilter({
+        includeTags: [],
+        orTags: [],
+        excludeTags: [],
+        isEmpty: true
+      });
+      var cy = cyRef.current;
+      if (cy) {
+        cy.nodes().removeClass("tag-highlight");
+        cy.edges().removeClass("tag-highlight");
+        cy.nodes().removeClass("dimmed");
+        cy.edges().removeClass("dimmed");
       }
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_16__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_TopTagsComponent__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -107623,7 +107652,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 var SearchBarComponent = function SearchBarComponent(_ref) {
   var notes = _ref.notes,
-    onSelectNote = _ref.onSelectNote;
+    onSelectNote = _ref.onSelectNote,
+    onClear = _ref.onClear;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState2 = _slicedToArray(_useState, 2),
     searchQuery = _useState2[0],
@@ -107677,6 +107707,7 @@ var SearchBarComponent = function SearchBarComponent(_ref) {
   var handleClear = function handleClear() {
     setSearchQuery("");
     setIsSearching(false);
+    if (onClear) onClear();
   };
   var handleSelectNote = function handleSelectNote(note) {
     onSelectNote(note);
