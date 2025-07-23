@@ -218,26 +218,25 @@ const SidebarComponent = ({
       setNodePosition({ x: 0, y: 0 });
     }
 
-    // Animate to the first node with this tag
+    // Animate to all nodes with this tag
     const cy = cyRef.current;
     if (cy) {
-      const node = cy
+      const nodesWithTag = cy
         .nodes()
         .filter((n) => {
           const tags = n.data("tags") || [];
           return tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase());
-        })
-        .first();
-      if (node && node.length > 0) {
+        });
+      if (nodesWithTag && nodesWithTag.length > 0) {
         cy.animate({
-          center: { eles: node },
-          zoom: 2,
+          center: { eles: nodesWithTag },
+          zoom: 1.5,
           duration: 600,
           easing: "ease-in-out-cubic",
         });
-        node.select();
+        nodesWithTag.select();
         // Set _fromTagSelection for tag selection
-        node.data("_fromTagSelection", true);
+        nodesWithTag.forEach((node) => node.data("_fromTagSelection", true));
       }
     }
   };
@@ -508,7 +507,7 @@ const SidebarComponent = ({
             </Box>
 
             <Box>
-              <TopTagsComponent notes={notes} onSelectTag={handleSelectTag} />
+              <TopTagsComponent notes={notes} onSelectTag={handleSelectTag} selectedTag={selectedTag} />
             </Box>
 
             <Box>

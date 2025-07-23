@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Group, Badge, Text, Stack } from "@mantine/core";
 import { IconTag } from "@tabler/icons-react";
 
-const TopTagsComponent = ({ notes, onSelectTag }) => {
+const TopTagsComponent = ({ notes, onSelectTag, selectedTag }) => {
   // Compute tag counts (case-insensitive)
   const topTags = useMemo(() => {
     const tagCount = {};
@@ -41,9 +41,9 @@ const TopTagsComponent = ({ notes, onSelectTag }) => {
           <Badge
             key={tag}
             leftSection={<IconTag size={12} />}
-            color="blue"
-            variant="filled"
-            style={{ cursor: "pointer" }}
+            color={selectedTag ? (selectedTag.toLowerCase() === tag ? "blue" : "dark") : "blue"}
+            variant={selectedTag ? (selectedTag.toLowerCase() === tag ? "filled" : "outline") : "filled"}
+            style={{ cursor: "pointer", fontWeight: selectedTag && selectedTag.toLowerCase() === tag ? 700 : 400 }}
             onClick={() => onSelectTag(tag)}
             title={`Used in ${count} note${count !== 1 ? "s" : ""}`}
           >

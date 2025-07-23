@@ -106680,27 +106680,29 @@ var SidebarComponent = function SidebarComponent(_ref) {
       });
     }
 
-    // Animate to the first node with this tag
+    // Animate to all nodes with this tag
     var cy = cyRef.current;
     if (cy) {
-      var node = cy.nodes().filter(function (n) {
+      var nodesWithTag = cy.nodes().filter(function (n) {
         var tags = n.data("tags") || [];
         return tags.map(function (t) {
           return t.toLowerCase();
         }).includes(tag.toLowerCase());
-      }).first();
-      if (node && node.length > 0) {
+      });
+      if (nodesWithTag && nodesWithTag.length > 0) {
         cy.animate({
           center: {
-            eles: node
+            eles: nodesWithTag
           },
-          zoom: 2,
+          zoom: 1.5,
           duration: 600,
           easing: "ease-in-out-cubic"
         });
-        node.select();
+        nodesWithTag.select();
         // Set _fromTagSelection for tag selection
-        node.data("_fromTagSelection", true);
+        nodesWithTag.forEach(function (node) {
+          return node.data("_fromTagSelection", true);
+        });
       }
     }
   };
@@ -106960,7 +106962,8 @@ var SidebarComponent = function SidebarComponent(_ref) {
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_16__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_TopTagsComponent__WEBPACK_IMPORTED_MODULE_4__["default"], {
     notes: notes,
-    onSelectTag: handleSelectTag
+    onSelectTag: handleSelectTag,
+    selectedTag: selectedTag
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mantine_core__WEBPACK_IMPORTED_MODULE_16__.Box, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_SidebarComponent_AdvancedTagFilterComponent__WEBPACK_IMPORTED_MODULE_5__["default"], {
     notes: notes,
     onFilterChange: handleAdvancedFilterChange
@@ -107920,7 +107923,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 var TopTagsComponent = function TopTagsComponent(_ref) {
   var notes = _ref.notes,
-    onSelectTag = _ref.onSelectTag;
+    onSelectTag = _ref.onSelectTag,
+    selectedTag = _ref.selectedTag;
   // Compute tag counts (case-insensitive)
   var topTags = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(function () {
     var tagCount = {};
@@ -107964,10 +107968,11 @@ var TopTagsComponent = function TopTagsComponent(_ref) {
       leftSection: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_tabler_icons_react__WEBPACK_IMPORTED_MODULE_5__["default"], {
         size: 12
       }),
-      color: "blue",
-      variant: "filled",
+      color: selectedTag ? selectedTag.toLowerCase() === tag ? "blue" : "dark" : "blue",
+      variant: selectedTag ? selectedTag.toLowerCase() === tag ? "filled" : "outline" : "filled",
       style: {
-        cursor: "pointer"
+        cursor: "pointer",
+        fontWeight: selectedTag && selectedTag.toLowerCase() === tag ? 700 : 400
       },
       onClick: function onClick() {
         return onSelectTag(tag);
